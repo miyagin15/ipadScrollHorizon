@@ -46,13 +46,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         createCSV(fileArrData: nowgoal_Data)
     }
     @IBOutlet var functionalExpressionLabel: UILabel!
-    
-    
-    
     //ウインクした場所を特定するために定義
     let userDefaults = UserDefaults.standard
-    
-
     private let cellIdentifier = "cell"
     //Trackingfaceを使うための設定
     private let defaultConfiguration: ARFaceTrackingConfiguration = {
@@ -61,14 +56,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     }()
     
     //var NetWork = NetWorkViewController()
-
     //ゴールの目標セルを決める
     var goalPositionInt:[Int] = [5,1,2,3,2,7,5]
     //ゴールの目標位置を決める
     var goalPosition:[Float] = [0,0,0,0,0,0,0]
-    
-    
-    
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float]=[]
     
@@ -85,17 +76,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         // Cellのマージン.
         layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
         layout.scrollDirection = .horizontal
+        //layout.scrollDirection = .vertical
+
         // セクション毎のヘッダーサイズ.
         layout.headerReferenceSize = CGSize(width:10,height:30)
 
         // CollectionViewを生成.
-        myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        //myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
 
+        myCollectionView = UICollectionView(frame:CGRect(x:0,y:150,width: 700,height: 800),
+            collectionViewLayout: layout)
+        
         // Cellに使われるクラスを登録.
         myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
 
         myCollectionView.delegate = self
         myCollectionView.dataSource = self
+        myCollectionView.contentSize=CGSize(width: 3400, height: 2000)
 
         self.view.addSubview(myCollectionView)
         
@@ -125,6 +122,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
         
+        var goalView = UIView()
+        self.view.addSubview(goalView)
+        goalView.frame = CGRect(x:200,y:150, width:150 ,height: 700)
+        goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
+        self.view.addSubview(goalView)
     }
     
     @objc func update() {
@@ -218,10 +220,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             self.functionalExpressionLabel.text = String(-Float(ratio))
             if(ratio<0.25){
                 let ratio = ratio * 0.3
+                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x+10*ratio*CGFloat(self.ratioChange), y: 0)
                 self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
             }
             else if(ratio>0.55){
                 let ratio = ratio * 1.5
+                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x + 10*ratio*CGFloat(self.ratioChange), y: 0)
                 self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
             }
             else{
@@ -230,6 +234,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             //self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
     }
+    
     //down scroll
     private func scrollDownInMainThread(ratio :CGFloat) {
         print(ratio)
@@ -254,7 +259,50 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             //self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
         }
     }
-
+    //right scroll
+    private func rightScrollMainThread(ratio :CGFloat) {
+        DispatchQueue.main.async {
+            if(self.myCollectionView.contentOffset.x > 8000){
+                return
+            }
+            self.functionalExpression.value = Float(ratio)
+            self.functionalExpressionLabel.text = String(Float(ratio))
+            if(ratio<0.25){
+                let ratio = ratio * 0.3
+                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x+10*ratio*CGFloat(self.ratioChange), y: 0)
+            }
+            else if(ratio>0.55){
+                let ratio = ratio * 1.5
+                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x + 10*ratio*CGFloat(self.ratioChange), y: 0)
+            }
+            else{
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10*ratio*CGFloat(self.ratioChange), y: 0)
+            }
+            //self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
+        }
+    }
+    //left scroll
+    private func leftScrollMainThread(ratio :CGFloat) {
+        DispatchQueue.main.async {
+            if(self.myCollectionView.contentOffset.x < 0){
+                return
+            }
+            self.functionalExpression.value = -Float(ratio)
+            self.functionalExpressionLabel.text = String(Float(-ratio))
+            if(ratio<0.25){
+                let ratio = ratio * 0.3
+                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x-10*ratio*CGFloat(self.ratioChange), y: 0)
+            }
+            else if(ratio>0.55){
+                let ratio = ratio * 1.5
+                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x - 10*ratio*CGFloat(self.ratioChange), y: 0)
+            }
+            else{
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10*ratio*CGFloat(self.ratioChange), y: 0)
+            }
+            //self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
+        }
+    }
     // 眉毛を上げたとき
     private func backToHome(ratio :CGFloat) {
         DispatchQueue.main.async {
@@ -363,13 +411,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             }
             if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
                 if mouthLeft > 0.1 {
-                    self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+                    //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+                    self.rightScrollMainThread(ratio: CGFloat(mouthLeft))
                 }
             }
             
             if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
                 if mouthRight > 0.1 {
-                    self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
+                    //self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
+                    self.leftScrollMainThread(ratio: CGFloat(mouthRight))
                 }
             }
         case (1):

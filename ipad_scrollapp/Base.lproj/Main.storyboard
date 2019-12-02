@@ -11,15 +11,15 @@
         <scene sceneID="tXr-a1-R10">
             <objects>
                 <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="ipad_scroll_horizon" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="U0K-SW-4ec">
                         <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
-                                <rect key="frame" x="0.0" y="0.0" width="1194" height="814"/>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="814"/>
                             </arscnView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LqD-ud-hH5">
-                                <rect key="frame" x="0.0" y="0.0" width="1194" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="3cu-zm-MT0"/>
                                     <constraint firstAttribute="width" constant="834" id="znK-UL-gy2"/>
@@ -37,7 +37,7 @@
                                             </slider>
                                         </barButtonItem>
                                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WSq-IT-Skv">
-                                            <rect key="frame" x="506.5" y="3" width="181" height="44"/>
+                                            <rect key="frame" x="326.5" y="3" width="181" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -50,7 +50,7 @@
                                         </button>
                                         <barButtonItem key="rightBarButtonItem" style="plain" id="jXG-ml-GS2">
                                             <view key="customView" contentMode="scaleToFill" id="FzM-5d-oAt">
-                                                <rect key="frame" x="989" y="6.5" width="185" height="37"/>
+                                                <rect key="frame" x="629" y="6.5" width="185" height="37"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             </view>
@@ -59,12 +59,8 @@
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0LH-x5-56R" userLabel="LabelView">
-                                <rect key="frame" x="0.0" y="50" width="1194" height="70"/>
+                                <rect key="frame" x="0.0" y="50" width="834" height="70"/>
                                 <subviews>
-                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="bAq-Wh-VV3">
-                                        <rect key="frame" x="6" y="21" width="274" height="30"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                    </slider>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IhE-jI-5PZ">
                                         <rect key="frame" x="709" y="15" width="117" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -87,12 +83,16 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZR1-g8-nJ2">
-                                        <rect key="frame" x="312" y="49" width="191" height="21"/>
+                                        <rect key="frame" x="601" y="49" width="191" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="23"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="bAq-Wh-VV3">
+                                        <rect key="frame" x="6" y="8" width="274" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                    </slider>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -123,11 +123,19 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
-                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3Mr-z6-nJ4">
-                                <rect key="frame" x="323" y="163" width="549" height="30"/>
+                            <view alpha="0.25" contentMode="scaleToFill" id="bAZ-UZ-ZfD" userLabel="LangeGoal">
+                                <rect key="frame" x="297" y="106" width="196" height="728"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
+                            <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="3Mr-z6-nJ4">
+                                <rect key="frame" x="-2" y="90" width="549" height="31"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <color key="tintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="30" id="1RT-Xe-U4x"/>
+                                    <constraint firstAttribute="width" constant="545" id="bxU-FS-Rbl"/>
+                                </constraints>
                             </slider>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
@@ -139,6 +147,7 @@
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="bottom" secondItem="fQZ-KI-GVf" secondAttribute="bottom" id="VpT-BR-CcM"/>
                             <constraint firstItem="0LH-x5-56R" firstAttribute="leading" secondItem="fQZ-KI-GVf" secondAttribute="leading" id="XyI-bk-tjT"/>
                             <constraint firstItem="BrB-h1-WRS" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="XyZ-9z-H8e"/>
+                            <constraint firstItem="3Mr-z6-nJ4" firstAttribute="bottom" secondItem="0LH-x5-56R" secondAttribute="bottom" id="asX-4b-vdN"/>
                             <constraint firstItem="0LH-x5-56R" firstAttribute="trailing" secondItem="fQZ-KI-GVf" secondAttribute="trailing" id="jZG-jE-aZw"/>
                             <constraint firstAttribute="bottom" secondItem="yfE-MM-78e" secondAttribute="bottom" id="juD-oW-pm7"/>
                             <constraint firstItem="yfE-MM-78e" firstAttribute="top" secondItem="0LH-x5-56R" secondAttribute="bottom" id="pYh-PJ-0Mv"/>
