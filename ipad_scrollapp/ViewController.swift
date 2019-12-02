@@ -67,66 +67,19 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // CollectionViewのレイアウトを生成.
-        let layout = UICollectionViewFlowLayout()
-        // Cell一つ一つの大きさ.
-        layout.itemSize = CGSize(width:800, height:700)
-
-        // Cellのマージン.
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
-        layout.scrollDirection = .horizontal
-        //layout.scrollDirection = .vertical
-
-        // セクション毎のヘッダーサイズ.
-        layout.headerReferenceSize = CGSize(width:10,height:30)
-
-        // CollectionViewを生成.
-        //myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-
-        myCollectionView = UICollectionView(frame:CGRect(x:0,y:150,width: 700,height: 800),
-            collectionViewLayout: layout)
-        
-        // Cellに使われるクラスを登録.
-        myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
-
-        myCollectionView.delegate = self
-        myCollectionView.dataSource = self
-        myCollectionView.contentSize=CGSize(width: 3400, height: 2000)
-
-        self.view.addSubview(myCollectionView)
-        
-        
-        
-        self.goalLabel.text = String(goalPositionInt[0])
-
-        for i in 0..<goalPositionInt.count{
-            goalPosition[i] = Float(goalPositionInt[i] * 800-100)
-        }
-        
-        
-        timeCount.maximumValue = 50
-        timeCount.minimumValue = 0
-        timeCount.value=0
-        
+        createScrollVIew()
+        decideGoalpositionTimeCount()
         
         tableView.delegate = self
         tableView.dataSource = self
-        
-
         sceneView.delegate = self
+        
         //スクロールできる範囲を指定する
         tableView.contentSize = CGSize(width: 340, height: 2000)
         tableView.rowHeight = 800
-        
+        createGoalView()
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
-        
-        var goalView = UIView()
-        self.view.addSubview(goalView)
-        goalView.frame = CGRect(x:200,y:150, width:150 ,height: 700)
-        goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
-        self.view.addSubview(goalView)
     }
     
     @objc func update() {
@@ -152,8 +105,47 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         return cell
     }
     
+    //scrolViewを作成する
+    private func createScrollVIew(){
+        // CollectionViewのレイアウトを生成.
+        let layout = UICollectionViewFlowLayout()
+        // Cell一つ一つの大きさ.
+        layout.itemSize = CGSize(width:300, height:700)
+        // Cellのマージン.
+        layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        layout.scrollDirection = .horizontal
+        //layout.scrollDirection = .vertical
+        // セクション毎のヘッダーサイズ.
+        layout.headerReferenceSize = CGSize(width:10,height:30)
+        // CollectionViewを生成.
+        //myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+        myCollectionView = UICollectionView(frame:CGRect(x:0,y:150,width: 700,height: 800),
+            collectionViewLayout: layout)
+        // Cellに使われるクラスを登録.
+        myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
+        myCollectionView.delegate = self
+        myCollectionView.dataSource = self
+        myCollectionView.contentSize=CGSize(width: 3400, height: 2000)
+        self.view.addSubview(myCollectionView)
+    }
     
-    
+    private func decideGoalpositionTimeCount(){
+        
+        self.goalLabel.text = String(goalPositionInt[0])
+        for i in 0..<goalPositionInt.count{
+            goalPosition[i] = Float(goalPositionInt[i] * 800-100)
+        }
+        timeCount.maximumValue = 50
+        timeCount.minimumValue = 0
+        timeCount.value=0
+    }
+    private func createGoalView(){
+        let goalView = UIView()
+        self.view.addSubview(goalView)
+        goalView.frame = CGRect(x:200,y:150, width:150 ,height: 700)
+        goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
+        self.view.addSubview(goalView)
+    }
     
     
 
@@ -163,19 +155,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-//        if indexPath.row % 2 == 0 {
-//            cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-//
-//            cell.backgroundColor =  UIColor(red: 238/255, green: 163/255, blue: 88/255, alpha: 0.1)
-//
-//        } else {
-//            cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-//
-//
-//            cell.backgroundColor = UIColor.white
-//
-//        }
-        
         cell.backgroundColor = UIColor(red: 255/255, green: 1, blue: CGFloat(11 - indexPath.row)/10, alpha: 0.25)
         
         cell.textLabel?.text = "セル " + indexPath.row.description
