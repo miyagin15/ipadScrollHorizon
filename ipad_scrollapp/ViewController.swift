@@ -69,15 +69,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         super.viewDidLoad()
         createScrollVIew()
         decideGoalpositionTimeCount()
-        
-        tableView.delegate = self
-        tableView.dataSource = self
-        sceneView.delegate = self
-        
-        //スクロールできる範囲を指定する
-        tableView.contentSize = CGSize(width: 340, height: 2000)
-        tableView.rowHeight = 800
         createGoalView()
+        createTableView()
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
@@ -93,7 +86,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 100
     }
-
     /*
      Cellに値を設定する
      */
@@ -101,7 +93,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
 
         let cell : CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath) as! CollectionViewCell
         cell.textLabel?.text = indexPath.row.description
-
         return cell
     }
     
@@ -146,8 +137,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
         self.view.addSubview(goalView)
     }
-    
-    
+    private func createTableView(){
+        tableView.delegate = self
+        tableView.dataSource = self
+        sceneView.delegate = self
+        //スクロールできる範囲を指定する
+        tableView.contentSize = CGSize(width: 340, height: 2000)
+        tableView.rowHeight = 800
+    }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 100
@@ -162,17 +159,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         cell.textLabel?.font = UIFont.systemFont(ofSize: 80)
         return cell
     }
-    
-    /*
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-        // セルの選択を解除
-        tableView.deselectRow(at: indexPath, animated: true)
-        
-        // 別の画面に遷移
-        performSegue(withIdentifier: "toNext", sender: nil)
-    }
-     */
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -199,12 +185,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             self.functionalExpressionLabel.text = String(-Float(ratio))
             if(ratio<0.25){
                 let ratio = ratio * 0.3
-                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x+10*ratio*CGFloat(self.ratioChange), y: 0)
                 self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
             }
             else if(ratio>0.55){
                 let ratio = ratio * 1.5
-                self.myCollectionView.contentOffset=CGPoint(x: self.myCollectionView.contentOffset.x + 10*ratio*CGFloat(self.ratioChange), y: 0)
                 self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
             }
             else{
@@ -280,12 +264,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10*ratio*CGFloat(self.ratioChange), y: 0)
             }
             //self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
-        }
-    }
-    // 眉毛を上げたとき
-    private func backToHome(ratio :CGFloat) {
-        DispatchQueue.main.async {
-            self.dismiss(animated: false, completion: nil)
         }
     }
 
