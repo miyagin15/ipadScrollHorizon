@@ -79,10 +79,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         
         // CollectionViewのレイアウトを生成.
         let layout = UICollectionViewFlowLayout()
-
-
         // Cell一つ一つの大きさ.
-        layout.itemSize = CGSize(width:300, height:700)
+        layout.itemSize = CGSize(width:800, height:700)
 
         // Cellのマージン.
         layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
