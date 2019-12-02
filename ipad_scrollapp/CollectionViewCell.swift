@@ -23,6 +23,9 @@ class CollectionViewCell: UICollectionViewCell {
         // UILabelを生成.
         textLabel = UILabel(frame: CGRect(x:0, y:0, width:frame.width, height:frame.height))
         textLabel?.text = "nil"
+        layer.borderColor = UIColor.red.cgColor
+        layer.borderWidth = 1
+        
         textLabel?.font = UIFont.systemFont(ofSize: 36)
         textLabel?.backgroundColor = UIColor.white
         textLabel?.textAlignment = NSTextAlignment.center

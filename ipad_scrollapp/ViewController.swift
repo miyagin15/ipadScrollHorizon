@@ -84,7 +84,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
      Cellの総数を返す
      */
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return 50
     }
     /*
      Cellに値を設定する
@@ -101,27 +101,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         // CollectionViewのレイアウトを生成.
         let layout = UICollectionViewFlowLayout()
         // Cell一つ一つの大きさ.
-        layout.itemSize = CGSize(width:300, height:700)
+        layout.itemSize = CGSize(width:100, height:600)
+        layout.minimumLineSpacing = 0.1
         // Cellのマージン.
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 0, bottom: 0, right: 0)
+        //layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
         layout.scrollDirection = .horizontal
+        
         //layout.scrollDirection = .vertical
+        
         // セクション毎のヘッダーサイズ.
-        layout.headerReferenceSize = CGSize(width:10,height:30)
+        //layout.headerReferenceSize = CGSize(width:10,height:30)
         // CollectionViewを生成.
         //myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-        myCollectionView = UICollectionView(frame:CGRect(x:0,y:150,width: 700,height: 800),
+        myCollectionView = UICollectionView(frame:CGRect(x:0,y:150,width: 600,height: 600),
             collectionViewLayout: layout)
+        myCollectionView.backgroundColor=UIColor.white
         // Cellに使われるクラスを登録.
         myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
         myCollectionView.delegate = self
         myCollectionView.dataSource = self
-        myCollectionView.contentSize=CGSize(width: 3400, height: 2000)
+        myCollectionView.contentSize=CGSize(width: 1800, height: 600)
         self.view.addSubview(myCollectionView)
     }
     
     private func decideGoalpositionTimeCount(){
-        
         self.goalLabel.text = String(goalPositionInt[0])
         for i in 0..<goalPositionInt.count{
             goalPosition[i] = Float(goalPositionInt[i] * 800-100)
@@ -288,6 +291,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     var time :Int = 0
     //tarcking状態
     var tableViewPosition :CGFloat = 0
+    var myCollectionViewPosition :CGFloat = 0
     var before_cheek_right:Float = 0
     var after_cheek_right:Float = 0
     var before_cheek_left:Float = 0
@@ -299,16 +303,38 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
-        
-        
-        
         let goal = self.goalPosition[self.i]
-        
+//        DispatchQueue.main.async {
+//            self.tableViewPosition = self.tableView.contentOffset.y
+//            //目標との距離が近くなったら
+//            if( (Float(self.tableViewPosition) - goal) < 50 && (Float(self.tableViewPosition) - goal) > -50){
+//                print("クリア")
+//                self.time=self.time+1
+//                self.timeCount.value=Float(self.time)
+//                if(self.time>50){
+//                    print("クリア2")
+//                    if(self.i < self.goalPositionInt.count-1){
+//                        self.i=self.i+1
+//                        self.timeCount.value = 0
+//                        self.buttonLabel.backgroundColor  = UIColor.blue
+//                        self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
+//                    }else{
+//                        self.tableView.contentOffset.y = 0
+//                        self.goalLabel.text = "終了"
+//                        //データをパソコンに送る(今の場所と目標地点)
+//                        DispatchQueue.main.async {
+//                            //self.NetWork.send(message: [0,0])
+//                        }
+//                    }
+//                }
+//            }else{
+//                self.time=0
+//            }
+//        }
         DispatchQueue.main.async {
-            self.tableViewPosition = self.tableView.contentOffset.y
-
+            self.myCollectionViewPosition = self.myCollectionView.contentOffset.x
             //目標との距離が近くなったら
-            if( (Float(self.tableViewPosition) - goal) < 50 && (Float(self.tableViewPosition) - goal) > -50){
+            if( (Float(self.myCollectionViewPosition) - goal) < 50 && (Float(self.myCollectionViewPosition) - goal) > -50){
                 print("クリア")
                 self.time=self.time+1
                 self.timeCount.value=Float(self.time)
@@ -320,20 +346,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
                         self.buttonLabel.backgroundColor  = UIColor.blue
                         self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
                     }else{
-                        self.tableView.contentOffset.y = 0
+                        self.myCollectionView.contentOffset.y = 0
                         self.goalLabel.text = "終了"
                         //データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
                             //self.NetWork.send(message: [0,0])
                         }
-                        
                     }
                 }
             }else{
                 self.time=0
             }
         }
-        
         // 認識していたら青色に
         DispatchQueue.main.async {
             //print(self.tableView.contentOffset.y)
