@@ -346,7 +346,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
                         self.i=self.i+1
                         self.timeCount.value = 0
                         self.buttonLabel.backgroundColor  = UIColor.blue
-                        self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
+                        if self.i==self.goalPosition.count-1{
+                            self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i])
+                        }else{
+                            self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
+                        }
                     }else{
                         self.myCollectionView.contentOffset.y = 0
                         self.goalLabel.text = "終了"
@@ -366,14 +370,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             self.tracking.backgroundColor = UIColor.blue
         }
         
+        //CSVを作るデータに足していく縦スクロール
+//        DispatchQueue.main.async {
+//            if((Float(self.tableViewPosition) > 5)){
+//                //self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
+//                self.nowgoal_Data.append(Float(self.tableViewPosition))
+//                self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+//            }
+//            if(Float(self.tableViewPosition) < -160){
+//                self.goalLabel.text = "5.0"
+//                self.nowgoal_Data = []
+//                //self.tapData = []
+//
+//            }
+//            //print(Float(self.tableViewPosition))
+//            //データをパソコンに送る(今の場所と目標地点)
+//            //self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
+//        }
         //CSVを作るデータに足していく
         DispatchQueue.main.async {
-            if((Float(self.tableViewPosition) > 5)){
+            if((Float(self.myCollectionViewPosition) > 5)){
                 //self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
-                self.nowgoal_Data.append(Float(self.tableViewPosition))
+                self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
                 self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
             }
-            if(Float(self.tableViewPosition) < -160){
+            if(Float(self.myCollectionViewPosition) < -160){
                 self.goalLabel.text = "5.0"
                 self.nowgoal_Data = []
                 //self.tapData = []
@@ -572,13 +593,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         
     }
     
-    func createCSV(fileArrData : [Float]){
+    func createCSV(fileArrData : [Float]) {
         
         var fileStrData:String = ""
         let fileName = buttonLabel.titleLabel!.text!+".csv"
         
         //StringのCSV用データを準備
         print(fileArrData)
+        if fileArrData.count==0{
+            self.goalLabel.text="データがありません。"
+            return
+        }
         for i in 1...fileArrData.count{
             if (i%2 != 0){
                 fileStrData += String(fileArrData[i-1]) + ","
