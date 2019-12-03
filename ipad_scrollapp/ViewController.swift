@@ -352,7 +352,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
                             self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
                         }
                     }else{
-                        self.myCollectionView.contentOffset.y = 0
+                        self.myCollectionView.contentOffset.x = 0
                         self.goalLabel.text = "終了"
                         //データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
