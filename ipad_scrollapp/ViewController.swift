@@ -57,9 +57,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     
     //var NetWork = NetWorkViewController()
     //ゴールの目標セルを決める
-    var goalPositionInt:[Int] = [5,1,2,3,2,7,5]
+    var goalPositionInt:[Int] = [10,11,50,11,10]
     //ゴールの目標位置を決める
-    var goalPosition:[Float] = [0,0,0,0,0,0,0]
+    var goalPosition:[Float] = [0,0,0,0,0]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float]=[]
     
@@ -84,7 +84,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
      Cellの総数を返す
      */
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 50
+        return 70
     }
     /*
      Cellに値を設定する
@@ -127,7 +127,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     private func decideGoalpositionTimeCount(){
         self.goalLabel.text = String(goalPositionInt[0])
         for i in 0..<goalPositionInt.count{
-            goalPosition[i] = Float(goalPositionInt[i] * 800-100)
+            goalPosition[i] = Float(goalPositionInt[i] * 100-200)
         }
         timeCount.maximumValue = 50
         timeCount.minimumValue = 0
@@ -334,7 +334,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         DispatchQueue.main.async {
             self.myCollectionViewPosition = self.myCollectionView.contentOffset.x
             //目標との距離が近くなったら
-            if( (Float(self.myCollectionViewPosition) - goal) < 50 && (Float(self.myCollectionViewPosition) - goal) > -50){
+            if goal-50<Float(self.myCollectionViewPosition) && Float(self.myCollectionViewPosition)<goal{
+            //if((Float(self.myCollectionViewPosition)) - Float(100 * self.i) < -200.0 && (Float(self.myCollectionViewPosition)) - Float(100 * self.i) > -250.0){
+            //if( (Float(self.myCollectionViewPosition) - goal) < 50 && (Float(self.myCollectionViewPosition) - goal) > -50){
                 print("クリア")
                 self.time=self.time+1
                 self.timeCount.value=Float(self.time)
