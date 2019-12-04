@@ -71,6 +71,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         decideGoalpositionTimeCount()
         createGoalView()
         createTableView()
+        sceneView.delegate = self
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
@@ -139,7 +140,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     private func createTableView(){
         tableView.delegate = self
         tableView.dataSource = self
-        sceneView.delegate = self
         //スクロールできる範囲を指定する
         tableView.contentSize = CGSize(width: 340, height: 2000)
         tableView.rowHeight = 800
