@@ -389,12 +389,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
 //        }
         //CSVを作るデータに足していく
         DispatchQueue.main.async {
-            if((Float(self.myCollectionViewPosition) > 5
-            
-            
-            
-            
-            )){
+            if((Float(self.myCollectionViewPosition) > 5))
+            {
                 //self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
                 self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
                 self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
