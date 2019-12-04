@@ -80,15 +80,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             self.tracking.backgroundColor = UIColor.white
         }
     }
-    /*
-     Cellの総数を返す
-     */
+    //Cellの総数を返す
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 70
     }
-    /*
-     Cellに値を設定する
-     */
+    //Cellに値を設定する
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell : CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath) as! CollectionViewCell
@@ -352,7 +348,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
                             self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
                         }
                     }else{
-                        self.myCollectionView.contentOffset.y = 0
+                        self.myCollectionView.contentOffset.x = 0
                         self.goalLabel.text = "終了"
                         //データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
@@ -389,7 +385,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
 //        }
         //CSVを作るデータに足していく
         DispatchQueue.main.async {
-            if((Float(self.myCollectionViewPosition) > 5)){
+            if((Float(self.myCollectionViewPosition) > 5))
+            {
                 //self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
                 self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
                 self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
