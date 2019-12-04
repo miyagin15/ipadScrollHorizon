@@ -40,6 +40,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         self.goalLabel.text = String(goalPositionInt[i])
     }
     @IBAction func toConfig(_ sender: Any) {
+        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "CalibrationViewController") as! CalibrationViewController
+        self.present(secondViewController, animated: true, completion: nil)
+        
     }
     @IBAction func sendFile(_ sender: Any) {
         //createFile(fileArrData: tapData)
