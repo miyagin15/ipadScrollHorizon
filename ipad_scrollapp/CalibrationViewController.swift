@@ -49,16 +49,16 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     private func createCallibrationButton(){
-        for x in 0...12{
+        for x in 0...11{
             let buttonXposition=0
             //位置を変えながらボタンを作る
             let btn : UIButton = callibrationButton(
                 x:x,
                 frame:CGRect(x: CGFloat(buttonXposition),y: CGFloat(x)*90,width: 80,height: 50))
-            if(x<7){
+            if(x<6){
                 btn.frame=CGRect(x: CGFloat(buttonXposition),y: CGFloat(x)*90,width: 160,height: 50)
             }else{
-                btn.frame=CGRect(x: CGFloat(buttonXposition+180),y: CGFloat(x-7)*90,width: 160,height: 50)
+                btn.frame=CGRect(x: CGFloat(buttonXposition+180),y: CGFloat(x-6)*90,width: 160,height: 50)
             }
             btn.setTitle(callibrationArr[x], for: .normal)
             //ボタンを押したときの動作

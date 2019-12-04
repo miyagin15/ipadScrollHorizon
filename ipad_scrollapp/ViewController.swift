@@ -41,6 +41,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     }
     @IBAction func toConfig(_ sender: Any) {
         let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "CalibrationViewController") as! CalibrationViewController
+        secondViewController.modalPresentationStyle = .fullScreen
         self.present(secondViewController, animated: true, completion: nil)
         
     }
