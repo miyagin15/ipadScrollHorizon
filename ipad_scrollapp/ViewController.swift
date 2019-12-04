@@ -80,15 +80,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             self.tracking.backgroundColor = UIColor.white
         }
     }
-    /*
-     Cellの総数を返す
-     */
+    //Cellの総数を返す
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 70
     }
-    /*
-     Cellに値を設定する
-     */
+    //Cellに値を設定する
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cell : CollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "MyCell", for: indexPath) as! CollectionViewCell
