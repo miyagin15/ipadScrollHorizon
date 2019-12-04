@@ -201,18 +201,6 @@
                                                 </connections>
                                             </slider>
                                         </barButtonItem>
-                                        <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="K2B-qq-LZI">
-                                            <rect key="frame" x="506.5" y="3" width="181" height="44"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="25"/>
-                                            <state key="normal" title="Button">
-                                                <color key="titleColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="changeUseFace:" destination="BV1-FR-VrT" eventType="touchUpInside" id="rPI-I5-fxJ"/>
-                                            </connections>
-                                        </button>
                                         <barButtonItem key="rightBarButtonItem" style="plain" id="3yl-Gf-aJr">
                                             <view key="customView" contentMode="scaleToFill" id="GxE-lQ-HwJ">
                                                 <rect key="frame" x="989" y="6.5" width="185" height="37"/>

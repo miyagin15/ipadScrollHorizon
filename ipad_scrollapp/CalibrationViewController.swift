@@ -24,55 +24,57 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     }()
     
     // UIButtonを継承した独自クラス
-    class MyButton: UIButton{
+    class callibrationButton: UIButton{
         let x:Int
-        let y:Int
-        init(x:Int,y:Int,frame:CGRect){
+        init(x:Int,frame:CGRect){
             self.x = x
-            self.y = y
             super.init(frame:frame)
         }
         required init(coder aDecoder: NSCoder) {
             fatalError("init(coder:) has not been implemented")
         }
     }
-    
-    
+    let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉毛上","眉毛下","右笑い","左笑い","ノーマル","a","b"]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.delegate = self
-        // Do any additional setup after loading the view.
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
-        
-        for x in 0...1{
-            for y in 0...6{
-            //位置を変えながらボタンを作る
-                let btn : UIButton = MyButton(
-                    x:x,
-                    y:y,
-                    frame:CGRect(x: CGFloat(x)*100,y: CGFloat(y)*90,width: 80,height: 50))
-                btn.setTitle("眉毛", for: .normal)
-            //ボタンを押したときの動作
-                btn.addTarget(self, action: #selector(self.pushed(mybtn:)), for: .touchUpInside)
-            //見える用に赤くした
-            btn.backgroundColor = UIColor.black
-            //画面に追加
-            view.addSubview(btn)
-            }
-        }
+        createCallibrationButton()
     }
     @objc func update() {
         DispatchQueue.main.async {
             self.tracking.backgroundColor = UIColor.white
         }
     }
+    private func createCallibrationButton(){
+        for x in 0...12{
+            let buttonXposition=0
+            //位置を変えながらボタンを作る
+            let btn : UIButton = callibrationButton(
+                x:x,
+                frame:CGRect(x: CGFloat(buttonXposition),y: CGFloat(x)*90,width: 80,height: 50))
+            if(x<7){
+                btn.frame=CGRect(x: CGFloat(buttonXposition),y: CGFloat(x)*90,width: 160,height: 50)
+            }else{
+                btn.frame=CGRect(x: CGFloat(buttonXposition+180),y: CGFloat(x-7)*90,width: 160,height: 50)
+            }
+            btn.setTitle(callibrationArr[x], for: .normal)
+            //ボタンを押したときの動作
+            btn.addTarget(self, action: #selector(self.pushed(mybtn:)), for: .touchUpInside)
+            //見える用に赤くした
+            btn.backgroundColor = UIColor.black
+            //画面に追加
+            view.addSubview(btn)
+        }
+    }
     
     //ボタンが押されたときの動作
-    @objc func pushed(mybtn : MyButton){
+    @objc func pushed(mybtn : callibrationButton){
         //押されたボタンごとに結果が異なる
-        print("button at (\(mybtn.x),\(mybtn.y)) is pushed")
+        print("button at (\(mybtn.currentTitle!)) is pushed")
+        mybtn.setTitle(mybtn.currentTitle!+"押した", for: .normal)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -92,12 +94,14 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
             guard let faceAnchor = anchor as? ARFaceAnchor else {
                 return
             }
-            // 認識していたら青色に
-        DispatchQueue.main.async {
-            //print(self.tableView.contentOffset.y)
-            self.tracking.backgroundColor = UIColor.blue
+            print(faceAnchor.geometry.vertices[24][1],"24")
+            print(faceAnchor.geometry.vertices[25][1],"25")
+                // 認識していたら青色に
+            DispatchQueue.main.async {
+                //print(self.tableView.contentOffset.y)
+                self.tracking.backgroundColor = UIColor.blue
+            }
         }
-    }
     /*
     // MARK: - Navigation
 
