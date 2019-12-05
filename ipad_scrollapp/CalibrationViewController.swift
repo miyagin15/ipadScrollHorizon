@@ -17,7 +17,7 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     
     @IBAction func goToVeticalScroll(_ sender: Any) {
-        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "HorizonalViewController") as! ViewController
+        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         secondViewController.modalPresentationStyle = .fullScreen
         self.present(secondViewController, animated: true, completion: nil)
     }
