@@ -15,7 +15,6 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet var tracking: UIView!
     @IBOutlet var sceneView: ARSCNView!
-    
     @IBAction func goToVeticalScroll(_ sender: Any) {
         let verticalViewController = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         verticalViewController.modalPresentationStyle = .fullScreen
@@ -47,6 +46,12 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     }
     let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉毛上","眉毛下","右笑い","左笑い","ノーマル","a","b"]
     
+
+    var mouthDown:Float = 0
+    var mouthUp:Float = 0
+    var mouthL:Float = 0
+    var mouthR:Float = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         sceneView.delegate = self
@@ -61,15 +66,15 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     }
     private func createCallibrationButton(){
         for x in 0...11{
-            let buttonXposition=0
+            let buttonXposition=800
             //位置を変えながらボタンを作る
             let btn : UIButton = callibrationButton(
                 x:x,
                 frame:CGRect(x: CGFloat(buttonXposition),y: CGFloat(x)*90,width: 80,height: 50))
             if(x<6){
-                btn.frame=CGRect(x: CGFloat(buttonXposition),y: CGFloat(x)*90,width: 160,height: 50)
+                btn.frame=CGRect(x: CGFloat(buttonXposition),y: CGFloat(x)*90+200,width: 160,height: 50)
             }else{
-                btn.frame=CGRect(x: CGFloat(buttonXposition+180),y: CGFloat(x-6)*90,width: 160,height: 50)
+                btn.frame=CGRect(x: CGFloat(buttonXposition+180),y: CGFloat(x-6)*90+200,width: 160,height: 50)
             }
             btn.setTitle(callibrationArr[x], for: .normal)
             //ボタンを押したときの動作
@@ -85,6 +90,9 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     @objc func pushed(mybtn : callibrationButton){
         //押されたボタンごとに結果が異なる
         print("button at (\(mybtn.currentTitle!)) is pushed")
+        userDefaults.set(mouthR, forKey: mybtn.currentTitle!)
+        // UserDefaultsへの値の保存を明示的に行う
+        userDefaults.synchronize()
         mybtn.setTitle(mybtn.currentTitle!+"押した", for: .normal)
     }
 
@@ -101,18 +109,20 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
            //NetWork.stopConnection()
        }
     
-       func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
-            guard let faceAnchor = anchor as? ARFaceAnchor else {
-                return
-            }
-            print(faceAnchor.geometry.vertices[24][1],"24")
-            print(faceAnchor.geometry.vertices[25][1],"25")
-                // 認識していたら青色に
-            DispatchQueue.main.async {
-                //print(self.tableView.contentOffset.y)
-                self.tracking.backgroundColor = UIColor.blue
-            }
+    func renderer(_ renderer: SCNSceneRenderer, didUpdate node: SCNNode, for anchor: ARAnchor) {
+        guard let faceAnchor = anchor as? ARFaceAnchor else {
+            return
         }
+        //print(faceAnchor.geometry.vertices[24][1],"24")
+        //print(faceAnchor.geometry.vertices[25][1],"25")
+        mouthR = faceAnchor.geometry.vertices[25][1]
+            // 認識していたら青色に
+        DispatchQueue.main.async {
+            //print(self.tableView.contentOffset.y)
+            self.tracking.backgroundColor = UIColor.blue
+            // sampleというキーを指定して保存していたString型の値を取り出す
+        }
+    }
     /*
     // MARK: - Navigation
 

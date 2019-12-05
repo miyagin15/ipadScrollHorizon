@@ -78,6 +78,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         sceneView.delegate = self
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
+        if let value = self.userDefaults.string(forKey: "ノーマル") {
+            print(value)
+        }
     }
     
     @objc func update() {
