@@ -102,13 +102,13 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
         // CollectionViewのレイアウトを生成.
         let layout = UICollectionViewFlowLayout()
         // Cell一つ一つの大きさ.
-        layout.itemSize = CGSize(width:100, height:600)
+        layout.itemSize = CGSize(width:600, height:100)
         layout.minimumLineSpacing = 0.1
         // Cellのマージン.
         //layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-        layout.scrollDirection = .horizontal
+        //layout.scrollDirection = .horizontal
         
-        //layout.scrollDirection = .vertical
+        layout.scrollDirection = .vertical
         
         // セクション毎のヘッダーサイズ.
         //layout.headerReferenceSize = CGSize(width:10,height:30)
@@ -121,7 +121,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
         myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
         myCollectionView.delegate = self
         myCollectionView.dataSource = self
-        myCollectionView.contentSize=CGSize(width: 1800, height: 600)
+        myCollectionView.contentSize=CGSize(width: 600, height: 1800)
         self.view.addSubview(myCollectionView)
     }
     
@@ -137,7 +137,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
     private func createGoalView(){
         let goalView = UIView()
         self.view.addSubview(goalView)
-        goalView.frame = CGRect(x:200,y:150, width:150 ,height: 700)
+        goalView.frame = CGRect(x:0,y:350, width:700 ,height: 150)
         goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
         self.view.addSubview(goalView)
     }
@@ -181,21 +181,21 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
     //up scroll
     private func scrollUpInMainThread(ratio :CGFloat) {
         DispatchQueue.main.async {
-            if(self.tableView.contentOffset.y > 8000){
+            if(self.myCollectionView.contentOffset.y > 8000){
                 return
             }
             self.functionalExpression.value = -Float(ratio)
             self.functionalExpressionLabel.text = String(-Float(ratio))
             if(ratio<0.25){
                 let ratio = ratio * 0.3
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
+                self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
             }
             else if(ratio>0.55){
                 let ratio = ratio * 1.5
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
+                self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
             }
             else{
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
+                self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
             }
             //self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
@@ -205,21 +205,21 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
     private func scrollDownInMainThread(ratio :CGFloat) {
         print(ratio)
         DispatchQueue.main.async {
-            if(self.tableView.contentOffset.y < 0){
+            if(self.myCollectionView.contentOffset.y < 0){
                 return
             }
             self.functionalExpression.value = Float(ratio)
             self.functionalExpressionLabel.text = String(Float(ratio))
             if(ratio<0.25){
                 let ratio = ratio * 0.3
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
+                self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
             }
             else if(ratio>0.55){
                 let ratio = ratio * 1.5
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
+                self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
             }
             else{
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
+                self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
             }
             
             //self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
@@ -332,7 +332,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
 //            }
 //        }
         DispatchQueue.main.async {
-            self.myCollectionViewPosition = self.myCollectionView.contentOffset.x
+            self.myCollectionViewPosition = self.myCollectionView.contentOffset.y
             //目標との距離が近くなったら
             if goal-50<Float(self.myCollectionViewPosition) && Float(self.myCollectionViewPosition)<goal{
             //if((Float(self.myCollectionViewPosition)) - Float(100 * self.i) < -200.0 && (Float(self.myCollectionViewPosition)) - Float(100 * self.i) > -250.0){
@@ -352,7 +352,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
                             self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
                         }
                     }else{
-                        self.myCollectionView.contentOffset.x = 0
+                        self.myCollectionView.contentOffset.y = 0
                         self.goalLabel.text = "終了"
                         //データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
@@ -416,15 +416,15 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDe
             }
             if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
                 if mouthLeft > 0.1 {
-                    //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-                    self.rightScrollMainThread(ratio: CGFloat(mouthLeft))
+                    self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+                    //self.rightScrollMainThread(ratio: CGFloat(mouthLeft))
                 }
             }
             
             if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
                 if mouthRight > 0.1 {
-                    //self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
-                    self.leftScrollMainThread(ratio: CGFloat(mouthRight))
+                    self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
+                    //self.leftScrollMainThread(ratio: CGFloat(mouthRight))
                 }
             }
         case (1):
