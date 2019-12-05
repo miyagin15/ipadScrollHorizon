@@ -44,7 +44,7 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
             fatalError("init(coder:) has not been implemented")
         }
     }
-    let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉毛上","眉毛下","右笑い","左笑い","ノーマル","a","b"]
+    let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
     
 
     var mouthDown:Float = 0
@@ -76,7 +76,12 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
             }else{
                 btn.frame=CGRect(x: CGFloat(buttonXposition+180),y: CGFloat(x-6)*90+200,width: 160,height: 50)
             }
-            btn.setTitle(callibrationArr[x], for: .normal)
+            // sampleというキーを指定して保存していたString型の値を取り出す
+            if let value = userDefaults.string(forKey: callibrationArr[x]) {
+                btn.setTitle(callibrationArr[x]+":"+value, for: .normal)
+            }else{
+                btn.setTitle(callibrationArr[x], for: .normal)
+            }
             //ボタンを押したときの動作
             btn.addTarget(self, action: #selector(self.pushed(mybtn:)), for: .touchUpInside)
             //見える用に赤くした
@@ -93,7 +98,7 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         userDefaults.set(mouthR, forKey: mybtn.currentTitle!)
         // UserDefaultsへの値の保存を明示的に行う
         userDefaults.synchronize()
-        mybtn.setTitle(mybtn.currentTitle!+"押した", for: .normal)
+        mybtn.setTitle(String(mouthR), for: .normal)
     }
 
     override func viewWillAppear(_ animated: Bool) {
