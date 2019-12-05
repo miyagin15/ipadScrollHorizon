@@ -15,6 +15,17 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     
     @IBOutlet var tracking: UIView!
     @IBOutlet var sceneView: ARSCNView!
+    
+    @IBAction func goToVeticalScroll(_ sender: Any) {
+        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "HorizonalViewController") as! ViewController
+        secondViewController.modalPresentationStyle = .fullScreen
+        self.present(secondViewController, animated: true, completion: nil)
+    }
+    @IBAction func goToHorizonalScroll(_ sender: Any) {
+        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "HorizonalViewController") as! ViewController
+        secondViewController.modalPresentationStyle = .fullScreen
+        self.present(secondViewController, animated: true, completion: nil)
+    }
     //ウインクした場所を特定するために定義
     let userDefaults = UserDefaults.standard
     //Trackingfaceを使うための設定

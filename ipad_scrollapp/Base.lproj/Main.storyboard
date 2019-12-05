@@ -10,7 +10,7 @@
         <!--View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="ipad_scroll_horizon" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="HorizonalViewController" id="BV1-FR-VrT" customClass="ViewController" customModule="ipad_scroll_horizon" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
                         <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -179,15 +179,18 @@
                         <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BjY-dN-mmH">
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BjY-dN-mmH">
                                 <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="1194" id="IXP-Rf-ckI"/>
+                                    <constraint firstAttribute="height" constant="834" id="UYa-xv-3jK"/>
+                                </constraints>
                             </arscnView>
-                            <navigationBar contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8iD-tX-0Lx">
+                            <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8iD-tX-0Lx">
                                 <rect key="frame" x="0.0" y="0.0" width="1194" height="50"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="834" id="IdM-xe-vp0"/>
-                                    <constraint firstAttribute="height" constant="50" id="KNh-Z6-Z38"/>
+                                    <constraint firstAttribute="width" constant="1194" id="Mfq-ZK-usW"/>
+                                    <constraint firstAttribute="height" constant="50" id="o9i-lS-3qL"/>
                                 </constraints>
                                 <items>
                                     <navigationItem id="cEi-EZ-60u">
@@ -201,18 +204,42 @@
                                                 </connections>
                                             </slider>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" style="plain" id="3yl-Gf-aJr">
-                                            <view key="customView" contentMode="scaleToFill" id="GxE-lQ-HwJ">
-                                                <rect key="frame" x="989" y="6.5" width="185" height="37"/>
-                                                <autoresizingMask key="autoresizingMask"/>
-                                                <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                            </view>
-                                        </barButtonItem>
+                                        <rightBarButtonItems>
+                                            <barButtonItem style="plain" id="3yl-Gf-aJr">
+                                                <view key="customView" contentMode="scaleToFill" id="GxE-lQ-HwJ">
+                                                    <rect key="frame" x="989" y="6.5" width="185" height="37"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                </view>
+                                            </barButtonItem>
+                                            <barButtonItem title="縦" image="arrow.up.and.down" catalog="system" width="100" id="Fcj-N1-Cf7" userLabel="縦">
+                                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="goToVeticalScroll:" destination="jWB-VX-5GB" id="fxe-yB-lHN"/>
+                                                </connections>
+                                            </barButtonItem>
+                                            <barButtonItem title="横" image="arrow.left.and.right" catalog="system" width="100" id="0SO-CR-XPb" userLabel="横">
+                                                <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                <connections>
+                                                    <action selector="goToHorizonalScroll:" destination="jWB-VX-5GB" id="8Up-Dw-eK0"/>
+                                                </connections>
+                                            </barButtonItem>
+                                        </rightBarButtonItems>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="BjY-dN-mmH" secondAttribute="bottom" id="6iy-rQ-Jpe"/>
+                            <constraint firstItem="BjY-dN-mmH" firstAttribute="leading" secondItem="unn-k1-hVc" secondAttribute="leading" id="7NT-Dj-b0v"/>
+                            <constraint firstItem="8iD-tX-0Lx" firstAttribute="trailing" secondItem="unn-k1-hVc" secondAttribute="trailing" id="8MT-vt-f7Q"/>
+                            <constraint firstItem="unn-k1-hVc" firstAttribute="bottom" secondItem="8iD-tX-0Lx" secondAttribute="bottom" constant="764" id="Kox-Wy-XFh"/>
+                            <constraint firstItem="8iD-tX-0Lx" firstAttribute="leading" secondItem="unn-k1-hVc" secondAttribute="leading" id="dG4-4O-yIJ"/>
+                            <constraint firstItem="8iD-tX-0Lx" firstAttribute="top" secondItem="unn-k1-hVc" secondAttribute="top" id="iIk-Iy-kjM"/>
+                            <constraint firstItem="BjY-dN-mmH" firstAttribute="top" secondItem="unn-k1-hVc" secondAttribute="top" id="iN9-C6-UZl"/>
+                            <constraint firstItem="BjY-dN-mmH" firstAttribute="trailing" secondItem="unn-k1-hVc" secondAttribute="trailing" id="q16-rM-4Ht"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="unn-k1-hVc"/>
                     </view>
                     <connections>
@@ -225,4 +252,8 @@
             <point key="canvasLocation" x="137.68844221105527" y="970.50359712230227"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="arrow.left.and.right" catalog="system" width="64" height="42"/>
+        <image name="arrow.up.and.down" catalog="system" width="52" height="64"/>
+    </resources>
 </document>
