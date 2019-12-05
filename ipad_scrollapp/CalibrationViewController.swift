@@ -45,6 +45,8 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
+    var callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
+
     
 
     var mouthDown:Float = 0
@@ -95,10 +97,18 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     @objc func pushed(mybtn : callibrationButton){
         //押されたボタンごとに結果が異なる
         print("button at (\(mybtn.currentTitle!)) is pushed")
-        userDefaults.set(mouthR, forKey: mybtn.currentTitle!)
+        print(mybtn.x)
+        print(callibrationPosition[mybtn.x])
+        if(callibrationArr[mybtn.x]=="普通"){
+            print("普通")
+            userDefaults.set(callibrationPosition[0], forKey: "普通"+callibrationArr[0])
+            userDefaults.set(callibrationPosition[1], forKey: "普通"+callibrationArr[1])
+        }else{
+            userDefaults.set(callibrationPosition[mybtn.x], forKey: callibrationArr[mybtn.x])
+        }
         // UserDefaultsへの値の保存を明示的に行う
         userDefaults.synchronize()
-        mybtn.setTitle(String(mouthR), for: .normal)
+        mybtn.setTitle(String(callibrationPosition[mybtn.x]), for: .normal)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -118,8 +128,12 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
+//        let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
+//        let callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
         //print(faceAnchor.geometry.vertices[24][1],"24")
         //print(faceAnchor.geometry.vertices[25][1],"25")
+        callibrationPosition[0] = faceAnchor.geometry.vertices[638][0]
+        callibrationPosition[1] = faceAnchor.geometry.vertices[405][0]
         mouthR = faceAnchor.geometry.vertices[25][1]
             // 認識していたら青色に
         DispatchQueue.main.async {
