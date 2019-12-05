@@ -17,14 +17,14 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var sceneView: ARSCNView!
     
     @IBAction func goToVeticalScroll(_ sender: Any) {
-        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
-        secondViewController.modalPresentationStyle = .fullScreen
-        self.present(secondViewController, animated: true, completion: nil)
+        let verticalViewController = self.storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
+        verticalViewController.modalPresentationStyle = .fullScreen
+        self.present(verticalViewController, animated: true, completion: nil)
     }
     @IBAction func goToHorizonalScroll(_ sender: Any) {
-        let secondViewController = self.storyboard?.instantiateViewController(withIdentifier: "HorizonalViewController") as! ViewController
-        secondViewController.modalPresentationStyle = .fullScreen
-        self.present(secondViewController, animated: true, completion: nil)
+        let horizonalViewController = self.storyboard?.instantiateViewController(withIdentifier: "HorizonalViewController") as! ViewController
+        horizonalViewController.modalPresentationStyle = .fullScreen
+        self.present(horizonalViewController, animated: true, completion: nil)
     }
     //ウインクした場所を特定するために定義
     let userDefaults = UserDefaults.standard
