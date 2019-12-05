@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		5E0AB8252394F35A00C8F2D0 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB8242394F35A00C8F2D0 /* CollectionViewCell.swift */; };
+		5E0AB8292397D37400C8F2D0 /* CalibrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB8282397D37400C8F2D0 /* CalibrationViewController.swift */; };
+		5E0AB82B239896B100C8F2D0 /* VerticalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB82A239896B100C8F2D0 /* VerticalViewController.swift */; };
 		5E2DC572238BB13E0012A8AD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2DC571238BB13E0012A8AD /* AppDelegate.swift */; };
 		5E2DC574238BB13E0012A8AD /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 5E2DC573238BB13E0012A8AD /* art.scnassets */; };
 		5E2DC576238BB13E0012A8AD /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2DC575238BB13E0012A8AD /* ViewController.swift */; };
@@ -37,6 +39,8 @@
 
 /* Begin PBXFileReference section */
 		5E0AB8242394F35A00C8F2D0 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
+		5E0AB8282397D37400C8F2D0 /* CalibrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationViewController.swift; sourceTree = "<group>"; };
+		5E0AB82A239896B100C8F2D0 /* VerticalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalViewController.swift; sourceTree = "<group>"; };
 		5E2DC56E238BB13E0012A8AD /* ipad_scroll_horizon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ipad_scroll_horizon.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E2DC571238BB13E0012A8AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E2DC573238BB13E0012A8AD /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
@@ -106,6 +110,8 @@
 				5E2DC575238BB13E0012A8AD /* ViewController.swift */,
 				5E0AB8242394F35A00C8F2D0 /* CollectionViewCell.swift */,
 				5E2DC577238BB13E0012A8AD /* Main.storyboard */,
+				5E0AB82A239896B100C8F2D0 /* VerticalViewController.swift */,
+				5E0AB8282397D37400C8F2D0 /* CalibrationViewController.swift */,
 				5E2DC57A238BB1410012A8AD /* Assets.xcassets */,
 				5E2DC57C238BB1410012A8AD /* LaunchScreen.storyboard */,
 				5E2DC57F238BB1410012A8AD /* Info.plist */,
@@ -264,7 +270,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				5E2DC576238BB13E0012A8AD /* ViewController.swift in Sources */,
+				5E0AB8292397D37400C8F2D0 /* CalibrationViewController.swift in Sources */,
 				5E2DC572238BB13E0012A8AD /* AppDelegate.swift in Sources */,
+				5E0AB82B239896B100C8F2D0 /* VerticalViewController.swift in Sources */,
 				5E0AB8252394F35A00C8F2D0 /* CollectionViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

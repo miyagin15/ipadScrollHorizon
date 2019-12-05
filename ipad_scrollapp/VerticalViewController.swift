@@ -12,7 +12,7 @@ import ARKit
 import Network
 
 
-class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate, UICollectionViewDataSource{
+class VerticalViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,UITableViewDataSource,UICollectionViewDelegate, UICollectionViewDataSource{
     
     var myCollectionView : UICollectionView!
 
