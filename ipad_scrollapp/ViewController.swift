@@ -75,6 +75,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         decideGoalpositionTimeCount()
         createGoalView()
         createTableView()
+        initialCallibrationSettings()
+        
         sceneView.delegate = self
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
@@ -100,6 +102,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         return cell
     }
     
+    let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
+    var callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
+    private func initialCallibrationSettings(){
+         for x in 0...11{
+            if let value = userDefaults.string(forKey: callibrationArr[x]) {
+                print(value)
+            }else{
+                print("no value",x)
+            }
+        }
+    }
     //scrolViewを作成する
     private func createScrollVIew(){
         // CollectionViewのレイアウトを生成.
