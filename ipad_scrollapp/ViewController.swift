@@ -66,7 +66,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     var goalPosition:[Float] = [0,0,0,0,0]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float]=[]
-    
+    let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
+    // 初期設定のための配列
+    var callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
+    var callibrationOrdinalPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
     var documentInteraction: UIDocumentInteractionController!
 
     override func viewDidLoad() {
@@ -80,9 +83,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         sceneView.delegate = self
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
-        if let value = self.userDefaults.string(forKey: "ノーマル") {
-            print(value)
-        }
     }
     
     @objc func update() {
@@ -102,16 +102,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         return cell
     }
     
-    let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
-    var callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
     private func initialCallibrationSettings(){
          for x in 0...11{
             if let value = userDefaults.string(forKey: callibrationArr[x]) {
-                print(value)
+                callibrationPosition[x]=Float(value)!
             }else{
                 print("no value",x)
             }
         }
+        print("口右:638",userDefaults.string(forKey: callibrationArr[0])!)
+        //0:口左、1:口右
+        callibrationOrdinalPosition[0]=userDefaults.float(forKey: "普通"+callibrationArr[0])
+        callibrationOrdinalPosition[1]=userDefaults.float(forKey: "普通"+callibrationArr[1])
     }
     //scrolViewを作成する
     private func createScrollVIew(){
@@ -424,25 +426,58 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
 
         
         let changeAction = changeNum%5
-
+        var lastMouthLeft: Float = 0.0
+        var lastMouthRight: Float = 0.0
+        var passMouthLeft: Float = 0.0
+        var passMouthRight: Float = 0.0
+        let k: Float = 0.3
+        
         switch changeAction{
         case (0):
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("MouthRL", for: .normal)
             }
-            if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
-                if mouthLeft > 0.1 {
-                    //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-                    self.rightScrollMainThread(ratio: CGFloat(mouthLeft))
-                }
+            
+//            if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
+//                if mouthLeft > 0.1 {
+//                    //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+//                    self.rightScrollMainThread(ratio: CGFloat(mouthLeft))
+//                }
+//            }
+            
+            let mouthLeft = faceAnchor.geometry.vertices[638][0]/(callibrationPosition[0]-callibrationOrdinalPosition[0])+callibrationOrdinalPosition[0]/(callibrationOrdinalPosition[0]-callibrationPosition[0])
+            passMouthLeft = (1-k)*lastMouthLeft+k*mouthLeft
+            lastMouthLeft = passMouthLeft
+            print("mouthLeft",passMouthLeft)
+//            if mouthLeft > 0.1 {
+//                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+//                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
+//            }
+            
+            let mouthRight = faceAnchor.geometry.vertices[405][0]/(callibrationPosition[1]-callibrationOrdinalPosition[1])+callibrationOrdinalPosition[1]/(callibrationOrdinalPosition[1]-callibrationPosition[1])
+            passMouthRight = (1-k)*lastMouthRight+k*mouthRight
+            lastMouthRight = passMouthRight
+            print("mouthRight",passMouthRight)
+            
+            if passMouthLeft>passMouthRight {
+                self.leftScrollMainThread(ratio: CGFloat(passMouthLeft))
+            }else{
+                self.rightScrollMainThread(ratio: CGFloat(passMouthRight))
             }
             
-            if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
-                if mouthRight > 0.1 {
-                    //self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
-                    self.leftScrollMainThread(ratio: CGFloat(mouthRight))
-                }
-            }
+            
+//            if mouthRight > 0.1 {
+//                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+//                self.rightScrollMainThread(ratio: CGFloat(mouthRight))
+//            }
+            
+            
+//            if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
+//                if mouthRight > 0.1 {
+//                    //self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
+//                    self.leftScrollMainThread(ratio: CGFloat(mouthRight))
+//                }
+//            }
         case (1):
              DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Hands", for: .normal)

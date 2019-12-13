@@ -132,8 +132,10 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
 //        let callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
         //print(faceAnchor.geometry.vertices[24][1],"24")
         //print(faceAnchor.geometry.vertices[25][1],"25")
+        //口の右側の座標:638,口の左側の座標:405
         callibrationPosition[0] = faceAnchor.geometry.vertices[638][0]
         callibrationPosition[1] = faceAnchor.geometry.vertices[405][0]
+        print(callibrationPosition[0])
         mouthR = faceAnchor.geometry.vertices[25][1]
             // 認識していたら青色に
         DispatchQueue.main.async {
