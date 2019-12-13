@@ -426,12 +426,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
 
         
         let changeAction = changeNum%5
-        var lastMouthLeft: Float = 0.0
-        var lastMouthRight: Float = 0.0
-        var passMouthLeft: Float = 0.0
-        var passMouthRight: Float = 0.0
-        let k: Float = 0.3
-        
+
         switch changeAction{
         case (0):
             DispatchQueue.main.async {
@@ -446,23 +441,22 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
 //            }
             
             let mouthLeft = faceAnchor.geometry.vertices[638][0]/(callibrationPosition[0]-callibrationOrdinalPosition[0])+callibrationOrdinalPosition[0]/(callibrationOrdinalPosition[0]-callibrationPosition[0])
-            passMouthLeft = (1-k)*lastMouthLeft+k*mouthLeft
-            lastMouthLeft = passMouthLeft
-            print("mouthLeft",passMouthLeft)
+            print("mouthLeft",mouthLeft)
 //            if mouthLeft > 0.1 {
 //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
 //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
 //            }
             
             let mouthRight = faceAnchor.geometry.vertices[405][0]/(callibrationPosition[1]-callibrationOrdinalPosition[1])+callibrationOrdinalPosition[1]/(callibrationOrdinalPosition[1]-callibrationPosition[1])
-            passMouthRight = (1-k)*lastMouthRight+k*mouthRight
-            lastMouthRight = passMouthRight
-            print("mouthRight",passMouthRight)
+            print("mouthRight",mouthRight)
             
-            if passMouthLeft>passMouthRight {
-                self.leftScrollMainThread(ratio: CGFloat(passMouthLeft))
+            if mouthLeft < 0.1 && mouthRight < 0.1{
+                return
+            }
+            if mouthLeft>mouthRight {
+                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
             }else{
-                self.rightScrollMainThread(ratio: CGFloat(passMouthRight))
+                self.rightScrollMainThread(ratio: CGFloat(mouthRight))
             }
             
             
