@@ -17,6 +17,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     var myCollectionView : UICollectionView!
 
     var changeNum = 0
+    var callibrationUseBool = false
     //顔を認識できている描画するView
     @IBOutlet weak var tracking: UIView!
     @IBOutlet var goalLabel: UILabel!
@@ -50,6 +51,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         createCSV(fileArrData: nowgoal_Data)
     }
     @IBOutlet var functionalExpressionLabel: UILabel!
+    
+    @IBAction func callibrationUseChange(_ sender: Any) {
+        print(callibrationUseBool)
+        if callibrationUseBool==false{
+            callibrationUseBool=true
+            return
+        }else{
+            callibrationUseBool=false
+            return
+        }
+        
+    }
     //ウインクした場所を特定するために定義
     let userDefaults = UserDefaults.standard
     private let cellIdentifier = "cell"
@@ -433,45 +446,40 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
                 self.buttonLabel.setTitle("MouthRL", for: .normal)
             }
             
-//            if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
-//                if mouthLeft > 0.1 {
-//                    //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-//                    self.rightScrollMainThread(ratio: CGFloat(mouthLeft))
-//                }
-//            }
-            
-            let mouthLeft = faceAnchor.geometry.vertices[638][0]/(callibrationPosition[0]-callibrationOrdinalPosition[0])+callibrationOrdinalPosition[0]/(callibrationOrdinalPosition[0]-callibrationPosition[0])
-            print("mouthLeft",mouthLeft)
-//            if mouthLeft > 0.1 {
-//                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-//                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
-//            }
-            
-            let mouthRight = faceAnchor.geometry.vertices[405][0]/(callibrationPosition[1]-callibrationOrdinalPosition[1])+callibrationOrdinalPosition[1]/(callibrationOrdinalPosition[1]-callibrationPosition[1])
-            print("mouthRight",mouthRight)
-            
-            if mouthLeft < 0.1 && mouthRight < 0.1{
-                return
-            }
-            if mouthLeft>mouthRight {
-                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
+
+            if callibrationUseBool==true{
+                let mouthLeft = faceAnchor.geometry.vertices[638][0]/(callibrationPosition[0]-callibrationOrdinalPosition[0])+callibrationOrdinalPosition[0]/(callibrationOrdinalPosition[0]-callibrationPosition[0])
+                print("mouthLeft",mouthLeft)
+    //            if mouthLeft > 0.1 {
+    //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+    //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
+    //            }
+                let mouthRight = faceAnchor.geometry.vertices[405][0]/(callibrationPosition[1]-callibrationOrdinalPosition[1])+callibrationOrdinalPosition[1]/(callibrationOrdinalPosition[1]-callibrationPosition[1])
+                print("mouthRight",mouthRight)
+                
+                if mouthLeft < 0.1 && mouthRight < 0.1{
+                    return
+                }
+                if mouthLeft>mouthRight {
+                    self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
+                }else{
+                    self.rightScrollMainThread(ratio: CGFloat(mouthRight))
+                }
             }else{
-                self.rightScrollMainThread(ratio: CGFloat(mouthRight))
+                if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
+                    if mouthLeft > 0.1 {
+                        //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+                        self.rightScrollMainThread(ratio: CGFloat(mouthLeft))
+                    }
+                }
+                if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
+                    if mouthRight > 0.1 {
+                        //self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
+                        self.leftScrollMainThread(ratio: CGFloat(mouthRight))
+                    }
+                }
             }
             
-            
-//            if mouthRight > 0.1 {
-//                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-//                self.rightScrollMainThread(ratio: CGFloat(mouthRight))
-//            }
-            
-            
-//            if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
-//                if mouthRight > 0.1 {
-//                    //self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
-//                    self.leftScrollMainThread(ratio: CGFloat(mouthRight))
-//                }
-//            }
         case (1):
              DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Hands", for: .normal)
