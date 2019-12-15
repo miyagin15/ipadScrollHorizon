@@ -11,15 +11,15 @@
         <scene sceneID="tXr-a1-R10">
             <objects>
                 <viewController storyboardIdentifier="HorizonalViewController" id="BV1-FR-VrT" customClass="ViewController" customModule="ipad_scroll_horizon" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="U0K-SW-4ec">
+                    <view key="view" contentMode="scaleToFill" ambiguous="YES" id="U0K-SW-4ec">
                         <rect key="frame" x="0.0" y="0.0" width="1194" height="834"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
-                                <rect key="frame" x="0.0" y="0.0" width="1194" height="814"/>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BrB-h1-WRS">
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="814"/>
                             </arscnView>
                             <navigationBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LqD-ud-hH5">
-                                <rect key="frame" x="0.0" y="0.0" width="1194" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="834" height="50"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="50" id="3cu-zm-MT0"/>
                                     <constraint firstAttribute="width" constant="834" id="znK-UL-gy2"/>
@@ -37,7 +37,7 @@
                                             </slider>
                                         </barButtonItem>
                                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WSq-IT-Skv">
-                                            <rect key="frame" x="527.5" y="3" width="139" height="44"/>
+                                            <rect key="frame" x="347.5" y="3" width="139" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -48,33 +48,18 @@
                                                 <action selector="changeUseFace:" destination="BV1-FR-VrT" eventType="touchUpInside" id="AXF-0X-XvD"/>
                                             </connections>
                                         </button>
-                                        <rightBarButtonItems>
-                                            <barButtonItem style="plain" id="jXG-ml-GS2">
-                                                <view key="customView" contentMode="scaleToFill" id="FzM-5d-oAt">
-                                                    <rect key="frame" x="989" y="6.5" width="185" height="37"/>
-                                                    <autoresizingMask key="autoresizingMask"/>
-                                                    <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                                </view>
-                                            </barButtonItem>
-                                            <barButtonItem style="plain" id="fTB-ak-8dA">
-                                                <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3Qs-sV-D7W">
-                                                    <rect key="frame" x="716" y="10" width="265" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="初期設定使う"/>
-                                                    <connections>
-                                                        <action selector="callibrationUseChange:" destination="BV1-FR-VrT" eventType="touchUpInside" id="HwY-Fz-8mj"/>
-                                                    </connections>
-                                                </button>
-                                                <connections>
-                                                    <action selector="callibrationUseChange:" destination="BV1-FR-VrT" id="Ihs-jh-ubQ"/>
-                                                </connections>
-                                            </barButtonItem>
-                                        </rightBarButtonItems>
+                                        <barButtonItem key="rightBarButtonItem" style="plain" id="jXG-ml-GS2">
+                                            <view key="customView" contentMode="scaleToFill" id="FzM-5d-oAt">
+                                                <rect key="frame" x="629" y="6.5" width="185" height="37"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <color key="backgroundColor" systemColor="linkColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </view>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0LH-x5-56R" userLabel="LabelView">
-                                <rect key="frame" x="0.0" y="50" width="1194" height="70"/>
+                                <rect key="frame" x="0.0" y="50" width="834" height="70"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IhE-jI-5PZ">
                                         <rect key="frame" x="709" y="15" width="117" height="40"/>
@@ -183,7 +168,6 @@
                     <connections>
                         <outlet property="buttonLabel" destination="WSq-IT-Skv" id="rVA-dm-njm"/>
                         <outlet property="callibrationBoolLabel" destination="kt1-oE-uav" id="bEJ-17-Vr8"/>
-                        <outlet property="callibrationTitle" destination="fTB-ak-8dA" id="Lmt-Cr-fQh"/>
                         <outlet property="functionalExpression" destination="3Mr-z6-nJ4" id="6bp-PO-JFV"/>
                         <outlet property="functionalExpressionLabel" destination="ZR1-g8-nJ2" id="D5x-JR-f3x"/>
                         <outlet property="goalLabel" destination="nPB-qJ-nXg" id="yzk-7b-TmJ"/>

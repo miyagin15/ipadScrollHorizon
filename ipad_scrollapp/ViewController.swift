@@ -51,22 +51,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         createCSV(fileArrData: nowgoal_Data)
     }
     @IBOutlet var functionalExpressionLabel: UILabel!
-    
-    @IBOutlet var callibrationTitle: UIBarButtonItem!
-    @IBAction func callibrationUseChange(_ sender: Any) {
-        print(callibrationUseBool)
-        if callibrationUseBool==false{
-            callibrationUseBool=true
-            callibrationTitle?.title="キャリブレーション使う"
-            return
-        }else{
-            callibrationUseBool=false
-            callibrationTitle?.title="キャリブレーション使わない"
-            return
-        }
-    }
-    
-    
     @IBOutlet var callibrationBoolLabel: UIButton!
     @IBAction func callibrationConfigChange(_ sender: Any) {
         if callibrationUseBool==false{
