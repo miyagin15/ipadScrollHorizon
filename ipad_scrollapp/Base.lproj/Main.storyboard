@@ -37,7 +37,7 @@
                                             </slider>
                                         </barButtonItem>
                                         <button key="titleView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="WSq-IT-Skv">
-                                            <rect key="frame" x="506.5" y="3" width="181" height="44"/>
+                                            <rect key="frame" x="527.5" y="3" width="139" height="44"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="25"/>
@@ -111,6 +111,14 @@
                                             <action selector="toConfig:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Zcx-yA-gdT"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kt1-oE-uav">
+                                        <rect key="frame" x="849" y="28" width="108" height="42"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="初期設定を使う"/>
+                                        <connections>
+                                            <action selector="callibrationConfigChange:" destination="BV1-FR-VrT" eventType="touchUpInside" id="jSS-mq-9fW"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
@@ -174,6 +182,8 @@
                     </view>
                     <connections>
                         <outlet property="buttonLabel" destination="WSq-IT-Skv" id="rVA-dm-njm"/>
+                        <outlet property="callibrationBoolLabel" destination="kt1-oE-uav" id="bEJ-17-Vr8"/>
+                        <outlet property="callibrationTitle" destination="fTB-ak-8dA" id="Lmt-Cr-fQh"/>
                         <outlet property="functionalExpression" destination="3Mr-z6-nJ4" id="6bp-PO-JFV"/>
                         <outlet property="functionalExpressionLabel" destination="ZR1-g8-nJ2" id="D5x-JR-f3x"/>
                         <outlet property="goalLabel" destination="nPB-qJ-nXg" id="yzk-7b-TmJ"/>

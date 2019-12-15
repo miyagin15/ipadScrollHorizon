@@ -52,17 +52,36 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     }
     @IBOutlet var functionalExpressionLabel: UILabel!
     
+    @IBOutlet var callibrationTitle: UIBarButtonItem!
     @IBAction func callibrationUseChange(_ sender: Any) {
         print(callibrationUseBool)
         if callibrationUseBool==false{
             callibrationUseBool=true
+            callibrationTitle?.title="キャリブレーション使う"
             return
         }else{
             callibrationUseBool=false
+            callibrationTitle?.title="キャリブレーション使わない"
             return
         }
-        
     }
+    
+    
+    @IBOutlet var callibrationBoolLabel: UIButton!
+    @IBAction func callibrationConfigChange(_ sender: Any) {
+        if callibrationUseBool==false{
+            callibrationUseBool=true
+            callibrationBoolLabel.setTitle("キャリブレーション使う", for: .normal)
+            return
+        }else{
+            callibrationUseBool=false
+            callibrationBoolLabel.setTitle("キャリブレーション使わない", for: .normal)
+            return
+        }
+    }
+    
+    
+    
     //ウインクした場所を特定するために定義
     let userDefaults = UserDefaults.standard
     private let cellIdentifier = "cell"
