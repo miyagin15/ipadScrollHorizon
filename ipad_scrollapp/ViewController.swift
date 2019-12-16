@@ -530,15 +530,35 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
              DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Brow", for: .normal)
              }
-            if let browInnerUp = faceAnchor.blendShapes[.browInnerUp] as? Float {
-                if browInnerUp > 0.5 {
-                    self.scrollDownInMainThread(ratio: CGFloat(browInnerUp-0.4)*1.5)
+             if callibrationUseBool==true{
+                 let browInnerUp = faceAnchor.geometry.vertices[762][1]/(callibrationPosition[6]-callibrationOrdinalPosition[6])+callibrationOrdinalPosition[6]/(callibrationOrdinalPosition[6]-callibrationPosition[6])
+                 print("browInnerUp",browInnerUp)
+     //            if mouthLeft > 0.1 {
+     //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+     //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
+     //            }
+                 let browDownLeft = faceAnchor.geometry.vertices[762][1]/(callibrationPosition[7]-callibrationOrdinalPosition[7])+callibrationOrdinalPosition[7]/(callibrationOrdinalPosition[7]-callibrationPosition[7])
+                 print("browDownLeft",browDownLeft)
+                 
+                 if browInnerUp < 0.1 && browDownLeft < 0.1{
+                     return
+                 }
+                 if browInnerUp>browDownLeft {
+                     self.leftScrollMainThread(ratio: CGFloat(browInnerUp))
+                 }else{
+                     self.rightScrollMainThread(ratio: CGFloat(browDownLeft))
+                 }
+             }else{
+                if let browInnerUp = faceAnchor.blendShapes[.browInnerUp] as? Float {
+                    if browInnerUp > 0.5 {
+                        self.scrollDownInMainThread(ratio: CGFloat(browInnerUp-0.4)*1.5)
+                    }
                 }
-            }
-        
-            if let browDownLeft = faceAnchor.blendShapes[.browDownLeft] as? Float {
-                if browDownLeft > 0.2 {
-                    self.scrollUpInMainThread(ratio: CGFloat(browDownLeft))
+            
+                if let browDownLeft = faceAnchor.blendShapes[.browDownLeft] as? Float {
+                    if browDownLeft > 0.2 {
+                        self.scrollUpInMainThread(ratio: CGFloat(browDownLeft))
+                    }
                 }
             }
         case (3):
