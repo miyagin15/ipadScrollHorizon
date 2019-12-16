@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		15BE94DB61020F967641292A /* Pods_ipad_scrollapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE890EB32FEA0B5F50274BCB /* Pods_ipad_scrollapp.framework */; };
 		5E0AB8252394F35A00C8F2D0 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB8242394F35A00C8F2D0 /* CollectionViewCell.swift */; };
 		5E0AB8292397D37400C8F2D0 /* CalibrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB8282397D37400C8F2D0 /* CalibrationViewController.swift */; };
 		5E0AB82B239896B100C8F2D0 /* VerticalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB82A239896B100C8F2D0 /* VerticalViewController.swift */; };
@@ -74,7 +73,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				15BE94DB61020F967641292A /* Pods_ipad_scrollapp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,7 +105,6 @@
 				CF4837D3C8C04E7DA0B8DE7F /* Pods-ipad_scrollappUITests.debug.xcconfig */,
 				B4ADFB14EE3A65430F742EF2 /* Pods-ipad_scrollappUITests.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
