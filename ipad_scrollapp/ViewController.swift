@@ -128,8 +128,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
         }
         print("口右:638",userDefaults.string(forKey: callibrationArr[0])!)
         //0:口左、1:口右
-        callibrationOrdinalPosition[0]=userDefaults.float(forKey: "普通"+callibrationArr[0])
-        callibrationOrdinalPosition[1]=userDefaults.float(forKey: "普通"+callibrationArr[1])
+//        callibrationOrdinalPosition[0]=userDefaults.float(forKey: "普通"+callibrationArr[0])
+//        callibrationOrdinalPosition[1]=userDefaults.float(forKey: "普通"+callibrationArr[1])
+        for x in 0...11{
+            callibrationOrdinalPosition[x]=userDefaults.float(forKey: "普通"+callibrationArr[x])
+        }
     }
     //scrolViewを作成する
     private func createScrollVIew(){
@@ -403,24 +406,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
             //print(self.tableView.contentOffset.y)
             self.tracking.backgroundColor = UIColor.blue
         }
-        
-        //CSVを作るデータに足していく縦スクロール
-//        DispatchQueue.main.async {
-//            if((Float(self.tableViewPosition) > 5)){
-//                //self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
-//                self.nowgoal_Data.append(Float(self.tableViewPosition))
-//                self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
-//            }
-//            if(Float(self.tableViewPosition) < -160){
-//                self.goalLabel.text = "5.0"
-//                self.nowgoal_Data = []
-//                //self.tapData = []
-//
-//            }
-//            //print(Float(self.tableViewPosition))
-//            //データをパソコンに送る(今の場所と目標地点)
-//            //self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
-//        }
         //CSVを作るデータに足していく
         DispatchQueue.main.async {
             if((Float(self.myCollectionViewPosition) > 5))
@@ -560,18 +545,41 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
              DispatchQueue.main.async {
                 self.buttonLabel.setTitle("mouthCentral", for: .normal)
              }
-            //口の中央
-            print(faceAnchor.geometry.vertices[24][1],"24")
-            print(faceAnchor.geometry.vertices[25][1],"25")
+             //let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
              
-            let mouthCenter = (faceAnchor.geometry.vertices[24][1] + faceAnchor.geometry.vertices[25][1])/2
+             if callibrationUseBool==true{
+                 let mouthUp = faceAnchor.geometry.vertices[24][1]/(callibrationPosition[2]-callibrationOrdinalPosition[2])+callibrationOrdinalPosition[2]/(callibrationOrdinalPosition[2]-callibrationPosition[2])
+                 print("mouthUp",mouthUp)
+     //            if mouthLeft > 0.1 {
+     //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+     //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
+     //            }
+                 let mouthDown = faceAnchor.geometry.vertices[24][1]/(callibrationPosition[3]-callibrationOrdinalPosition[3])+callibrationOrdinalPosition[3]/(callibrationOrdinalPosition[3]-callibrationPosition[3])
+                 print("mouthDown",mouthDown)
+                 
+                 if mouthUp < 0.1 && mouthDown < 0.1{
+                     return
+                 }
+                 if mouthUp>mouthDown {
+                     self.leftScrollMainThread(ratio: CGFloat(mouthUp))
+                 }else{
+                     self.rightScrollMainThread(ratio: CGFloat(mouthDown))
+                 }
+             }else{
+                //口の中央
+                print(faceAnchor.geometry.vertices[24][1],"24")
+                print(faceAnchor.geometry.vertices[25][1],"25")
+                 
+                let mouthCenter = (faceAnchor.geometry.vertices[24][1] + faceAnchor.geometry.vertices[25][1])/2
+                
+                if mouthCenter < -0.045{
+                    self.scrollUpInMainThread(ratio: CGFloat(0.8))
+                }
+                if mouthCenter > -0.039{
+                    self.scrollDownInMainThread(ratio: CGFloat(0.8))
+                }
+             }
             
-            if mouthCenter < -0.045{
-                self.scrollUpInMainThread(ratio: CGFloat(0.8))
-            }
-            if mouthCenter > -0.039{
-                self.scrollDownInMainThread(ratio: CGFloat(0.8))
-            }
 
         default:
              DispatchQueue.main.async {
