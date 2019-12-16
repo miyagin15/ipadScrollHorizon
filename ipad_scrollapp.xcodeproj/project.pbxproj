@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		15BE94DB61020F967641292A /* Pods_ipad_scrollapp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE890EB32FEA0B5F50274BCB /* Pods_ipad_scrollapp.framework */; };
 		5E0AB8252394F35A00C8F2D0 /* CollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB8242394F35A00C8F2D0 /* CollectionViewCell.swift */; };
 		5E0AB8292397D37400C8F2D0 /* CalibrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB8282397D37400C8F2D0 /* CalibrationViewController.swift */; };
 		5E0AB82B239896B100C8F2D0 /* VerticalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E0AB82A239896B100C8F2D0 /* VerticalViewController.swift */; };
@@ -18,6 +19,8 @@
 		5E2DC57E238BB1410012A8AD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5E2DC57C238BB1410012A8AD /* LaunchScreen.storyboard */; };
 		5E2DC589238BB1410012A8AD /* ipad_scrollappTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2DC588238BB1410012A8AD /* ipad_scrollappTests.swift */; };
 		5E2DC594238BB1410012A8AD /* ipad_scrollappUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E2DC593238BB1410012A8AD /* ipad_scrollappUITests.swift */; };
+		684E2C8AA591A88248009CC2 /* Pods_ipad_scrollappUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 63590B26C82731286052026E /* Pods_ipad_scrollappUITests.framework */; };
+		6F40FD59C5DE2025AB739259 /* Pods_ipad_scrollappTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D052AF692499B7D01BB3950F /* Pods_ipad_scrollappTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,6 +41,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3AC957CB8BC0FCF8612E9E49 /* Pods-ipad_scrollapp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ipad_scrollapp.debug.xcconfig"; path = "Target Support Files/Pods-ipad_scrollapp/Pods-ipad_scrollapp.debug.xcconfig"; sourceTree = "<group>"; };
+		499AA693E62E5B22BF5E5E9A /* Pods-ipad_scrollappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ipad_scrollappTests.release.xcconfig"; path = "Target Support Files/Pods-ipad_scrollappTests/Pods-ipad_scrollappTests.release.xcconfig"; sourceTree = "<group>"; };
 		5E0AB8242394F35A00C8F2D0 /* CollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectionViewCell.swift; sourceTree = "<group>"; };
 		5E0AB8282397D37400C8F2D0 /* CalibrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationViewController.swift; sourceTree = "<group>"; };
 		5E0AB82A239896B100C8F2D0 /* VerticalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalViewController.swift; sourceTree = "<group>"; };
@@ -55,6 +60,13 @@
 		5E2DC58F238BB1410012A8AD /* ipad_scrollappUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ipad_scrollappUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E2DC593238BB1410012A8AD /* ipad_scrollappUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ipad_scrollappUITests.swift; sourceTree = "<group>"; };
 		5E2DC595238BB1410012A8AD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		63590B26C82731286052026E /* Pods_ipad_scrollappUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ipad_scrollappUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		649228DFB5586FAFD745E6FF /* Pods-ipad_scrollappTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ipad_scrollappTests.debug.xcconfig"; path = "Target Support Files/Pods-ipad_scrollappTests/Pods-ipad_scrollappTests.debug.xcconfig"; sourceTree = "<group>"; };
+		890D7E8C29BC24D1E9F3E89B /* Pods-ipad_scrollapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ipad_scrollapp.release.xcconfig"; path = "Target Support Files/Pods-ipad_scrollapp/Pods-ipad_scrollapp.release.xcconfig"; sourceTree = "<group>"; };
+		AE890EB32FEA0B5F50274BCB /* Pods_ipad_scrollapp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ipad_scrollapp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4ADFB14EE3A65430F742EF2 /* Pods-ipad_scrollappUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ipad_scrollappUITests.release.xcconfig"; path = "Target Support Files/Pods-ipad_scrollappUITests/Pods-ipad_scrollappUITests.release.xcconfig"; sourceTree = "<group>"; };
+		CF4837D3C8C04E7DA0B8DE7F /* Pods-ipad_scrollappUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ipad_scrollappUITests.debug.xcconfig"; path = "Target Support Files/Pods-ipad_scrollappUITests/Pods-ipad_scrollappUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		D052AF692499B7D01BB3950F /* Pods_ipad_scrollappTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ipad_scrollappTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +74,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				15BE94DB61020F967641292A /* Pods_ipad_scrollapp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -69,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F40FD59C5DE2025AB739259 /* Pods_ipad_scrollappTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,12 +90,27 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				684E2C8AA591A88248009CC2 /* Pods_ipad_scrollappUITests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		17214C59D811627B71393E1A /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				3AC957CB8BC0FCF8612E9E49 /* Pods-ipad_scrollapp.debug.xcconfig */,
+				890D7E8C29BC24D1E9F3E89B /* Pods-ipad_scrollapp.release.xcconfig */,
+				649228DFB5586FAFD745E6FF /* Pods-ipad_scrollappTests.debug.xcconfig */,
+				499AA693E62E5B22BF5E5E9A /* Pods-ipad_scrollappTests.release.xcconfig */,
+				CF4837D3C8C04E7DA0B8DE7F /* Pods-ipad_scrollappUITests.debug.xcconfig */,
+				B4ADFB14EE3A65430F742EF2 /* Pods-ipad_scrollappUITests.release.xcconfig */,
+			);
+			name = Pods;
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		5E2DC565238BB13E0012A8AD = {
 			isa = PBXGroup;
 			children = (
@@ -89,6 +118,8 @@
 				5E2DC587238BB1410012A8AD /* ipad_scrollappTests */,
 				5E2DC592238BB1410012A8AD /* ipad_scrollappUITests */,
 				5E2DC56F238BB13E0012A8AD /* Products */,
+				17214C59D811627B71393E1A /* Pods */,
+				EF7B0CF3E9F9F6CB37776CE2 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -137,6 +168,16 @@
 			path = ipad_scrollappUITests;
 			sourceTree = "<group>";
 		};
+		EF7B0CF3E9F9F6CB37776CE2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				AE890EB32FEA0B5F50274BCB /* Pods_ipad_scrollapp.framework */,
+				D052AF692499B7D01BB3950F /* Pods_ipad_scrollappTests.framework */,
+				63590B26C82731286052026E /* Pods_ipad_scrollappUITests.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -144,6 +185,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E2DC598238BB1410012A8AD /* Build configuration list for PBXNativeTarget "ipad_scrollapp" */;
 			buildPhases = (
+				5C38505B9131073D31A47E67 /* [CP] Check Pods Manifest.lock */,
 				5E2DC56A238BB13E0012A8AD /* Sources */,
 				5E2DC56B238BB13E0012A8AD /* Frameworks */,
 				5E2DC56C238BB13E0012A8AD /* Resources */,
@@ -161,6 +203,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E2DC59B238BB1410012A8AD /* Build configuration list for PBXNativeTarget "ipad_scrollappTests" */;
 			buildPhases = (
+				AE8BA2867016D2C6A623B614 /* [CP] Check Pods Manifest.lock */,
 				5E2DC580238BB1410012A8AD /* Sources */,
 				5E2DC581238BB1410012A8AD /* Frameworks */,
 				5E2DC582238BB1410012A8AD /* Resources */,
@@ -179,6 +222,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 5E2DC59E238BB1410012A8AD /* Build configuration list for PBXNativeTarget "ipad_scrollappUITests" */;
 			buildPhases = (
+				FAACCBCC5545EF2FD12568A1 /* [CP] Check Pods Manifest.lock */,
 				5E2DC58B238BB1410012A8AD /* Sources */,
 				5E2DC58C238BB1410012A8AD /* Frameworks */,
 				5E2DC58D238BB1410012A8AD /* Resources */,
@@ -263,6 +307,75 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		5C38505B9131073D31A47E67 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ipad_scrollapp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AE8BA2867016D2C6A623B614 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ipad_scrollappTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		FAACCBCC5545EF2FD12568A1 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-ipad_scrollappUITests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		5E2DC56A238BB13E0012A8AD /* Sources */ = {
@@ -444,6 +557,7 @@
 		};
 		5E2DC599238BB1410012A8AD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 3AC957CB8BC0FCF8612E9E49 /* Pods-ipad_scrollapp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -462,6 +576,7 @@
 		};
 		5E2DC59A238BB1410012A8AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 890D7E8C29BC24D1E9F3E89B /* Pods-ipad_scrollapp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -480,6 +595,7 @@
 		};
 		5E2DC59C238BB1410012A8AD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 649228DFB5586FAFD745E6FF /* Pods-ipad_scrollappTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -502,6 +618,7 @@
 		};
 		5E2DC59D238BB1410012A8AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 499AA693E62E5B22BF5E5E9A /* Pods-ipad_scrollappTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -524,6 +641,7 @@
 		};
 		5E2DC59F238BB1410012A8AD /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CF4837D3C8C04E7DA0B8DE7F /* Pods-ipad_scrollappUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -544,6 +662,7 @@
 		};
 		5E2DC5A0238BB1410012A8AD /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B4ADFB14EE3A65430F742EF2 /* Pods-ipad_scrollappUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
