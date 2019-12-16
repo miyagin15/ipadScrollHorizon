@@ -101,8 +101,11 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         print(callibrationPosition[mybtn.x])
         if(callibrationArr[mybtn.x]=="普通"){
             print("普通")
-            userDefaults.set(callibrationPosition[0], forKey: "普通"+callibrationArr[0])
-            userDefaults.set(callibrationPosition[1], forKey: "普通"+callibrationArr[1])
+            for x in 0...11{
+                userDefaults.set(callibrationPosition[x], forKey: "普通"+callibrationArr[x])
+            }
+//            userDefaults.set(callibrationPosition[0], forKey: "普通"+callibrationArr[0])
+//            userDefaults.set(callibrationPosition[1], forKey: "普通"+callibrationArr[1])
         }else{
             userDefaults.set(callibrationPosition[mybtn.x], forKey: callibrationArr[mybtn.x])
         }
@@ -135,6 +138,16 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         //口の右側の座標:638,口の左側の座標:405
         callibrationPosition[0] = faceAnchor.geometry.vertices[638][0]
         callibrationPosition[1] = faceAnchor.geometry.vertices[405][0]
+        //口24を見る。口を上にしたときのy座標と口を下にしたときのy座標:
+        callibrationPosition[2] = faceAnchor.geometry.vertices[24][1]
+        callibrationPosition[3] = faceAnchor.geometry.vertices[24][1]
+        //口右:638,口左:329のz座標を保存
+        callibrationPosition[4] = faceAnchor.geometry.vertices[638][2]
+        callibrationPosition[5] = faceAnchor.geometry.vertices[405][2]
+        //眉上:762,眉下のy座標
+        callibrationPosition[6] = faceAnchor.geometry.vertices[762][1]
+        callibrationPosition[7] = faceAnchor.geometry.vertices[762][1]
+        
         print(callibrationPosition[0])
         mouthR = faceAnchor.geometry.vertices[25][1]
             // 認識していたら青色に
