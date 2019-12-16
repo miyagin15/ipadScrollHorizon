@@ -100,9 +100,9 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         print(mybtn.x)
         print(callibrationPosition[mybtn.x])
         if(callibrationArr[mybtn.x]=="普通"){
-            print("普通")
             for x in 0...11{
                 userDefaults.set(callibrationPosition[x], forKey: "普通"+callibrationArr[x])
+                print(callibrationPosition[x],"普通"+callibrationArr[x])
             }
 //            userDefaults.set(callibrationPosition[0], forKey: "普通"+callibrationArr[0])
 //            userDefaults.set(callibrationPosition[1], forKey: "普通"+callibrationArr[1])
@@ -147,8 +147,6 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         //眉上:762,眉下のy座標
         callibrationPosition[6] = faceAnchor.geometry.vertices[762][1]
         callibrationPosition[7] = faceAnchor.geometry.vertices[762][1]
-        
-        print(callibrationPosition[0])
         mouthR = faceAnchor.geometry.vertices[25][1]
             // 認識していたら青色に
         DispatchQueue.main.async {
