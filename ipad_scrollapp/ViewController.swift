@@ -265,7 +265,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate,U
     //right scroll
     private func rightScrollMainThread(ratio :CGFloat) {
         DispatchQueue.main.async {
-            if(self.myCollectionView.contentOffset.x > 8000){
+            if(self.myCollectionView.contentOffset.x > 6000){
                 return
             }
             self.functionalExpression.value = Float(ratio)
