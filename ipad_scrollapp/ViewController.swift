@@ -73,13 +73,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     @IBOutlet var inputMethodLabel: UIButton!
     @IBAction func inputMethodChange(_: Any) {
         if inputMethodString == "velocity" {
-            inputMethodString = "position"
-            inputMethodLabel.setTitle("position", for: .normal)
-            return
-        } else if inputMethodString == "position" {
             inputMethodString = "p_mouse"
             inputMethodLabel.setTitle("p_mouse", for: .normal)
             return
+//        } else if inputMethodString == "position" {
+//            inputMethodString = "p_mouse"
+//            inputMethodLabel.setTitle("p_mouse", for: .normal)
+//            return
         } else if inputMethodString == "p_mouse" {
             inputMethodString = "velocity"
             inputMethodLabel.setTitle("velocity", for: .normal)
@@ -129,7 +129,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // Cellの総数を返す
     func collectionView(_: UICollectionView, numberOfItemsInSection _: Int) -> Int {
-        return 70
+        return 100
     }
 
     // Cellに値を設定する
@@ -224,13 +224,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             self.functionalExpression.value = Float(ratio)
             self.functionalExpressionLabel.text = String(Float(ratio))
-            let ratio = self.scrollRatioChange(ratio)
             if self.inputMethodString == "velocity" {
+                let ratio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
             } else if self.inputMethodString == "position" {
                 self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else {
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
+                let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 300 * ratio * CGFloat(self.ratioChange), y: 0)
             }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
@@ -244,13 +245,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             self.functionalExpression.value = -Float(ratio)
             self.functionalExpressionLabel.text = String(Float(-ratio))
-            let ratio = self.scrollRatioChange(ratio)
             if self.inputMethodString == "velocity" {
+                let ratio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
             } else if self.inputMethodString == "position" {
                 self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else {
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
+                let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 300 * ratio * CGFloat(self.ratioChange), y: 0)
             }
         }
     }
@@ -306,12 +308,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
         // 顔のxyz位置
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
-
+        // 下を向いている時の処理
         let ratioLookDown = faceAnchor.transform.columns.1.z
-        print(ratioLookDown)
         if ratioLookDown > 0.65 {
             //  認識していたら青色に
             DispatchQueue.main.async {
+                self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
                 // print(self.tableView.contentOffset.y)
                 self.inputClutchView.backgroundColor = UIColor.white
             }
