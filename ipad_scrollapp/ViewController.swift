@@ -425,13 +425,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             }
 
             if callibrationUseBool == true {
-                let mouthLeft = faceAnchor.geometry.vertices[638][0] / (callibrationPosition[0] - callibrationOrdinalPosition[0]) + callibrationOrdinalPosition[0] / (callibrationOrdinalPosition[0] - callibrationPosition[0])
+                let mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 print("mouthLeft", mouthLeft)
                 //            if mouthLeft > 0.1 {
                 //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
                 //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
                 //            }
-                let mouthRight = faceAnchor.geometry.vertices[405][0] / (callibrationPosition[1] - callibrationOrdinalPosition[1]) + callibrationOrdinalPosition[1] / (callibrationOrdinalPosition[1] - callibrationPosition[1])
+                let mouthRight = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
                 print("mouthRight", mouthRight)
 
                 if mouthLeft < 0.1, mouthRight < 0.1 {
@@ -721,5 +721,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
 //        }
 
         nowgoal_Data = []
+    }
+
+    // y = x/(max-min)+min/(min-max)
+    private func faceAURangeChange(faceAUVertex: Float, maxFaceAUVertex: Float, minFaceAUVertex: Float) -> Float {
+        let faceAUChangeValue = faceAUVertex / (maxFaceAUVertex - minFaceAUVertex) + minFaceAUVertex / (minFaceAUVertex - maxFaceAUVertex)
+        return faceAUChangeValue
     }
 }
