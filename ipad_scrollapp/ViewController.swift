@@ -416,7 +416,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
         }
 
-        let changeAction = changeNum % 5
+        let changeAction = changeNum % 6
 
         switch changeAction {
         case 0:
@@ -427,10 +427,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             if callibrationUseBool == true {
                 let mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 print("mouthLeft", mouthLeft)
-                //            if mouthLeft > 0.1 {
-                //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-                //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
-                //            }
                 let mouthRight = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
                 print("mouthRight", mouthRight)
 
@@ -520,10 +516,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             if callibrationUseBool == true {
                 let browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
                 print("browInnerUp", browInnerUp)
-                //            if mouthLeft > 0.1 {
-                //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-                //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
-                //            }
                 let browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[7], minFaceAUVertex: callibrationOrdinalPosition[7])
                 print("browDownLeft", browDownLeft)
 
@@ -557,10 +549,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             if callibrationUseBool == true {
                 let mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[2], minFaceAUVertex: callibrationOrdinalPosition[2])
                 print("mouthUp", mouthUp)
-                //            if mouthLeft > 0.1 {
-                //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-                //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
-                //            }
                 let mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
                 print("mouthDown", mouthDown)
 
@@ -586,10 +574,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
                     scrollDownInMainThread(ratio: CGFloat(0.8))
                 }
             }
+        case 4:
+            DispatchQueue.main.async {
+                self.buttonLabel.setTitle("cheekPuff", for: .normal)
+            }
+            let cheekR = faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[697][2] + faceAnchor.geometry.vertices[826][2] + faceAnchor.geometry.vertices[839][2]) / 3, maxFaceAUVertex: callibrationPosition[4], minFaceAUVertex: callibrationOrdinalPosition[4])
+            print("cheekR", cheekR)
+            let cheekL = faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[245][2] + faceAnchor.geometry.vertices[397][2] + faceAnchor.geometry.vertices[172][2]) / 3, maxFaceAUVertex: callibrationPosition[5], minFaceAUVertex: callibrationOrdinalPosition[5])
+            print("cheekL", cheekL)
 
+            if cheekR < 0.1, cheekL < 0.1 {
+                return
+            }
+            if cheekL > cheekR {
+                leftScrollMainThread(ratio: CGFloat(cheekL))
+            } else {
+                rightScrollMainThread(ratio: CGFloat(cheekR))
+            }
         default:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("Cheek", for: .normal)
+                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
             }
             if let cheekSquintLeft = faceAnchor.blendShapes[.cheekSquintLeft] as? Float {
                 if cheekSquintLeft > 0.1 {
@@ -698,28 +702,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
 
         documentInteraction = UIDocumentInteractionController(url: FilePath)
         documentInteraction.presentOpenInMenu(from: CGRect(x: 10, y: 10, width: 100, height: 50), in: view, animated: true)
-
-        // documentInteraction.url = FilePath
-
-//        text形式で送信
-//        let objectsToShare = fileStrData as Any
-//        let activityVC = UIActivityViewController(activityItems: [objectsToShare], applicationActivities: nil)
-//        activityVC.title = "data.csv"
-//        if let wPPC = activityVC.popoverPresentationController {
-//            wPPC.sourceView = self.view
-//        }
-//        present( activityVC, animated: true, completion: nil )
-        // self.documentInteraction.presentOpenInMenu(from: self.view.bounds, in: self.view, animated: true)
-
-//        if !(documentInteraction?.presentOpenInMenu(from: self.view.frame, in: self.view, animated: true))!
-//        {
-//            print("3")
-//            // 送信できるアプリが見つからなかった時の処理
-//            let alert = UIAlertController(title: "送信失敗", message: "ファイルを送れるアプリが見つかりません", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            self.present(alert, animated: true, completion: nil)
-//        }
-
         nowgoal_Data = []
     }
 
