@@ -74,14 +74,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     @IBOutlet var inputMethodLabel: UIButton!
     @IBAction func inputMethodChange(_: Any) {
         if inputMethodString == "velocity" {
-            inputMethodString = "p_mouse"
-            inputMethodLabel.setTitle("p_mouse", for: .normal)
+            inputMethodString = "position"
+            inputMethodLabel.setTitle("position", for: .normal)
             return
 //        } else if inputMethodString == "position" {
 //            inputMethodString = "p_mouse"
 //            inputMethodLabel.setTitle("p_mouse", for: .normal)
 //            return
-        } else if inputMethodString == "p_mouse" {
+        } else if inputMethodString == "position" {
             inputMethodString = "velocity"
             inputMethodLabel.setTitle("velocity", for: .normal)
             return
@@ -228,8 +228,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             if self.inputMethodString == "velocity" {
                 let ratio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else if self.inputMethodString == "position" {
-                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
+//            } else if self.inputMethodString == "position" {
+//                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                 self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 300 * ratio * CGFloat(self.ratioChange), y: 0)
@@ -249,8 +249,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             if self.inputMethodString == "velocity" {
                 let ratio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else if self.inputMethodString == "position" {
-                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
+//            } else if self.inputMethodString == "position" {
+//                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                 self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 300 * ratio * CGFloat(self.ratioChange), y: 0)
@@ -628,7 +628,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     func createCSV(fileArrData: [Float]) {
         var fileStrData: String = ""
-        let fileName = buttonLabel.titleLabel!.text! + ".csv"
+        let fileName = buttonLabel.titleLabel!.text! + "_" + inputMethodString + ".csv"
 
         // StringのCSV用データを準備
         // print(fileArrData)
