@@ -104,7 +104,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var goalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float] = []
-    let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "左顎", "右顎", "普通"]
+    let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
     // 初期設定のための配列
     var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var callibrationOrdinalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -551,32 +551,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
         case 5:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("jawLR", for: .normal)
+                self.buttonLabel.setTitle("ripRoll", for: .normal)
             }
-            let jawLeft = faceAnchor.blendShapes[.jawLeft] as! Float
-            let jawRight = faceAnchor.blendShapes[.jawRight] as! Float
+            let mouthRollUpper = faceAnchor.blendShapes[.mouthRollUpper] as! Float
+            let mouthRollLower = faceAnchor.blendShapes[.mouthRollLower] as! Float
             if callibrationUseBool == true {
-                let jawL = faceAURangeChange(faceAUVertex: jawLeft, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
-                print("jawL", jawL)
-                let jawR = faceAURangeChange(faceAUVertex: jawRight, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
-                print("jawR", jawR)
+                let mouthRollUp = faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
+                print("mouthRollUp", mouthRollUp)
+                let mouthRollDown = faceAURangeChange(faceAUVertex: mouthRollLower, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
+                print("mouthRollDown", mouthRollDown)
 
-                if jawL < 0.1, jawR < 0.1 {
+                if mouthRollUp < 0.1, mouthRollDown < 0.1 {
                     return
                 }
-                if jawR > jawL {
-                    leftScrollMainThread(ratio: CGFloat(jawR))
+                if mouthRollDown > mouthRollUp {
+                    leftScrollMainThread(ratio: CGFloat(mouthRollDown))
                 } else {
-                    rightScrollMainThread(ratio: CGFloat(jawL))
+                    rightScrollMainThread(ratio: CGFloat(mouthRollUp))
                 }
             } else {
-                if jawLeft < 0.1, jawRight < 0.1 {
+                if mouthRollUpper < 0.1, mouthRollLower < 0.1 {
                     return
                 }
-                if jawLeft > jawRight {
-                    rightScrollMainThread(ratio: CGFloat(jawRight))
+                if mouthRollUpper > mouthRollLower {
+                    rightScrollMainThread(ratio: CGFloat(mouthRollUpper))
                 } else {
-                    leftScrollMainThread(ratio: CGFloat(jawLeft))
+                    leftScrollMainThread(ratio: CGFloat(mouthRollLower))
                 }
             }
         default:

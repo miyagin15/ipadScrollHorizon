@@ -46,7 +46,7 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         }
     }
 
-    let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "左顎", "右顎", "普通"]
+    let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
     var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
     var mouthDown: Float = 0
@@ -155,8 +155,8 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         callibrationPosition[8] = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
         callibrationPosition[9] = faceAnchor.blendShapes[.mouthSmileRight] as! Float
         // 唇の丸まり具合
-        callibrationPosition[10] = faceAnchor.blendShapes[.jawLeft] as! Float
-        callibrationPosition[11] = faceAnchor.blendShapes[.jawRight] as! Float
+        callibrationPosition[10] = faceAnchor.blendShapes[.mouthRollUpper] as! Float
+        callibrationPosition[11] = faceAnchor.blendShapes[.mouthRollLower] as! Float
         //  認識していたら青色に
         DispatchQueue.main.async {
             // print(self.tableView.contentOffset.y)
