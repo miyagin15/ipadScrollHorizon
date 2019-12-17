@@ -45,6 +45,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         goalLabel.text = String(goalPositionInt[i])
     }
 
+    @IBOutlet var orietationLabel: UILabel!
     @IBAction func toConfig(_: Any) {
         let secondViewController = storyboard?.instantiateViewController(withIdentifier: "CalibrationViewController") as! CalibrationViewController
         secondViewController.modalPresentationStyle = .fullScreen
@@ -310,6 +311,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
         // 下を向いている時の処理
         let ratioLookDown = faceAnchor.transform.columns.1.z
+        DispatchQueue.main.async {
+            self.orietationLabel.text = String(ratioLookDown)
+        }
         if ratioLookDown > 0.65 {
             //  認識していたら青色に
             DispatchQueue.main.async {
@@ -597,7 +601,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         let fileName = buttonLabel.titleLabel!.text! + ".csv"
 
         // StringのCSV用データを準備
-        //print(fileArrData)
+        // print(fileArrData)
         if fileArrData.count == 0 {
             goalLabel.text = "データがありません。"
             return

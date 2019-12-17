@@ -153,6 +153,13 @@
                                 <color key="backgroundColor" red="0.86983146646434384" green="0.87379523197261022" blue="0.88568652849740936" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                             </view>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="inW-SV-gjn">
+                                <rect key="frame" x="237" y="15" width="160" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -179,6 +186,7 @@
                         <outlet property="goalLabel" destination="nPB-qJ-nXg" id="yzk-7b-TmJ"/>
                         <outlet property="inputClutchView" destination="BaT-Nf-PZS" id="xwf-XA-eZt"/>
                         <outlet property="inputMethodLabel" destination="9Mc-Vs-3uY" id="9Tg-IP-9w4"/>
+                        <outlet property="orietationLabel" destination="inW-SV-gjn" id="RuT-Gx-mGi"/>
                         <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
                         <outlet property="timeCount" destination="bAq-Wh-VV3" id="79w-Aa-Ovc"/>
                         <outlet property="tracking" destination="FzM-5d-oAt" id="lFO-sK-VZy"/>
