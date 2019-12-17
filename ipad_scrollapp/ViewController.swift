@@ -21,6 +21,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // 顔を認識できている描画するView
     @IBOutlet var tracking: UIView!
+
+    @IBOutlet var inputClutchView: UIView!
+
     @IBOutlet var goalLabel: UILabel!
     @IBAction func timeCount(_: Any) {}
 
@@ -295,7 +298,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
-        //print(faceAnchor.transform)
+        //  認識していたら青色に
+        DispatchQueue.main.async {
+            // print(self.tableView.contentOffset.y)
+            self.inputClutchView.backgroundColor = UIColor.red
+            self.tracking.backgroundColor = UIColor.blue
+        }
+        // 顔のxyz位置
+        // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
+
+        let ratioLookDown = faceAnchor.transform.columns.1.z
+        print(ratioLookDown)
+        if ratioLookDown > 0.65 {
+            //  認識していたら青色に
+            DispatchQueue.main.async {
+                // print(self.tableView.contentOffset.y)
+                self.inputClutchView.backgroundColor = UIColor.white
+            }
+            print("うなづき")
+            return
+        }
         let goal = goalPosition[self.i]
         DispatchQueue.main.async {
             self.myCollectionViewPosition = self.myCollectionView.contentOffset.x
@@ -327,11 +349,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             } else {
                 self.time = 0
             }
-        }
-        //  認識していたら青色に
-        DispatchQueue.main.async {
-            // print(self.tableView.contentOffset.y)
-            self.tracking.backgroundColor = UIColor.blue
         }
         // CSVを作るデータに足していく
         DispatchQueue.main.async {
