@@ -16,6 +16,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var changeNum = 0
     var callibrationUseBool = false
+
+    var inputMethodString = "velocity"
+
     // 顔を認識できている描画するView
     @IBOutlet var tracking: UIView!
     @IBOutlet var goalLabel: UILabel!
@@ -60,6 +63,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         } else {
             callibrationUseBool = false
             callibrationBoolLabel.setTitle("キャリブレーション使わない", for: .normal)
+            return
+        }
+    }
+
+    @IBOutlet var inputMethodLabel: UIButton!
+    @IBAction func inputMethodChange(_: Any) {
+        if inputMethodString == "velocity" {
+            inputMethodString = "position"
+            inputMethodLabel.setTitle("position", for: .normal)
+            return
+        } else if inputMethodString == "position" {
+            inputMethodString = "p_mouse"
+            inputMethodLabel.setTitle("p_mouse", for: .normal)
+            return
+        } else if inputMethodString == "p_mouse" {
+            inputMethodString = "velocity"
+            inputMethodLabel.setTitle("velocity", for: .normal)
             return
         }
     }
@@ -201,15 +221,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             self.functionalExpression.value = Float(ratio)
             self.functionalExpressionLabel.text = String(Float(ratio))
-            if ratio < 0.25 {
-                let ratio = ratio * 0.3
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else if ratio > 0.55 {
-                let ratio = ratio * 1.5
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else {
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            }
+            let ratio = self.scrollRatioChange(ratio)
+            self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
     }
@@ -222,17 +235,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             self.functionalExpression.value = -Float(ratio)
             self.functionalExpressionLabel.text = String(Float(-ratio))
-            if ratio < 0.25 {
-                let ratio = ratio * 0.3
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else if ratio > 0.55 {
-                let ratio = ratio * 1.5
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else {
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            }
+            let ratio = self.scrollRatioChange(ratio)
+            self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
+    }
+
+    private func scrollRatioChange(_ ratioValue: CGFloat) -> CGFloat {
+        var changeRatio: CGFloat = 0
+
+        if ratioValue < 0.25 {
+            changeRatio = ratioValue * 0.3
+        } else if ratioValue > 0.55 {
+            changeRatio = ratioValue * 1.5
+        } else {
+            changeRatio = ratioValue
+        }
+        return changeRatio
     }
 
     // MARK: - ARSCNViewDelegate
