@@ -222,7 +222,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.functionalExpression.value = Float(ratio)
             self.functionalExpressionLabel.text = String(Float(ratio))
             let ratio = self.scrollRatioChange(ratio)
-            self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
+            if self.inputMethodString == "velocity" {
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
+            } else if self.inputMethodString == "position" {
+                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
+            } else {
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
+            }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
     }
@@ -236,8 +242,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.functionalExpression.value = -Float(ratio)
             self.functionalExpressionLabel.text = String(Float(-ratio))
             let ratio = self.scrollRatioChange(ratio)
-            self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
-            // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
+            if self.inputMethodString == "velocity" {
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
+            } else if self.inputMethodString == "position" {
+                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
+            } else {
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
+            }
         }
     }
 
@@ -245,7 +256,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         var changeRatio: CGFloat = 0
 
         if ratioValue < 0.25 {
-            changeRatio = ratioValue * 0.3
+            changeRatio = ratioValue * 0.2
         } else if ratioValue > 0.55 {
             changeRatio = ratioValue * 1.5
         } else {
@@ -284,40 +295,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
+        //print(faceAnchor.transform)
         let goal = goalPosition[self.i]
-//        DispatchQueue.main.async {
-//            self.tableViewPosition = self.tableView.contentOffset.y
-//            //目標との距離が近くなったら
-//            if( (Float(self.tableViewPosition) - goal) < 50 && (Float(self.tableViewPosition) - goal) > -50){
-//                print("クリア")
-//                self.time=self.time+1
-//                self.timeCount.value=Float(self.time)
-//                if(self.time>50){
-//                    print("クリア2")
-//                    if(self.i < self.goalPositionInt.count-1){
-//                        self.i=self.i+1
-//                        self.timeCount.value = 0
-//                        self.buttonLabel.backgroundColor  = UIColor.blue
-//                        self.goalLabel.text = "次:"+String(self.goalPositionInt[self.i]) + "---次の次:"+String(self.goalPositionInt[self.i+1])
-//                    }else{
-//                        self.tableView.contentOffset.y = 0
-//                        self.goalLabel.text = "終了"
-//                        //データをパソコンに送る(今の場所と目標地点)
-//                        DispatchQueue.main.async {
-//                            //self.NetWork.send(message: [0,0])
-//                        }
-//                    }
-//                }
-//            }else{
-//                self.time=0
-//            }
-//        }
         DispatchQueue.main.async {
             self.myCollectionViewPosition = self.myCollectionView.contentOffset.x
             // 目標との距離が近くなったら
             if goal - 50 < Float(self.myCollectionViewPosition), Float(self.myCollectionViewPosition) < goal {
-                // if((Float(self.myCollectionViewPosition)) - Float(100 * self.i) < -200.0 && (Float(self.myCollectionViewPosition)) - Float(100 * self.i) > -250.0){
-                // if( (Float(self.myCollectionViewPosition) - goal) < 50 && (Float(self.myCollectionViewPosition) - goal) > -50){
                 print("クリア")
                 self.time = self.time + 1
                 self.timeCount.value = Float(self.time)
@@ -512,17 +495,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(mouthDown))
                 }
             } else {
-                // 口の中央
-                print(faceAnchor.geometry.vertices[24][1], "24")
-                print(faceAnchor.geometry.vertices[25][1], "25")
+                let mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.03719348, minFaceAUVertex: -0.04107782)
+                print("mouthUp", mouthUp)
+                let mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.04889179, minFaceAUVertex: -0.04107782)
+                print("mouthDown", mouthDown)
 
-                let mouthCenter = (faceAnchor.geometry.vertices[24][1] + faceAnchor.geometry.vertices[25][1]) / 2
-
-                if mouthCenter < -0.045 {
-                    leftScrollMainThread(ratio: CGFloat(0.8))
+                if mouthUp < 0.1, mouthDown < 0.1 {
+                    return
                 }
-                if mouthCenter > -0.039 {
-                    rightScrollMainThread(ratio: CGFloat(0.8))
+                if mouthUp > mouthDown {
+                    leftScrollMainThread(ratio: CGFloat(mouthUp))
+                } else {
+                    rightScrollMainThread(ratio: CGFloat(mouthDown))
                 }
             }
         case 4:
@@ -546,15 +530,30 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
             }
-            if let cheekSquintLeft = faceAnchor.blendShapes[.cheekSquintLeft] as? Float {
-                if cheekSquintLeft > 0.1 {
-                    leftScrollMainThread(ratio: CGFloat(cheekSquintLeft))
-                }
-            }
+            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
+            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
+            if callibrationUseBool == true {
+                let cheekR = faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+                print("cheekR", cheekR)
+                let cheekL = faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                print("cheekL", cheekL)
 
-            if let cheekSquintRight = faceAnchor.blendShapes[.cheekSquintRight] as? Float {
-                if cheekSquintRight > 0.1 {
-                    rightScrollMainThread(ratio: CGFloat(cheekSquintRight))
+                if cheekR < 0.1, cheekL < 0.1 {
+                    return
+                }
+                if cheekL > cheekR {
+                    leftScrollMainThread(ratio: CGFloat(cheekL))
+                } else {
+                    rightScrollMainThread(ratio: CGFloat(cheekR))
+                }
+            } else {
+                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
+                    return
+                }
+                if cheekSquintLeft > cheekSquintRight {
+                    rightScrollMainThread(ratio: CGFloat(cheekSquintLeft))
+                } else {
+                    leftScrollMainThread(ratio: CGFloat(cheekSquintRight))
                 }
             }
 

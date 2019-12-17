@@ -147,12 +147,13 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         callibrationPosition[3] = faceAnchor.geometry.vertices[24][1]
         // 口右:638,口左:329のz座標を保存
         callibrationPosition[4] = (faceAnchor.geometry.vertices[697][2] + faceAnchor.geometry.vertices[826][2] + faceAnchor.geometry.vertices[839][2]) / 3
-
         callibrationPosition[5] = (faceAnchor.geometry.vertices[245][2] + faceAnchor.geometry.vertices[397][2] + faceAnchor.geometry.vertices[172][2]) / 3
         // 眉上:762,眉下のy座標
         callibrationPosition[6] = faceAnchor.geometry.vertices[762][1]
         callibrationPosition[7] = faceAnchor.geometry.vertices[762][1]
-        mouthR = faceAnchor.geometry.vertices[25][1]
+        // 半笑い
+        callibrationPosition[8] = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
+        callibrationPosition[9] = faceAnchor.blendShapes[.mouthSmileRight] as! Float
         //  認識していたら青色に
         DispatchQueue.main.async {
             // print(self.tableView.contentOffset.y)
