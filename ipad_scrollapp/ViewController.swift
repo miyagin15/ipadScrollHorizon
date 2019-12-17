@@ -518,13 +518,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
                 self.buttonLabel.setTitle("Brow", for: .normal)
             }
             if callibrationUseBool == true {
-                let browInnerUp = faceAnchor.geometry.vertices[762][1] / (callibrationPosition[6] - callibrationOrdinalPosition[6]) + callibrationOrdinalPosition[6] / (callibrationOrdinalPosition[6] - callibrationPosition[6])
+                let browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
                 print("browInnerUp", browInnerUp)
                 //            if mouthLeft > 0.1 {
                 //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
                 //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
                 //            }
-                let browDownLeft = faceAnchor.geometry.vertices[762][1] / (callibrationPosition[7] - callibrationOrdinalPosition[7]) + callibrationOrdinalPosition[7] / (callibrationOrdinalPosition[7] - callibrationPosition[7])
+                let browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[7], minFaceAUVertex: callibrationOrdinalPosition[7])
                 print("browDownLeft", browDownLeft)
 
                 if browInnerUp < 0.1, browDownLeft < 0.1 {
@@ -555,13 +555,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             // let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
 
             if callibrationUseBool == true {
-                let mouthUp = faceAnchor.geometry.vertices[24][1] / (callibrationPosition[2] - callibrationOrdinalPosition[2]) + callibrationOrdinalPosition[2] / (callibrationOrdinalPosition[2] - callibrationPosition[2])
+                let mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[2], minFaceAUVertex: callibrationOrdinalPosition[2])
                 print("mouthUp", mouthUp)
                 //            if mouthLeft > 0.1 {
                 //                //self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
                 //                self.leftScrollMainThread(ratio: CGFloat(mouthLeft))
                 //            }
-                let mouthDown = faceAnchor.geometry.vertices[24][1] / (callibrationPosition[3] - callibrationOrdinalPosition[3]) + callibrationOrdinalPosition[3] / (callibrationOrdinalPosition[3] - callibrationPosition[3])
+                let mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
                 print("mouthDown", mouthDown)
 
                 if mouthUp < 0.1, mouthDown < 0.1 {
