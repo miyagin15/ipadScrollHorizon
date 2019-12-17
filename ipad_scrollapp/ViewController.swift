@@ -11,7 +11,7 @@ import Network
 import SceneKit
 import UIKit
 
-class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, UITableViewDataSource, UICollectionViewDelegate, UICollectionViewDataSource {
+class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDelegate, UICollectionViewDataSource {
     var myCollectionView: UICollectionView!
 
     var changeNum = 0
@@ -19,7 +19,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
     // 顔を認識できている描画するView
     @IBOutlet var tracking: UIView!
     @IBOutlet var goalLabel: UILabel!
-    @IBOutlet var tableView: UITableView!
     @IBAction func timeCount(_: Any) {}
 
     @IBOutlet var timeCount: UISlider!
@@ -92,7 +91,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
         createScrollVIew()
         decideGoalpositionTimeCount()
         createGoalView()
-        createTableView()
         initialCallibrationSettings()
 
         sceneView.delegate = self
@@ -181,28 +179,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
         view.addSubview(goalView)
     }
 
-    private func createTableView() {
-        tableView.delegate = self
-        tableView.dataSource = self
-        // スクロールできる範囲を指定する
-        tableView.contentSize = CGSize(width: 340, height: 2000)
-        tableView.rowHeight = 800
-    }
-
-    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
-        return 100
-    }
-
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
-        cell.backgroundColor = UIColor(red: 255 / 255, green: 1, blue: CGFloat(11 - indexPath.row) / 10, alpha: 0.25)
-
-        cell.textLabel?.text = "セル " + indexPath.row.description
-        // 文字サイズ変更
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 80)
-        return cell
-    }
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
@@ -215,50 +191,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
 
         sceneView.session.pause()
         // NetWork.stopConnection()
-    }
-
-    // up scroll
-    private func scrollUpInMainThread(ratio: CGFloat) {
-        DispatchQueue.main.async {
-            if self.tableView.contentOffset.y > 8000 {
-                return
-            }
-            self.functionalExpression.value = -Float(ratio)
-            self.functionalExpressionLabel.text = String(-Float(ratio))
-            if ratio < 0.25 {
-                let ratio = ratio * 0.3
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10 * ratio * CGFloat(self.ratioChange))
-            } else if ratio > 0.55 {
-                let ratio = ratio * 1.5
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10 * ratio * CGFloat(self.ratioChange))
-            } else {
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10 * ratio * CGFloat(self.ratioChange))
-            }
-            // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
-        }
-    }
-
-    // down scroll
-    private func scrollDownInMainThread(ratio: CGFloat) {
-        print(ratio)
-        DispatchQueue.main.async {
-            if self.tableView.contentOffset.y < 0 {
-                return
-            }
-            self.functionalExpression.value = Float(ratio)
-            self.functionalExpressionLabel.text = String(Float(ratio))
-            if ratio < 0.25 {
-                let ratio = ratio * 0.3
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10 * ratio * CGFloat(self.ratioChange))
-            } else if ratio > 0.55 {
-                let ratio = ratio * 1.5
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10 * ratio * CGFloat(self.ratioChange))
-            } else {
-                self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10 * ratio * CGFloat(self.ratioChange))
-            }
-
-            // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
-        }
     }
 
     // right scroll
@@ -530,13 +462,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             } else {
                 if let browInnerUp = faceAnchor.blendShapes[.browInnerUp] as? Float {
                     if browInnerUp > 0.5 {
-                        scrollDownInMainThread(ratio: CGFloat(browInnerUp - 0.4) * 1.5)
+                        leftScrollMainThread(ratio: CGFloat(browInnerUp - 0.4) * 1.5)
                     }
                 }
 
                 if let browDownLeft = faceAnchor.blendShapes[.browDownLeft] as? Float {
                     if browDownLeft > 0.2 {
-                        scrollUpInMainThread(ratio: CGFloat(browDownLeft))
+                        rightScrollMainThread(ratio: CGFloat(browDownLeft))
                     }
                 }
             }
@@ -568,10 +500,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
                 let mouthCenter = (faceAnchor.geometry.vertices[24][1] + faceAnchor.geometry.vertices[25][1]) / 2
 
                 if mouthCenter < -0.045 {
-                    scrollUpInMainThread(ratio: CGFloat(0.8))
+                    leftScrollMainThread(ratio: CGFloat(0.8))
                 }
                 if mouthCenter > -0.039 {
-                    scrollDownInMainThread(ratio: CGFloat(0.8))
+                    rightScrollMainThread(ratio: CGFloat(0.8))
                 }
             }
         case 4:
@@ -597,13 +529,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UITableViewDelegate, 
             }
             if let cheekSquintLeft = faceAnchor.blendShapes[.cheekSquintLeft] as? Float {
                 if cheekSquintLeft > 0.1 {
-                    scrollDownInMainThread(ratio: CGFloat(cheekSquintLeft))
+                    leftScrollMainThread(ratio: CGFloat(cheekSquintLeft))
                 }
             }
 
             if let cheekSquintRight = faceAnchor.blendShapes[.cheekSquintRight] as? Float {
                 if cheekSquintRight > 0.1 {
-                    scrollUpInMainThread(ratio: CGFloat(cheekSquintRight))
+                    rightScrollMainThread(ratio: CGFloat(cheekSquintRight))
                 }
             }
 
