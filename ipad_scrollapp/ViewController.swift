@@ -104,7 +104,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var goalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float] = []
-    let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "普通", "a", "b"]
+    let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "左顎", "右顎", "普通"]
     // 初期設定のための配列
     var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var callibrationOrdinalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -373,7 +373,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
         }
 
-        let changeAction = changeNum % 6
+        let changeAction = changeNum % 7
 
         switch changeAction {
         case 0:
@@ -549,6 +549,36 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             } else {
                 rightScrollMainThread(ratio: CGFloat(cheekR))
             }
+        case 5:
+            DispatchQueue.main.async {
+                self.buttonLabel.setTitle("jawLR", for: .normal)
+            }
+            let jawLeft = faceAnchor.blendShapes[.jawLeft] as! Float
+            let jawRight = faceAnchor.blendShapes[.jawRight] as! Float
+            if callibrationUseBool == true {
+                let jawL = faceAURangeChange(faceAUVertex: jawLeft, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
+                print("jawL", jawL)
+                let jawR = faceAURangeChange(faceAUVertex: jawRight, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
+                print("jawR", jawR)
+
+                if jawL < 0.1, jawR < 0.1 {
+                    return
+                }
+                if jawR > jawL {
+                    leftScrollMainThread(ratio: CGFloat(jawR))
+                } else {
+                    rightScrollMainThread(ratio: CGFloat(jawL))
+                }
+            } else {
+                if jawLeft < 0.1, jawRight < 0.1 {
+                    return
+                }
+                if jawLeft > jawRight {
+                    rightScrollMainThread(ratio: CGFloat(jawRight))
+                } else {
+                    leftScrollMainThread(ratio: CGFloat(jawLeft))
+                }
+            }
         default:
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
@@ -615,8 +645,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
         }
         // キャリブレーションMAX座標の値
-        for x in 0 ... 9 {
-            if x != 9 {
+        for x in 0 ... 11 {
+            if x != 11 {
                 if let value = userDefaults.string(forKey: callibrationArr[x]) {
                     fileStrData += String(value) + ","
                 } else {
