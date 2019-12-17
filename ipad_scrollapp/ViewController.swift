@@ -218,7 +218,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
 
     var lastValueR: CGFloat = 0
-    var a: CGFloat = 0.8
+    var a: CGFloat = 0.9
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -236,7 +236,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                 let outPutLPF = self.a * self.lastValueR + (1 - self.a) * ratio
                 self.lastValueR = outPutLPF
-                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 300 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
@@ -260,7 +260,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                 let outPutLPF = self.a * self.lastValueL + (1 - self.a) * ratio
                 self.lastValueL = outPutLPF
-                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 300 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
         }
     }
