@@ -98,9 +98,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // var NetWork = NetWorkViewController()
     // ゴールの目標セルを決める
-    var goalPositionInt: [Int] = [10, 11, 50, 11, 10]
+    var goalPositionInt: [Int] = [10, 15, 25, 50, 51, 50, 25, 15, 10]
     // ゴールの目標位置を決める
-    var goalPosition: [Float] = [0, 0, 0, 0, 0]
+    var goalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float] = []
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "普通", "a", "b"]
@@ -597,7 +597,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         let fileName = buttonLabel.titleLabel!.text! + ".csv"
 
         // StringのCSV用データを準備
-        print(fileArrData)
+        //print(fileArrData)
         if fileArrData.count == 0 {
             goalLabel.text = "データがありません。"
             return
@@ -653,7 +653,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 fileStrData += String(fileArrData[i - 1]) + "\n"
             }
         }
-        print(fileStrData)
+        // print(fileStrData)
 
         // DocumentディレクトリのfileURLを取得
         let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
