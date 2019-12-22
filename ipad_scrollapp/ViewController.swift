@@ -7,6 +7,7 @@
 //
 
 import ARKit
+import Foundation
 import Network
 import SceneKit
 import UIKit
@@ -88,7 +89,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
 
-    // ウインクした場所を特定するために定義
+    // 値を端末に保存するために宣言
     let userDefaults = UserDefaults.standard
     private let cellIdentifier = "cell"
     // Trackingfaceを使うための設定
@@ -267,14 +268,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     private func scrollRatioChange(_ ratioValue: CGFloat) -> CGFloat {
         var changeRatio: CGFloat = 0
-
-        if ratioValue < 0.25 {
-            changeRatio = ratioValue * 0.2
-        } else if ratioValue > 0.55 {
-            changeRatio = ratioValue * 1.5
-        } else {
-            changeRatio = ratioValue
-        }
+        changeRatio = 1.5 * ratioValue * ratioValue
+//        if ratioValue < 0.25 {
+//            changeRatio = ratioValue * 0.2
+//        } else if ratioValue > 0.55 {
+//            changeRatio = ratioValue * 1.5
+//        } else {
+//            changeRatio = ratioValue
+//        }
         return changeRatio
     }
 
