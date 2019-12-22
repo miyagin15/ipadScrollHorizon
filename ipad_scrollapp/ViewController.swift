@@ -388,7 +388,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("MouthRL", for: .normal)
             }
-
+            let mouthLeftBS = faceAnchor.blendShapes[.mouthLeft] as! Float
+            let mouthRightBS = faceAnchor.blendShapes[.mouthRight] as! Float
             if callibrationUseBool == true {
                 let mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 print("mouthLeft", mouthLeft)
@@ -398,9 +399,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 if mouthLeft < 0.1, mouthRight < 0.1 {
                     return
                 }
-                if mouthLeft > mouthRight {
+                print(mouthLeftBS, mouthRightBS)
+                if mouthLeft > mouthRight, mouthRightBS > 0.02 {
                     leftScrollMainThread(ratio: CGFloat(mouthLeft))
-                } else {
+
+                } else if mouthRight > mouthLeft, mouthLeftBS > 0.02 {
                     rightScrollMainThread(ratio: CGFloat(mouthRight))
                 }
             } else {
