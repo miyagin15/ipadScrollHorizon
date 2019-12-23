@@ -219,6 +219,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
 
     var lastValueR: CGFloat = 0
+    // LPFの比率
     var a: CGFloat = 0.9
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
@@ -268,6 +269,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     private func scrollRatioChange(_ ratioValue: CGFloat) -> CGFloat {
         var changeRatio: CGFloat = 0
+        // y = 1.5x^2
         changeRatio = 1.5 * ratioValue * ratioValue
 //        if ratioValue < 0.25 {
 //            changeRatio = ratioValue * 0.2
@@ -302,8 +304,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var after_cheek_right: Float = 0
     var before_cheek_left: Float = 0
     var after_cheek_left: Float = 0
-
-    // let firstConfig:[Float] = userDefaults.array(forKey: "firstConfig") as! [Float]
 
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
@@ -390,6 +390,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             let mouthLeftBS = faceAnchor.blendShapes[.mouthLeft] as! Float
             let mouthRightBS = faceAnchor.blendShapes[.mouthRight] as! Float
+            var mouthLeft: Float = 0
+            var mouthRight: Float = 0
             if callibrationUseBool == true {
                 let mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 print("mouthLeft", mouthLeft)
@@ -407,17 +409,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(mouthRight))
                 }
             } else {
-                if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
-                    if mouthLeft > 0.1 {
-                        // self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
-                        rightScrollMainThread(ratio: CGFloat(mouthLeft))
-                    }
+//                if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
+//                    if mouthLeft > 0.02 {
+//                        // self.scrollDownInMainThread(ratio: CGFloat(mouthLeft))
+//                        rightScrollMainThread(ratio: CGFloat(mouthLeft))
+//                    }
+//                }
+//                if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
+//                    if mouthRight > 0.02 {
+//                        // self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
+//                        leftScrollMainThread(ratio: CGFloat(mouthRight))
+//                    }
+//                }
+                mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
+                print("mouthLeft", mouthLeft)
+                mouthRight = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
+                print("mouthRight", mouthRight)
+                if mouthLeft < 0.1, mouthRight < 0.1 {
+                    return
                 }
-                if let mouthRight = faceAnchor.blendShapes[.mouthRight] as? Float {
-                    if mouthRight > 0.1 {
-                        // self.scrollUpInMainThread(ratio: CGFloat(mouthRight))
-                        leftScrollMainThread(ratio: CGFloat(mouthRight))
-                    }
+                print(mouthLeftBS, mouthRightBS)
+                if mouthLeft > mouthRight, mouthRightBS > 0.02 {
+                    leftScrollMainThread(ratio: CGFloat(mouthLeft))
+
+                } else if mouthRight > mouthLeft, mouthLeftBS > 0.02 {
+                    rightScrollMainThread(ratio: CGFloat(mouthRight))
                 }
             }
 
@@ -637,6 +653,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
 
+    // y = x/(max-min)+min/(min-max)
+    private func faceAURangeChange(faceAUVertex: Float, maxFaceAUVertex: Float, minFaceAUVertex: Float) -> Float {
+        let faceAUChangeValue = faceAUVertex / (maxFaceAUVertex - minFaceAUVertex) + minFaceAUVertex / (minFaceAUVertex - maxFaceAUVertex)
+        return faceAUChangeValue
+    }
+
     func createCSV(fileArrData: [Float]) {
         var fileStrData: String = ""
         let fileName = buttonLabel.titleLabel!.text! + "_" + inputMethodString + ".csv"
@@ -717,11 +739,5 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         documentInteraction = UIDocumentInteractionController(url: FilePath)
         documentInteraction.presentOpenInMenu(from: CGRect(x: 10, y: 10, width: 100, height: 50), in: view, animated: true)
         nowgoal_Data = []
-    }
-
-    // y = x/(max-min)+min/(min-max)
-    private func faceAURangeChange(faceAUVertex: Float, maxFaceAUVertex: Float, minFaceAUVertex: Float) -> Float {
-        let faceAUChangeValue = faceAUVertex / (maxFaceAUVertex - minFaceAUVertex) + minFaceAUVertex / (minFaceAUVertex - maxFaceAUVertex)
-        return faceAUChangeValue
     }
 }
