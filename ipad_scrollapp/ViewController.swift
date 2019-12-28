@@ -7,6 +7,7 @@
 //
 
 import ARKit
+import AudioToolbox
 import Foundation
 import Network
 import SceneKit
@@ -220,7 +221,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var lastValueR: CGFloat = 0
     // LPFの比率
-    var a: CGFloat = 0.9
+    var LPFRatio: CGFloat = 0.9
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -236,7 +237,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                let outPutLPF = self.a * self.lastValueR + (1 - self.a) * ratio
+                let outPutLPF = self.LPFRatio * self.lastValueR + (1 - self.LPFRatio) * ratio
                 self.lastValueR = outPutLPF
                 self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
@@ -260,7 +261,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                let outPutLPF = self.a * self.lastValueL + (1 - self.a) * ratio
+                let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
                 self.lastValueL = outPutLPF
                 self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
@@ -270,7 +271,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     private func scrollRatioChange(_ ratioValue: CGFloat) -> CGFloat {
         var changeRatio: CGFloat = 0
         // y = 1.5x^2
-        changeRatio = 1.5 * ratioValue * ratioValue
+        // changeRatio = 1.5 * ratioValue * ratioValue
+
+//        if ratioValue < 0.25 {
+//            changeRatio = ratioValue * 0.2
+//        } else if ratioValue > 0.55 {
+//            changeRatio = (ratioValue - 0.55) * 1.5 + 0.35
+//        } else {
+//            changeRatio = ratioValue - 0.25 + 0.05
+//        }
+
+        changeRatio = tanh((ratioValue * 3 - 1.5 - 0.2) * 3.14 / 2) * 0.7 + 0.7
+        print(changeRatio)
 //        if ratioValue < 0.25 {
 //            changeRatio = ratioValue * 0.2
 //        } else if ratioValue > 0.55 {
@@ -304,6 +316,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var after_cheek_right: Float = 0
     var before_cheek_left: Float = 0
     var after_cheek_left: Float = 0
+    let sound: SystemSoundID = 1013
 
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
@@ -342,6 +355,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.timeCount.value = Float(self.time)
                 if self.time > 50 {
                     print("クリア2")
+                    AudioServicesPlaySystemSound(self.sound)
                     if self.i < self.goalPositionInt.count - 1 {
                         self.i = self.i + 1
                         self.timeCount.value = 0
@@ -394,14 +408,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             var mouthRight: Float = 0
             if callibrationUseBool == true {
                 let mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
-                print("mouthLeft", mouthLeft)
+                // print("mouthLeft", mouthLeft)
                 let mouthRight = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
-                print("mouthRight", mouthRight)
+                // print("mouthRight", mouthRight)
 
                 if mouthLeft < 0.1, mouthRight < 0.1 {
                     return
                 }
-                print(mouthLeftBS, mouthRightBS)
+                // print(mouthLeftBS, mouthRightBS)
                 if mouthLeft > mouthRight, mouthRightBS > 0.02 {
                     leftScrollMainThread(ratio: CGFloat(mouthLeft))
 
@@ -422,13 +436,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //                    }
 //                }
                 mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
-                print("mouthLeft", mouthLeft)
+                // print("mouthLeft", mouthLeft)
                 mouthRight = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
-                print("mouthRight", mouthRight)
+                // print("mouthRight", mouthRight)
                 if mouthLeft < 0.1, mouthRight < 0.1 {
                     return
                 }
-                print(mouthLeftBS, mouthRightBS)
+                // print(mouthLeftBS, mouthRightBS)
                 if mouthLeft > mouthRight, mouthRightBS > 0.02 {
                     leftScrollMainThread(ratio: CGFloat(mouthLeft))
 
