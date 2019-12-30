@@ -280,9 +280,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //        } else {
 //            changeRatio = ratioValue - 0.25 + 0.05
 //        }
+        changeRatio = tanh((ratioValue * 3 - 1.5 - 0.8) * 3.14 / 2) * 0.7 + 0.7
+        // changeRatio = ratioValue
 
-        changeRatio = tanh((ratioValue * 3 - 1.5 - 0.2) * 3.14 / 2) * 0.7 + 0.7
-        print(changeRatio)
+//        if ratioValue < 0.55 {
+//            changeRatio = 0.10
+//        } else if ratioValue > 0.55 {
+//            changeRatio = 1
+//        }
+
+        print(changeRatio, "changeRatio")
 //        if ratioValue < 0.25 {
 //            changeRatio = ratioValue * 0.2
 //        } else if ratioValue > 0.55 {
