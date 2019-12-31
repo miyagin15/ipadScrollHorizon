@@ -536,9 +536,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(browDownLeft))
                 }
             } else {
-                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
+                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
                 // print("mouthLeft", mouthLeft)
-                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
+                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
                 // print("mouthRight", mouthRight)
                 if browInnerUp < 0.1, browDownLeft < 0.1 {
                     return
