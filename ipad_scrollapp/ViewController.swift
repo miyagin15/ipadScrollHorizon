@@ -423,6 +423,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     return
                 }
                 // print(mouthLeftBS, mouthRightBS)
+                // mouthRightが逆を表す
                 if mouthLeft > mouthRight, mouthRightBS > 0.02 {
                     leftScrollMainThread(ratio: CGFloat(mouthLeft))
 
