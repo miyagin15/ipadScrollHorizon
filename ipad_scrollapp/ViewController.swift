@@ -519,8 +519,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Brow", for: .normal)
             }
-            var browInnerUp:Float = 0
-            var browDownLeft:Float = 0
+            var browInnerUp: Float = 0
+            var browDownLeft: Float = 0
             if callibrationUseBool == true {
                 browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
                 print("browInnerUp", browInnerUp)
@@ -547,7 +547,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 if browInnerUp > browDownLeft {
                     leftScrollMainThread(ratio: CGFloat(browInnerUp))
 
-                } else if browDownLeft > browInnerUp{
+                } else if browDownLeft > browInnerUp {
                     rightScrollMainThread(ratio: CGFloat(browDownLeft))
                 }
 //                if let browInnerUp = faceAnchor.blendShapes[.browInnerUp] as? Float {
@@ -567,11 +567,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.buttonLabel.setTitle("mouthCentral", for: .normal)
             }
             // let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
-
+            var mouthUp: Float = 0
+            var mouthDown: Float = 0
             if callibrationUseBool == true {
-                let mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[2], minFaceAUVertex: callibrationOrdinalPosition[2])
+                mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[2], minFaceAUVertex: callibrationOrdinalPosition[2])
                 print("mouthUp", mouthUp)
-                let mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
+                mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
                 print("mouthDown", mouthDown)
 
                 if mouthUp < 0.1, mouthDown < 0.1 {
@@ -583,9 +584,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(mouthDown))
                 }
             } else {
-                let mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.03719348, minFaceAUVertex: -0.04107782)
+                mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.03719348, minFaceAUVertex: -0.04107782)
                 print("mouthUp", mouthUp)
-                let mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.04889179, minFaceAUVertex: -0.04107782)
+                mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.04889179, minFaceAUVertex: -0.04107782)
                 print("mouthDown", mouthDown)
 
                 if mouthUp < 0.1, mouthDown < 0.1 {
