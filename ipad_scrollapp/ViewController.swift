@@ -519,10 +519,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Brow", for: .normal)
             }
+            var browInnerUp:Float = 0
+            var browDownLeft:Float = 0
             if callibrationUseBool == true {
-                let browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
+                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
                 print("browInnerUp", browInnerUp)
-                let browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[7], minFaceAUVertex: callibrationOrdinalPosition[7])
+                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[7], minFaceAUVertex: callibrationOrdinalPosition[7])
                 print("browDownLeft", browDownLeft)
 
                 if browInnerUp < 0.1, browDownLeft < 0.1 {
@@ -534,17 +536,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(browDownLeft))
                 }
             } else {
-                if let browInnerUp = faceAnchor.blendShapes[.browInnerUp] as? Float {
-                    if browInnerUp > 0.5 {
-                        leftScrollMainThread(ratio: CGFloat(browInnerUp - 0.4) * 1.5)
-                    }
+                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
+                // print("mouthLeft", mouthLeft)
+                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
+                // print("mouthRight", mouthRight)
+                if browInnerUp < 0.1, browDownLeft < 0.1 {
+                    return
                 }
+                // print(mouthLeftBS, mouthRightBS)
+                if browInnerUp > browDownLeft {
+                    leftScrollMainThread(ratio: CGFloat(browInnerUp))
 
-                if let browDownLeft = faceAnchor.blendShapes[.browDownLeft] as? Float {
-                    if browDownLeft > 0.2 {
-                        rightScrollMainThread(ratio: CGFloat(browDownLeft))
-                    }
+                } else if browDownLeft > browInnerUp{
+                    rightScrollMainThread(ratio: CGFloat(browDownLeft))
                 }
+//                if let browInnerUp = faceAnchor.blendShapes[.browInnerUp] as? Float {
+//                    if browInnerUp > 0.5 {
+//                        leftScrollMainThread(ratio: CGFloat(browInnerUp - 0.4) * 1.5)
+//                    }
+//                }
+//
+//                if let browDownLeft = faceAnchor.blendShapes[.browDownLeft] as? Float {
+//                    if browDownLeft > 0.2 {
+//                        rightScrollMainThread(ratio: CGFloat(browDownLeft))
+//                    }
+//                }
             }
         case 3:
             DispatchQueue.main.async {
