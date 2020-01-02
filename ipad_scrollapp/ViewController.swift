@@ -46,7 +46,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         time = 0
         goalLabel.text = String(goalPositionInt[i])
     }
-
+    // 下を向いている度合いを示す
     @IBOutlet var orietationLabel: UILabel!
     @IBAction func toConfig(_: Any) {
         let secondViewController = storyboard?.instantiateViewController(withIdentifier: "CalibrationViewController") as! CalibrationViewController
