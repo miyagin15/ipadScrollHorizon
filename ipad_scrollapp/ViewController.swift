@@ -418,9 +418,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             var mouthLeft: Float = 0
             var mouthRight: Float = 0
             if callibrationUseBool == true {
-                let mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
+                let mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 // print("mouthLeft", mouthLeft)
-                let mouthRight = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
+                let mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
                 // print("mouthRight", mouthRight)
 
                 if mouthLeft < 0.1, mouthRight < 0.1 {
@@ -447,9 +447,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //                        leftScrollMainThread(ratio: CGFloat(mouthRight))
 //                    }
 //                }
-                mouthLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
+                mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
                 // print("mouthLeft", mouthLeft)
-                mouthRight = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
+                mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
                 // print("mouthRight", mouthRight)
                 if mouthLeft < 0.1, mouthRight < 0.1 {
                     return
@@ -526,9 +526,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             var browInnerUp: Float = 0
             var browDownLeft: Float = 0
             if callibrationUseBool == true {
-                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
+                browInnerUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
                 print("browInnerUp", browInnerUp)
-                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[7], minFaceAUVertex: callibrationOrdinalPosition[7])
+                browDownLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[7], minFaceAUVertex: callibrationOrdinalPosition[7])
                 print("browDownLeft", browDownLeft)
 
                 if browInnerUp < 0.1, browDownLeft < 0.1 {
@@ -540,9 +540,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(browDownLeft))
                 }
             } else {
-                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.053307146, minFaceAUVertex: 0.04667869)
+                browInnerUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.053307146, minFaceAUVertex: 0.04667869)
                 // print("mouthLeft", mouthLeft)
-                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.043554213, minFaceAUVertex: 0.04667869)
+                browDownLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.043554213, minFaceAUVertex: 0.04667869)
                 print("browInnerUp:", browInnerUp, ",browDown:", browDownLeft)
                 if browInnerUp < 0.1, browDownLeft < 0.1 {
                     return
@@ -574,9 +574,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             var mouthUp: Float = 0
             var mouthDown: Float = 0
             if callibrationUseBool == true {
-                mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[2], minFaceAUVertex: callibrationOrdinalPosition[2])
+                mouthUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[2], minFaceAUVertex: callibrationOrdinalPosition[2])
                 print("mouthUp", mouthUp)
-                mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
+                mouthDown = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
                 print("mouthDown", mouthDown)
 
                 if mouthUp < 0.1, mouthDown < 0.1 {
@@ -588,9 +588,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(mouthDown))
                 }
             } else {
-                mouthUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.03719348, minFaceAUVertex: -0.04107782)
+                mouthUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.03719348, minFaceAUVertex: -0.04107782)
                 print("mouthUp", mouthUp)
-                mouthDown = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.04889179, minFaceAUVertex: -0.04107782)
+                mouthDown = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.04889179, minFaceAUVertex: -0.04107782)
                 print("mouthDown", mouthDown)
 
                 if mouthUp < 0.1, mouthDown < 0.1 {
@@ -606,9 +606,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("cheekPuff", for: .normal)
             }
-            let cheekR = faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[697][2] + faceAnchor.geometry.vertices[826][2] + faceAnchor.geometry.vertices[839][2]) / 3, maxFaceAUVertex: callibrationPosition[4], minFaceAUVertex: callibrationOrdinalPosition[4])
+            let cheekR = Utility.faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[697][2] + faceAnchor.geometry.vertices[826][2] + faceAnchor.geometry.vertices[839][2]) / 3, maxFaceAUVertex: callibrationPosition[4], minFaceAUVertex: callibrationOrdinalPosition[4])
             print("cheekR", cheekR)
-            let cheekL = faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[245][2] + faceAnchor.geometry.vertices[397][2] + faceAnchor.geometry.vertices[172][2]) / 3, maxFaceAUVertex: callibrationPosition[5], minFaceAUVertex: callibrationOrdinalPosition[5])
+            let cheekL = Utility.faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[245][2] + faceAnchor.geometry.vertices[397][2] + faceAnchor.geometry.vertices[172][2]) / 3, maxFaceAUVertex: callibrationPosition[5], minFaceAUVertex: callibrationOrdinalPosition[5])
             print("cheekL", cheekL)
 
             if cheekR < 0.1, cheekL < 0.1 {
@@ -626,9 +626,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             let mouthRollUpper = faceAnchor.blendShapes[.mouthRollUpper] as! Float
             let mouthRollLower = faceAnchor.blendShapes[.mouthRollLower] as! Float
             if callibrationUseBool == true {
-                let mouthRollUp = faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
+                let mouthRollUp = Utility.faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
                 print("mouthRollUp", mouthRollUp)
-                let mouthRollDown = faceAURangeChange(faceAUVertex: mouthRollLower, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
+                let mouthRollDown = Utility.faceAURangeChange(faceAUVertex: mouthRollLower, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
                 print("mouthRollDown", mouthRollDown)
 
                 if mouthRollUp < 0.1, mouthRollDown < 0.1 {
@@ -656,9 +656,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
             let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
             if callibrationUseBool == true {
-                let cheekR = faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
                 print("cheekR", cheekR)
-                let cheekL = faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
                 print("cheekL", cheekL)
 
                 if cheekR < 0.1, cheekL < 0.1 {
@@ -694,12 +694,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //                }
 //            }
         }
-    }
-
-    // y = x/(max-min)+min/(min-max)
-    private func faceAURangeChange(faceAUVertex: Float, maxFaceAUVertex: Float, minFaceAUVertex: Float) -> Float {
-        let faceAUChangeValue = faceAUVertex / (maxFaceAUVertex - minFaceAUVertex) + minFaceAUVertex / (minFaceAUVertex - maxFaceAUVertex)
-        return faceAUChangeValue
     }
 
     func createCSV(fileArrData: [Float]) {
