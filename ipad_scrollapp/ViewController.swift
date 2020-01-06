@@ -152,10 +152,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 print("no value", x)
             }
         }
-        print("口右:638", userDefaults.string(forKey: callibrationArr[0])!)
-        // 0:口左、1:口右
-//        callibrationOrdinalPosition[0]=userDefaults.float(forKey: "普通"+callibrationArr[0])
-//        callibrationOrdinalPosition[1]=userDefaults.float(forKey: "普通"+callibrationArr[1])
         for x in 0 ... 11 {
             callibrationOrdinalPosition[x] = userDefaults.float(forKey: "普通" + callibrationArr[x])
         }
@@ -163,29 +159,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // scrolViewを作成する
     private func createScrollVIew() {
-//        // CollectionViewのレイアウトを生成.
-//        let layout = UICollectionViewFlowLayout()
-//        // Cell一つ一つの大きさ.
-//        layout.itemSize = CGSize(width: 100, height: 600)
-//        layout.minimumLineSpacing = 0.1
-//        // Cellのマージン.
-//        // layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-//        layout.scrollDirection = .horizontal
-//
-//        // layout.scrollDirection = .vertical
-//
-//        // セクション毎のヘッダーサイズ.
-//        // layout.headerReferenceSize = CGSize(width:10,height:30)
-//        // CollectionViewを生成.
-//        // myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-//        myCollectionView = UICollectionView(frame: CGRect(x: 0, y: 150, width: 600, height: 600),
-//                                            collectionViewLayout: layout)
-//        myCollectionView.backgroundColor = UIColor.white
-//        // Cellに使われるクラスを登録.
-//        myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
-//        myCollectionView.delegate = self
-//        myCollectionView.dataSource = self
-//        myCollectionView.contentSize = CGSize(width: 1800, height: 600)
         myCollectionView = Utility.createScrollView(directionString: "horizonal")
         myCollectionView.delegate = self
         myCollectionView.dataSource = self
@@ -203,11 +176,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
 
     private func createGoalView() {
-        let goalView = UIView()
-        view.addSubview(goalView)
-        goalView.frame = CGRect(x: 200, y: 150, width: 150, height: 700)
-        goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
-        view.addSubview(goalView)
+        view.addSubview(Utility.createGoalView(directionString: "horizonal")
+        )
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -62,4 +62,15 @@ class Utility {
         }
         return myCollectionView
     }
+
+    class func createGoalView(directionString: String) -> UIView {
+        let goalView = UIView()
+        if directionString == "horizonal" {
+            goalView.frame = CGRect(x: 200, y: 150, width: 150, height: 700)
+        } else if directionString == "vertical" {
+            goalView.frame = CGRect(x: 0, y: 350, width: 700, height: 150)
+        }
+        goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
+        return goalView
+    }
 }
