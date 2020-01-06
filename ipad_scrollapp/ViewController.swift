@@ -109,7 +109,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
     // 初期設定のためのMAXの座標を配列を保存する
     var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-    // 初期設定のMINの普通の座標を保存する
+    // 初期設定のMINの普通の状態を保存する
     var callibrationOrdinalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var documentInteraction: UIDocumentInteractionController!
 
