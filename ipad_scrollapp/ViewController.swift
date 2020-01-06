@@ -214,8 +214,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else if self.inputMethodString == "position" {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                let outPutLPF = self.LPFRatio * self.lastValueR + (1 - self.LPFRatio) * ratio
-                self.lastValueR = outPutLPF
                 self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
