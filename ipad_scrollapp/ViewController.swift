@@ -223,7 +223,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var lastValueR: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.9
+    var LPFRatio: CGFloat = 0.8
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -232,12 +232,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             self.functionalExpression.value = Float(ratio)
             self.functionalExpressionLabel.text = String(Float(ratio))
+            let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
+            self.lastValueL = outPutLPF
+            let changedRatio = self.scrollRatioChange(outPutLPF)
             if self.inputMethodString == "velocity" {
-                let ratio = self.scrollRatioChange(ratio)
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * ratio * CGFloat(self.ratioChange), y: 0)
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * changedRatio * CGFloat(self.ratioChange), y: 0)
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else {
+            } else if self.inputMethodString == "position" {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                 let outPutLPF = self.LPFRatio * self.lastValueR + (1 - self.LPFRatio) * ratio
                 self.lastValueR = outPutLPF
@@ -256,15 +258,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             self.functionalExpression.value = -Float(ratio)
             self.functionalExpressionLabel.text = String(Float(-ratio))
+            let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
+            self.lastValueL = outPutLPF
+            let changedRatio = self.scrollRatioChange(outPutLPF)
             if self.inputMethodString == "velocity" {
-                let ratio = self.scrollRatioChange(ratio)
-                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * ratio * CGFloat(self.ratioChange), y: 0)
+                self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * changedRatio * CGFloat(self.ratioChange), y: 0)
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
-            } else {
+            } else if self.inputMethodString == "position" {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
-                self.lastValueL = outPutLPF
                 self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
         }
