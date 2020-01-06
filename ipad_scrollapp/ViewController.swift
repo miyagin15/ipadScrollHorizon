@@ -46,6 +46,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         time = 0
         goalLabel.text = String(goalPositionInt[i])
     }
+
     // 下を向いている度合いを示す
     @IBOutlet var orietationLabel: UILabel!
     @IBAction func toConfig(_: Any) {
@@ -537,10 +538,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     rightScrollMainThread(ratio: CGFloat(browDownLeft))
                 }
             } else {
-                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
+                browInnerUp = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.053307146, minFaceAUVertex: 0.04667869)
                 // print("mouthLeft", mouthLeft)
-                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
-                // print("mouthRight", mouthRight)
+                browDownLeft = faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.043554213, minFaceAUVertex: 0.04667869)
+                print("browInnerUp:", browInnerUp, ",browDown:", browDownLeft)
                 if browInnerUp < 0.1, browDownLeft < 0.1 {
                     return
                 }
