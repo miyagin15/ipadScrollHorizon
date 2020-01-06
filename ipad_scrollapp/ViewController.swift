@@ -163,29 +163,32 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // scrolViewを作成する
     private func createScrollVIew() {
-        // CollectionViewのレイアウトを生成.
-        let layout = UICollectionViewFlowLayout()
-        // Cell一つ一つの大きさ.
-        layout.itemSize = CGSize(width: 100, height: 600)
-        layout.minimumLineSpacing = 0.1
-        // Cellのマージン.
-        // layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
-        layout.scrollDirection = .horizontal
-
-        // layout.scrollDirection = .vertical
-
-        // セクション毎のヘッダーサイズ.
-        // layout.headerReferenceSize = CGSize(width:10,height:30)
-        // CollectionViewを生成.
-        // myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-        myCollectionView = UICollectionView(frame: CGRect(x: 0, y: 150, width: 600, height: 600),
-                                            collectionViewLayout: layout)
-        myCollectionView.backgroundColor = UIColor.white
-        // Cellに使われるクラスを登録.
-        myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
+//        // CollectionViewのレイアウトを生成.
+//        let layout = UICollectionViewFlowLayout()
+//        // Cell一つ一つの大きさ.
+//        layout.itemSize = CGSize(width: 100, height: 600)
+//        layout.minimumLineSpacing = 0.1
+//        // Cellのマージン.
+//        // layout.sectionInset = UIEdgeInsets(top: 1, left: 1, bottom: 1, right: 1)
+//        layout.scrollDirection = .horizontal
+//
+//        // layout.scrollDirection = .vertical
+//
+//        // セクション毎のヘッダーサイズ.
+//        // layout.headerReferenceSize = CGSize(width:10,height:30)
+//        // CollectionViewを生成.
+//        // myCollectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
+//        myCollectionView = UICollectionView(frame: CGRect(x: 0, y: 150, width: 600, height: 600),
+//                                            collectionViewLayout: layout)
+//        myCollectionView.backgroundColor = UIColor.white
+//        // Cellに使われるクラスを登録.
+//        myCollectionView.register(CollectionViewCell.self, forCellWithReuseIdentifier: "MyCell")
+//        myCollectionView.delegate = self
+//        myCollectionView.dataSource = self
+//        myCollectionView.contentSize = CGSize(width: 1800, height: 600)
+        myCollectionView = Utility.createScrollView(directionString: "horizonal")
         myCollectionView.delegate = self
         myCollectionView.dataSource = self
-        myCollectionView.contentSize = CGSize(width: 1800, height: 600)
         view.addSubview(myCollectionView)
     }
 
