@@ -769,62 +769,9 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     }
 
     func createCSV(fileArrData: [Float]) {
-        var fileStrData: String = ""
-        let fileName = buttonLabel.titleLabel!.text! + "_" + inputMethodString + ".csv"
-
-        // キャリブレーション座標のラベル追加
-        for x in 0 ... 11 {
-            if x != 11 {
-                fileStrData += String(callibrationArr[x]) + ","
-            } else {
-                fileStrData += String(callibrationArr[x]) + "\n"
-            }
-        }
-        // キャリブレーションMAX座標の値
-        for x in 0 ... 11 {
-            if x != 11 {
-                if let value = userDefaults.string(forKey: callibrationArr[x]) {
-                    fileStrData += String(value) + ","
-                } else {
-                    print("no value", x)
-                }
-            } else {
-                if let value = userDefaults.string(forKey: callibrationArr[x]) {
-                    fileStrData += String(value) + "\n"
-                } else {
-                    print("no value", x)
-                }
-            }
-        }
-        // 普通の時のラベル
-        for x in 0 ... 11 {
-            if x != 11 {
-                fileStrData += String("普通" + callibrationArr[x]) + ","
-            } else {
-                fileStrData += String("普通" + callibrationArr[x]) + "\n"
-            }
-        }
-        // 普通の時の座標
-        for x in 0 ... 11 {
-            callibrationOrdinalPosition[x] = userDefaults.float(forKey: "普通" + callibrationArr[x])
-            if x != 11 {
-                fileStrData += String(callibrationOrdinalPosition[x]) + ","
-            } else {
-                fileStrData += String(callibrationOrdinalPosition[x]) + "\n"
-            }
-        }
-
-        fileStrData += "position,goalPosition\n"
-        for i in 1 ... fileArrData.count {
-            if i % 2 != 0 {
-                fileStrData += String(fileArrData[i - 1]) + ","
-            }
-            if i % 2 == 0 {
-                fileStrData += String(fileArrData[i - 1]) + "\n"
-            }
-        }
-        print(fileStrData)
-
+        let CSVFileData = Utility.createCSVFileData(fileArrData: fileArrData, facailAU: buttonLabel.titleLabel!.text!, direction: "vertical", inputMethod: inputMethodString)
+        let fileName = CSVFileData.fileName
+        let fileStrData = CSVFileData.fileData
         // DocumentディレクトリのfileURLを取得
         let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
 
@@ -841,28 +788,6 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
         documentInteraction = UIDocumentInteractionController(url: FilePath)
         documentInteraction.presentOpenInMenu(from: CGRect(x: 10, y: 10, width: 100, height: 50), in: view, animated: true)
-
-        // documentInteraction.url = FilePath
-
-//        text形式で送信
-//        let objectsToShare = fileStrData as Any
-//        let activityVC = UIActivityViewController(activityItems: [objectsToShare], applicationActivities: nil)
-//        activityVC.title = "data.csv"
-//        if let wPPC = activityVC.popoverPresentationController {
-//            wPPC.sourceView = self.view
-//        }
-//        present( activityVC, animated: true, completion: nil )
-        // self.documentInteraction.presentOpenInMenu(from: self.view.bounds, in: self.view, animated: true)
-
-//        if !(documentInteraction?.presentOpenInMenu(from: self.view.frame, in: self.view, animated: true))!
-//        {
-//            print("3")
-//            // 送信できるアプリが見つからなかった時の処理
-//            let alert = UIAlertController(title: "送信失敗", message: "ファイルを送れるアプリが見つかりません", preferredStyle: .alert)
-//            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-//            self.present(alert, animated: true, completion: nil)
-//        }
-
         nowgoal_Data = []
     }
 }

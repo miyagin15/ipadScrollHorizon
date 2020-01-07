@@ -8,8 +8,12 @@
 
 import Foundation
 import UIKit
+
 class Utility {
     static let goalPositionInt: [Int] = [10, 11, 12, 11, 10, 20, 50, 20, 10]
+    static let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
+    // 初期設定のMINの普通の状態を保存する
+    static var callibrationOrdinalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     // y = x/(max-min)+min/(min-max)
     class func faceAURangeChange(faceAUVertex: Float, maxFaceAUVertex: Float, minFaceAUVertex: Float) -> Float {
         let faceAUChangeValue = faceAUVertex / (maxFaceAUVertex - minFaceAUVertex) + minFaceAUVertex / (minFaceAUVertex - maxFaceAUVertex)
@@ -73,5 +77,70 @@ class Utility {
         }
         goalView.backgroundColor = UIColor(red: 0, green: 0.3, blue: 0.8, alpha: 0.5)
         return goalView
+    }
+
+    class func createCSVFileData(fileArrData: [Float], facailAU: String, direction: String, inputMethod: String) -> (fileName: String, fileData: String) {
+        var fileStrData: String = ""
+        let fileName = facailAU + "_" + direction + "_" + inputMethod + ".csv"
+
+        // StringのCSV用データを準備
+        // print(fileArrData)
+        if fileArrData.count == 0 {
+            return ("0", "0")
+        }
+        // キャリブレーション座標のラベル追加
+        for x in 0 ... 11 {
+            if x != 11 {
+                fileStrData += String(callibrationArr[x]) + ","
+            } else {
+                fileStrData += String(callibrationArr[x]) + "\n"
+            }
+        }
+        let userDefaults = UserDefaults.standard
+        // キャリブレーションMAX座標の値
+        for x in 0 ... 11 {
+            if x != 11 {
+                if let value = userDefaults.string(forKey: callibrationArr[x]) {
+                    fileStrData += String(value) + ","
+                } else {
+                    print("no value", x)
+                }
+            } else {
+                if let value = userDefaults.string(forKey: callibrationArr[x]) {
+                    fileStrData += String(value) + "\n"
+                } else {
+                    print("no value", x)
+                }
+            }
+        }
+        // 普通の時のラベル
+        for x in 0 ... 11 {
+            if x != 11 {
+                fileStrData += String("普通" + callibrationArr[x]) + ","
+            } else {
+                fileStrData += String("普通" + callibrationArr[x]) + "\n"
+            }
+        }
+        // 普通の時の座標
+        for x in 0 ... 11 {
+            callibrationOrdinalPosition[x] = userDefaults.float(forKey: "普通" + callibrationArr[x])
+            if x != 11 {
+                fileStrData += String(callibrationOrdinalPosition[x]) + ","
+            } else {
+                fileStrData += String(callibrationOrdinalPosition[x]) + "\n"
+            }
+        }
+
+        fileStrData += "position,goalPosition\n"
+        for i in 1 ... fileArrData.count {
+            if i % 2 != 0 {
+                fileStrData += String(fileArrData[i - 1]) + ","
+            }
+            if i % 2 == 0 {
+                fileStrData += String(fileArrData[i - 1]) + "\n"
+            }
+        }
+        // print(fileStrData)
+        return (fileName, fileStrData)
     }
 }

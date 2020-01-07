@@ -669,68 +669,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     }
 
     func createCSV(fileArrData: [Float]) {
-        var fileStrData: String = ""
-        let fileName = buttonLabel.titleLabel!.text! + "_" + inputMethodString + ".csv"
-
-        // StringのCSV用データを準備
-        // print(fileArrData)
-        if fileArrData.count == 0 {
-            goalLabel.text = "データがありません。"
-            return
-        }
-        // キャリブレーション座標のラベル追加
-        for x in 0 ... 11 {
-            if x != 11 {
-                fileStrData += String(callibrationArr[x]) + ","
-            } else {
-                fileStrData += String(callibrationArr[x]) + "\n"
-            }
-        }
-        // キャリブレーションMAX座標の値
-        for x in 0 ... 11 {
-            if x != 11 {
-                if let value = userDefaults.string(forKey: callibrationArr[x]) {
-                    fileStrData += String(value) + ","
-                } else {
-                    print("no value", x)
-                }
-            } else {
-                if let value = userDefaults.string(forKey: callibrationArr[x]) {
-                    fileStrData += String(value) + "\n"
-                } else {
-                    print("no value", x)
-                }
-            }
-        }
-        // 普通の時のラベル
-        for x in 0 ... 11 {
-            if x != 11 {
-                fileStrData += String("普通" + callibrationArr[x]) + ","
-            } else {
-                fileStrData += String("普通" + callibrationArr[x]) + "\n"
-            }
-        }
-        // 普通の時の座標
-        for x in 0 ... 11 {
-            callibrationOrdinalPosition[x] = userDefaults.float(forKey: "普通" + callibrationArr[x])
-            if x != 11 {
-                fileStrData += String(callibrationOrdinalPosition[x]) + ","
-            } else {
-                fileStrData += String(callibrationOrdinalPosition[x]) + "\n"
-            }
-        }
-
-        fileStrData += "position,goalPosition\n"
-        for i in 1 ... fileArrData.count {
-            if i % 2 != 0 {
-                fileStrData += String(fileArrData[i - 1]) + ","
-            }
-            if i % 2 == 0 {
-                fileStrData += String(fileArrData[i - 1]) + "\n"
-            }
-        }
-        // print(fileStrData)
-
+        let CSVFileData = Utility.createCSVFileData(fileArrData: fileArrData, facailAU: buttonLabel.titleLabel!.text!, direction: "horizonal", inputMethod: inputMethodString)
+        let fileName = CSVFileData.fileName
+        let fileStrData = CSVFileData.fileData
         // DocumentディレクトリのfileURLを取得
         let documentDirectoryFileURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).last!
 
