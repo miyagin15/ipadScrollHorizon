@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 class Utility {
+    static let goalPositionInt: [Int] = [10, 11, 12, 11, 10, 20, 50, 20, 10]
     // y = x/(max-min)+min/(min-max)
     class func faceAURangeChange(faceAUVertex: Float, maxFaceAUVertex: Float, minFaceAUVertex: Float) -> Float {
         let faceAUChangeValue = faceAUVertex / (maxFaceAUVertex - minFaceAUVertex) + minFaceAUVertex / (minFaceAUVertex - maxFaceAUVertex)

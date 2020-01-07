@@ -116,6 +116,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        goalPositionInt = Utility.goalPositionInt
         createScrollVIew()
         decideGoalpositionTimeCount()
         createGoalView()
