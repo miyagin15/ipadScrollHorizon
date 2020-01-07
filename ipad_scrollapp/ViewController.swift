@@ -93,6 +93,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // 値を端末に保存するために宣言
     let userDefaults = UserDefaults.standard
+
+    @IBAction func startButton(_: Any) {
+        nowgoal_Data = []
+        myCollectionView.contentOffset.x = 0
+        userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+    }
+
     private let cellIdentifier = "cell"
     // Trackingfaceを使うための設定
     private let defaultConfiguration: ARFaceTrackingConfiguration = {
@@ -367,11 +374,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
                 self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
                 self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
-            }
-            if Float(self.myCollectionViewPosition) < -160 {
-                self.goalLabel.text = "5.0"
-                self.nowgoal_Data = []
-                // self.tapData = []
             }
             // print(Float(self.tableViewPosition))
             // データをパソコンに送る(今の場所と目標地点)
