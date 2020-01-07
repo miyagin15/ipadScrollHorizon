@@ -91,6 +91,13 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     // 値を端末に保存するために宣言
     let userDefaults = UserDefaults.standard
+
+    @IBAction func startButton(_: Any) {
+        nowgoal_Data = []
+        myCollectionView.contentOffset.y = 0
+        userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+    }
+
     private let cellIdentifier = "cell"
     // Trackingfaceを使うための設定
     private let defaultConfiguration: ARFaceTrackingConfiguration = {
