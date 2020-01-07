@@ -444,11 +444,6 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
                 self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
             }
-            if Float(self.myCollectionViewPosition) < -160 {
-                self.goalLabel.text = "5.0"
-                self.nowgoal_Data = []
-                // self.tapData = []
-            }
             // print(Float(self.tableViewPosition))
             // データをパソコンに送る(今の場所と目標地点)
             // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])

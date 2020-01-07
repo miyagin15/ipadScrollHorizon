@@ -335,6 +335,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             print("うなづき")
             return
         }
+
         let goal = goalPosition[self.i]
         DispatchQueue.main.async {
             self.myCollectionViewPosition = self.myCollectionView.contentOffset.x
@@ -442,57 +443,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.buttonLabel.setTitle("Hands", for: .normal)
             }
 
-            // 頰を動かす。口角のz座標
-//            before_cheek_right = after_cheek_right
-//            before_cheek_left = after_cheek_left
-//            after_cheek_right = faceAnchor.geometry.vertices[636][2]+faceAnchor.geometry.vertices[678][2]+faceAnchor.geometry.vertices[635][2]
-//
-//
-//            after_cheek_left = faceAnchor.geometry.vertices[405][2]+faceAnchor.geometry.vertices[243][2]+faceAnchor.geometry.vertices[245][2]
-//            print(after_cheek_right)
-//            print(after_cheek_left)
-
-            /*
-             print((after_cheek_right-before_cheek_right)/before_cheek_right)
-             print(after_cheek_right)
-             print(before_cheek_right)
-             */
-            // print(abs((after_cheek_right-before_cheek_right) / before_cheek_right ))
-
-//            if abs((after_cheek_right-before_cheek_right) / before_cheek_right )>0.003{
-//                print("右の頬move")
-//                self.scrollDownInMainThread(ratio: CGFloat(0.8))
-//            }
-//
-//            if abs(after_cheek_left)>0.052{
-//                print("左の頬move")
-//                self.scrollDownInMainThread(ratio: CGFloat(0.8))
-//            }
-
-            // 動かす部分
-//            if abs(after_cheek_right)>0.152{
-//                print("右の頬move")
-//                self.scrollDownInMainThread(ratio: CGFloat(0.8))
-//            }
-//            if abs(after_cheek_left)>0.152{
-//                print("左の頬move")
-//                self.scrollUpInMainThread(ratio: CGFloat(0.8))
-//            }
-//
-
-//            if let cheek_right = faceAnchor.geometry.vertices[187] as? simd_float3{
-//                print(cheek_right)
-//            }
-//            if let cheek_leght = faceAnchor.geometry.vertices[676] as? simd_float3{
-//                print(cheek_leght)
-//            }
-        //        case (1):
-        //            buttonLabel.setTitle("Eye", for: .normal)
-        //            if let mouthLeft = faceAnchor.blendShapes[.eyeLookDownLeft] as? Float {
-        //                if mouthLeft < 0.2 {
-        //                    self.scrollDownInMainThread(ratio: CGFloat(1/(mouthLeft+0.1)/20))
-        //                }
-        //            }
         case 2:
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Brow", for: .normal)
