@@ -17,7 +17,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var myCollectionView: UICollectionView!
 
     var changeNum = 0
-    var callibrationUseBool = false
+    var callibrationUseBool = true
 
     var inputMethodString = "velocity"
 
@@ -405,13 +405,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            if mouthLeft < 0.1, mouthRight < 0.1 {
 //                return
 //            }
-            if mouthLeft > mouthRight, mouthRightBS > 0.0 {
+            if mouthLeft > mouthRight, mouthRightBS > 0.01 {
                 leftScrollMainThread(ratio: CGFloat(mouthLeft))
 
-            } else if mouthRight > mouthLeft, mouthLeftBS > 0.0 {
+            } else if mouthRight > mouthLeft, mouthLeftBS > 0.01 {
                 rightScrollMainThread(ratio: CGFloat(mouthRight))
             }
-
+            
+            
         case 1:
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Hands", for: .normal)
