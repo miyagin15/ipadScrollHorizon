@@ -94,6 +94,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     @IBAction func startButton(_: Any) {
         nowgoal_Data = []
+        i = 0
         myCollectionView.contentOffset.y = 0
         userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
     }
@@ -498,10 +499,10 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                     return
                 }
                 // print(mouthLeftBS, mouthRightBS)
-                if mouthLeft > mouthRight, mouthRightBS > 0.02 {
+                if mouthLeft > mouthRight, mouthRightBS > 0.01 {
                     scrollUpInMainThread(ratio: CGFloat(mouthLeft))
 
-                } else if mouthRight > mouthLeft, mouthLeftBS > 0.02 {
+                } else if mouthRight > mouthLeft, mouthLeftBS > 0.01 {
                     scrollDownInMainThread(ratio: CGFloat(mouthRight))
                 }
             }
