@@ -9,30 +9,26 @@
 import UIKit
 
 class CollectionViewCell: UICollectionViewCell {
-
     var textLabel: UILabel?
-    //var goalView = UIView()
+    // var goalView = UIView()
 
     required init(coder aDecoder: NSCoder) {
-            super.init(coder: aDecoder)!
+        super.init(coder: aDecoder)!
     }
 
     override init(frame: CGRect) {
         super.init(frame: frame)
 
         // UILabelを生成.
-        textLabel = UILabel(frame: CGRect(x:0, y:0, width:frame.width, height:frame.height))
+        textLabel = UILabel(frame: CGRect(x: 0, y: 0, width: frame.width, height: frame.height))
         textLabel?.text = "nil"
         layer.borderColor = UIColor.red.cgColor
         layer.borderWidth = 1
-        
+
         textLabel?.font = UIFont.systemFont(ofSize: 36)
         textLabel?.backgroundColor = UIColor.white
         textLabel?.textAlignment = NSTextAlignment.center
 
-        self.contentView.addSubview(textLabel!)
-
+        contentView.addSubview(textLabel!)
     }
-
 }
-

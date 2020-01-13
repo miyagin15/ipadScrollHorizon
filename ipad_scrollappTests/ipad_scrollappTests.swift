@@ -6,11 +6,10 @@
 //  Copyright © 2019 com.miyagin.ipad_scroll. All rights reserved.
 //
 
-import XCTest
 @testable import ipad_scrollapp
+import XCTest
 
 class ipad_scrollappTests: XCTestCase {
-
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
     }
@@ -26,9 +25,8 @@ class ipad_scrollappTests: XCTestCase {
 
     func testPerformanceExample() {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }
-
 }
