@@ -374,34 +374,48 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             print(distanceAtXYPoint)
             // print(floatBuffer[Int(faceRightCheekInscreenPos.x * faceRightCheekInscreenPos.y / 4)])
             // print(floatBuffer[Int(faceLeftCheekInscreenPos.x * faceLeftCheekInscreenPos.y / 4)])
-            for yMap in 0 ..< height {
-                let rowData = CVPixelBufferGetBaseAddress(depthDataMap!)! + yMap * CVPixelBufferGetBytesPerRow(depthDataMap!)
-                let data = UnsafeMutableBufferPointer<Float32>(start: rowData.assumingMemoryBound(to: Float32.self), count: width)
-                for index in 0 ..< width {
-                    let depth = data[index]
-                    print("yMap:", yMap, "width:", index, "depth:", data[index])
-                    if depth.isNaN {
-                        data[index] = 1.0
-                    } else if depth <= 1.0 {
-                        // 前景
-                        data[index] = 1.0
-                    } else {
-                        // 背景
-                        data[index] = 0.0
-                    }
-                }
-            }
+
+            // うまくdepthが取れた
+//            for yMap in 0 ..< height {
+//                let rowData = CVPixelBufferGetBaseAddress(depthDataMap!)! + yMap * CVPixelBufferGetBytesPerRow(depthDataMap!)
+//                let data = UnsafeMutableBufferPointer<Float32>(start: rowData.assumingMemoryBound(to: Float32.self), count: width)
+//                for index in 0 ..< width {
+//                    let depth = data[index]
+//                    print("yMap:", yMap, "width:", index, "depth:", data[index])
+//                    if depth.isNaN {
+//                        data[index] = 1.0
+//                    } else if depth <= 1.0 {
+//                        // 前景
+//                        data[index] = 1.0
+//                    } else {
+//                        // 背景
+//                        data[index] = 0.0
+//                    }
+//                }
+//            }
+
+            print(Int(faceNoseInscreenPos.y), Int(faceNoseInscreenPos.x))
+            let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+            let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
+            print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+            let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+            let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
+
+            // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+            print("Left:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceLeftCheekInscreenPos.x / 2)])
+            print("Right:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceRightCheekInscreenPos.x / 2)])
             CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
             return
         }
-        // print(faceAnchor.transform.columns.3)
+        return
+            // print(faceAnchor.transform.columns.3)
 
-        //  認識していたら青色に
-        DispatchQueue.main.async {
-            // print(self.tableView.contentOffset.y)
-            self.inputClutchView.backgroundColor = UIColor.red
-            self.tracking.backgroundColor = UIColor.blue
-        }
+            //  認識していたら青色に
+            DispatchQueue.main.async {
+                // print(self.tableView.contentOffset.y)
+                self.inputClutchView.backgroundColor = UIColor.red
+                self.tracking.backgroundColor = UIColor.blue
+            }
         // 顔のxyz位置
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
         // 下を向いている時の処理
