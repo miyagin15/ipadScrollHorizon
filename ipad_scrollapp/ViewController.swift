@@ -308,23 +308,46 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var before_cheek_left: Float = 0
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
+
+    var faceNoseInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceNoseInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceLeftCheekInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceLeftCheekInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceRightCheekInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceRightCheekInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+
+    var distanceAtXYPoint: Float32 = Float32(0)
+
     var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
+        // 左447 右600 鼻８
+        faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
+        faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
 
-        let faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
-        let faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
-        DispatchQueue.main.async {
-            let TestView = UIView(frame: CGRect(x: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y), width: 10, height: 10))
-            let bgColor = UIColor.blue
-            TestView.backgroundColor = bgColor
-            self.view.addSubview(TestView)
-            // print(CGFloat(faceNoseInscreenPos.x), CGFloat(faceNoseInscreenPos.y))
-            // self.transTrans = CGAffineTransform(translationX: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y))
-            self.tracking.transform = self.transTrans
-        }
+        faceLeftCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[449][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[449][1], faceAnchor.transform.columns.3.z)
+        faceLeftCheekInscreenPos = sceneView.projectPoint(faceLeftCheekInWorld)
+
+        faceRightCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[876][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[876][1], faceAnchor.transform.columns.3.z)
+        faceRightCheekInscreenPos = sceneView.projectPoint(faceRightCheekInWorld)
+
+        // print(faceCheekInWorld, faceNoseInWorld)
+        // print(faceCheekInscreenPos, faceNoseInscreenPos)
+//        print("1", faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][1])
+//        print("2", faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[447][1])
+//        print("3", faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y)
+        // 鼻トラッキング
+//        DispatchQueue.main.async {
+//            let TestView = UIView(frame: CGRect(x: CGFloat(self.faceRightCheekInscreenPos.x), y: CGFloat(self.faceRightCheekInscreenPos.y), width: 10, height: 10))
+//            let bgColor = UIColor.blue
+//            TestView.backgroundColor = bgColor
+//            self.view.addSubview(TestView)
+//            // print(CGFloat(faceNoseInscreenPos.x), CGFloat(faceNoseInscreenPos.y))
+//            // self.transTrans = CGAffineTransform(translationX: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y))
+//            self.tracking.transform = self.transTrans
+//        }
 
         // print(faceNoseInscreenPos) // 横にしてx:0~1200, y:0~740  中心は600,420  たて400,600
         // depth を直接取得          print(view.bounds)→1194*834
@@ -341,7 +364,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             // print(floatBuffer)
             // let distanceAtXYPoint = floatBuffer[Int(x * y)]
 
-            let distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * faceNoseInscreenPos.y / 4)]
+            distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * faceNoseInscreenPos.y / 4)]
 
             // print(floatBuffer[(width / 2) * (height / 2)])
             // print(width, height)
@@ -349,6 +372,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             //                print(i, floatBuffer[i])
             //            }
             print(distanceAtXYPoint)
+            // print(floatBuffer[Int(faceRightCheekInscreenPos.x * faceRightCheekInscreenPos.y / 4)])
+            // print(floatBuffer[Int(faceLeftCheekInscreenPos.x * faceLeftCheekInscreenPos.y / 4)])
+            for yMap in 0 ..< height {
+                let rowData = CVPixelBufferGetBaseAddress(depthDataMap!)! + yMap * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let data = UnsafeMutableBufferPointer<Float32>(start: rowData.assumingMemoryBound(to: Float32.self), count: width)
+                for index in 0 ..< width {
+                    let depth = data[index]
+                    print("yMap:", yMap, "width:", index, "depth:", data[index])
+                    if depth.isNaN {
+                        data[index] = 1.0
+                    } else if depth <= 1.0 {
+                        // 前景
+                        data[index] = 1.0
+                    } else {
+                        // 背景
+                        data[index] = 0.0
+                    }
+                }
+            }
+            CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
             return
         }
         // print(faceAnchor.transform.columns.3)
@@ -410,6 +453,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.time = 0
             }
         }
+
         // CSVを作るデータに足していく
         DispatchQueue.main.async {
             if Float(self.myCollectionViewPosition) > 5 {
