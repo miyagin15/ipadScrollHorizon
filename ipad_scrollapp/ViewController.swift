@@ -313,12 +313,35 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
-        //  認識していたら青色に
-        DispatchQueue.main.async {
-            // print(self.tableView.contentOffset.y)
-            self.inputClutchView.backgroundColor = UIColor.red
-            self.tracking.backgroundColor = UIColor.blue
+        // depth を直接取得
+        guard let frame = sceneView.session.currentFrame else { return }
+        let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
+        let depthDataMap = depthData?.depthDataMap
+        if depthDataMap != nil {
+            let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
+            let height = CVPixelBufferGetHeight(depthDataMap!) // 480
+            // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
+            // let floatBuffer = UnsafeMutablePointer<Float32>(baseAddress!)
+            CVPixelBufferLockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+            let floatBuffer = unsafeBitCast(CVPixelBufferGetBaseAddress(depthDataMap!), to: UnsafeMutablePointer<Float32>.self)
+            // print(floatBuffer)
+            // let distanceAtXYPoint = floatBuffer[Int(x * y)]
+
+            let distanceAtXYPoint = floatBuffer[Int(2388 * 1668 / 4)]
+            // print(floatBuffer[(width / 2) * (height / 2)])
+            // print(width, height)
+//            for i in 640 * 320 ... 640 * 321 {
+//                print(i, floatBuffer[i])
+//            }
+            print(distanceAtXYPoint)
         }
+        return
+            //  認識していたら青色に
+            DispatchQueue.main.async {
+                // print(self.tableView.contentOffset.y)
+                self.inputClutchView.backgroundColor = UIColor.red
+                self.tracking.backgroundColor = UIColor.blue
+            }
         // 顔のxyz位置
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
         // 下を向いている時の処理
@@ -411,8 +434,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             } else if mouthRight > mouthLeft, mouthLeftBS > 0.01 {
                 rightScrollMainThread(ratio: CGFloat(mouthRight))
             }
-            
-            
+
         case 1:
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Hands", for: .normal)
