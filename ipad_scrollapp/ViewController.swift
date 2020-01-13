@@ -308,12 +308,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var before_cheek_left: Float = 0
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
-
+    var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
-        // depth を直接取得
+
+        let faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
+        let faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
+        DispatchQueue.main.async {
+            let TestView = UIView(frame: CGRect(x: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y), width: 10, height: 10))
+            let bgColor = UIColor.blue
+            TestView.backgroundColor = bgColor
+            self.view.addSubview(TestView)
+            // print(CGFloat(faceNoseInscreenPos.x), CGFloat(faceNoseInscreenPos.y))
+            // self.transTrans = CGAffineTransform(translationX: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y))
+            self.tracking.transform = self.transTrans
+        }
+
+        // print(faceNoseInscreenPos) // 横にしてx:0~1200, y:0~740  中心は600,420  たて400,600
+        // depth を直接取得          print(view.bounds)→1194*834
         guard let frame = sceneView.session.currentFrame else { return }
         let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
         let depthDataMap = depthData?.depthDataMap
@@ -327,21 +341,24 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             // print(floatBuffer)
             // let distanceAtXYPoint = floatBuffer[Int(x * y)]
 
-            let distanceAtXYPoint = floatBuffer[Int(2388 * 1668 / 4)]
+            let distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * faceNoseInscreenPos.y / 4)]
+
             // print(floatBuffer[(width / 2) * (height / 2)])
             // print(width, height)
-//            for i in 640 * 320 ... 640 * 321 {
-//                print(i, floatBuffer[i])
-//            }
+            //            for i in 640 * 320 ... 640 * 321 {
+            //                print(i, floatBuffer[i])
+            //            }
             print(distanceAtXYPoint)
+            return
         }
-        return
-            //  認識していたら青色に
-            DispatchQueue.main.async {
-                // print(self.tableView.contentOffset.y)
-                self.inputClutchView.backgroundColor = UIColor.red
-                self.tracking.backgroundColor = UIColor.blue
-            }
+        // print(faceAnchor.transform.columns.3)
+
+        //  認識していたら青色に
+        DispatchQueue.main.async {
+            // print(self.tableView.contentOffset.y)
+            self.inputClutchView.backgroundColor = UIColor.red
+            self.tracking.backgroundColor = UIColor.blue
+        }
         // 顔のxyz位置
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
         // 下を向いている時の処理
