@@ -416,15 +416,6 @@
                                     <constraint firstItem="kVJ-Jk-R5w" firstAttribute="top" secondItem="1Mc-8e-KQZ" secondAttribute="top" id="vpd-4U-jrG"/>
                                 </constraints>
                             </view>
-                            <slider opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vhm-hR-QD7">
-                                <rect key="frame" x="-2" y="90" width="549" height="31"/>
-                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <color key="tintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="Yjq-a8-lIB"/>
-                                    <constraint firstAttribute="width" constant="545" id="e97-EI-gHS"/>
-                                </constraints>
-                            </slider>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="S3A-qi-OrS">
                                 <rect key="frame" x="0.0" y="119" width="619" height="695"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -448,6 +439,17 @@
                                     <action selector="startButton:" destination="8lW-eI-KZf" eventType="touchUpInside" id="nfc-iM-XyP"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vhm-hR-QD7">
+                                <rect key="frame" x="347" y="431" width="549" height="31"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <color key="tintColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="545" id="E9U-WN-1pw"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="RVT-rH-4J7"/>
+                                    <constraint firstAttribute="height" constant="30" id="Yjq-a8-lIB"/>
+                                    <constraint firstAttribute="width" constant="545" id="e97-EI-gHS"/>
+                                </constraints>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -459,10 +461,11 @@
                             <constraint firstItem="1Mc-8e-KQZ" firstAttribute="leading" secondItem="0ld-kY-ZLL" secondAttribute="leading" id="RJx-RY-grb"/>
                             <constraint firstItem="yud-E7-2Ht" firstAttribute="bottom" secondItem="0ld-kY-ZLL" secondAttribute="bottom" id="SaY-eT-Ups"/>
                             <constraint firstItem="1Mc-8e-KQZ" firstAttribute="top" secondItem="ah6-GI-ZFX" secondAttribute="bottom" id="YPY-eU-x8Q"/>
+                            <constraint firstItem="Vhm-hR-QD7" firstAttribute="leading" secondItem="0ld-kY-ZLL" secondAttribute="leading" constant="349" id="ZiC-eM-ere"/>
                             <constraint firstItem="ah6-GI-ZFX" firstAttribute="top" secondItem="kOr-3B-JOZ" secondAttribute="top" id="l5e-gy-oKm"/>
                             <constraint firstItem="ah6-GI-ZFX" firstAttribute="leading" secondItem="0ld-kY-ZLL" secondAttribute="leading" id="lZk-bf-HZh"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="Vhm-hR-QD7" secondAttribute="bottom" constant="353" id="oBT-LG-cfJ"/>
                             <constraint firstItem="1Mc-8e-KQZ" firstAttribute="trailing" secondItem="0ld-kY-ZLL" secondAttribute="trailing" id="ph8-Sz-CAI"/>
-                            <constraint firstItem="Vhm-hR-QD7" firstAttribute="bottom" secondItem="1Mc-8e-KQZ" secondAttribute="bottom" id="pja-xI-iwE"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="0ld-kY-ZLL"/>
                     </view>

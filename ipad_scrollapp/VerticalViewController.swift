@@ -125,6 +125,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        functionalExpression.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
         goalPositionInt = Utility.goalPositionInt
         createScrollVIew()
         decideGoalpositionTimeCount()
