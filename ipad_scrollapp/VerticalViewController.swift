@@ -516,7 +516,25 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
         case 1:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("Hands", for: .normal)
+                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+            }
+            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
+            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
+            var cheekR: Float = 0
+            var cheekL: Float = 0
+            if callibrationUseBool == true {
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+            } else {
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+            }
+            if cheekL > cheekR {
+                scrollUpInMainThread(ratio: CGFloat(cheekL))
+            } else {
+                scrollDownInMainThread(ratio: CGFloat(cheekR))
             }
 
             // 頰を動かす。口角のz座標
@@ -675,6 +693,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             }
             let mouthRollUpper = faceAnchor.blendShapes[.mouthRollUpper] as! Float
             let mouthRollLower = faceAnchor.blendShapes[.mouthRollLower] as! Float
+            print("mouthRollUP:", mouthRollUpper, "mouthRollLower", mouthRollLower)
+            return
             if callibrationUseBool == true {
                 let mouthRollUp = Utility.faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
                 print("mouthRollUp", mouthRollUp)
@@ -701,25 +721,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             }
         default:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
-            }
-            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
-            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
-            var cheekR: Float = 0
-            var cheekL: Float = 0
-            if callibrationUseBool == true {
-                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
-
-                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-            } else {
-                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
-
-                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-            }
-            if cheekL > cheekR {
-                scrollUpInMainThread(ratio: CGFloat(cheekL))
-            } else {
-                scrollDownInMainThread(ratio: CGFloat(cheekR))
+                self.buttonLabel.setTitle("Hands", for: .normal)
             }
         }
     }

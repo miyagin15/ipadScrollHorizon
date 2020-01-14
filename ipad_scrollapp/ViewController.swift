@@ -531,7 +531,36 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
         case 1:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("Hands", for: .normal)
+                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+            }
+            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
+            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
+            var cheekR: Float = 0
+            var cheekL: Float = 0
+            if callibrationUseBool == true {
+                //                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+                //
+                //                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                //
+                //                if cheekR < 0.1, cheekL < 0.1 {
+                //                    return
+                //                }
+            } else {
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                //
+                //                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
+                //                    return
+                //                }
+            }
+            if cheekL > cheekR {
+                leftScrollMainThread(ratio: CGFloat(cheekL))
+            } else {
+                rightScrollMainThread(ratio: CGFloat(cheekR))
             }
 
         case 2:
@@ -637,37 +666,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
         default:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+                self.buttonLabel.setTitle("Hands", for: .normal)
             }
-            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
-            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
-            var cheekR: Float = 0
-            var cheekL: Float = 0
-            if callibrationUseBool == true {
-//                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
-//
-//                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
 
-                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-//
-//                if cheekR < 0.1, cheekL < 0.1 {
-//                    return
-//                }
-            } else {
-                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
-
-                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-                //
-//                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
-//                    return
-//                }
-            }
-            if cheekL > cheekR {
-                leftScrollMainThread(ratio: CGFloat(cheekL))
-            } else {
-                rightScrollMainThread(ratio: CGFloat(cheekR))
-            }
 //            if cheekSquintLeft > cheekSquintRight {
 //                rightScrollMainThread(ratio: CGFloat(cheekSquintLeft))
 //            } else {
