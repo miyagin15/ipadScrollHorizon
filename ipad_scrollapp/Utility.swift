@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 class Utility {
-    static let goalPositionInt: [Int] = [10, 11, 12, 11, 10, 20, 50, 20, 10]
+    static let goalPositionInt: [Int] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
     static let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
     // 初期設定のMINの普通の状態を保存する
     static var callibrationOrdinalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]

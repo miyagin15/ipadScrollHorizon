@@ -15,7 +15,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var myCollectionView: UICollectionView!
 
     var changeNum = 0
-    var callibrationUseBool = false
+    var callibrationUseBool = true
 
     var inputMethodString = "velocity"
 
@@ -95,8 +95,11 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     @IBAction func startButton(_: Any) {
         nowgoal_Data = []
         i = 0
+        time = 0
+        goalLabel.text = String(goalPositionInt[i])
         myCollectionView.contentOffset.y = 0
         userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+        dataAppendBool = true
     }
 
     private let cellIdentifier = "cell"
@@ -108,9 +111,9 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     // var NetWork = NetWorkViewController()
     // ゴールの目標セルを決める
-    var goalPositionInt: [Int] = [10, 15, 25, 50, 51, 50, 25, 15, 10]
-    // ゴールの目標位置を決める
-    var goalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var goalPositionInt: [Int] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
+    // ゴールの目標位置を決める.数だけは合わせる必要がある
+    var goalPosition: [Float] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float] = []
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
@@ -122,6 +125,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        functionalExpression.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
         goalPositionInt = Utility.goalPositionInt
         createScrollVIew()
         decideGoalpositionTimeCount()
@@ -213,9 +217,9 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             self.functionalExpressionLabel.text = String(-Float(ratio))
             let outPutLPF = self.LPFRatio * self.lastValueU + (1 - self.LPFRatio) * ratio
             self.lastValueU = outPutLPF
-            let changedRatio = self.scrollRatioChange(outPutLPF)
 
             if self.inputMethodString == "velocity" {
+                let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y + 10 * changedRatio * CGFloat(self.ratioChange))
             } else if self.inputMethodString == "position" {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
@@ -228,7 +232,6 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var lastValueD: CGFloat = 0
     // down scroll
     private func scrollDownInMainThread(ratio: CGFloat) {
-        print(ratio)
         DispatchQueue.main.async {
             if self.myCollectionView.contentOffset.y < 0 {
                 return
@@ -237,8 +240,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             self.functionalExpressionLabel.text = String(Float(ratio))
             let outPutLPF = self.LPFRatio * self.lastValueD + (1 - self.LPFRatio) * ratio
             self.lastValueD = outPutLPF
-            let changedRatio = self.scrollRatioChange(outPutLPF)
             if self.inputMethodString == "velocity" {
+                let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y - 10 * changedRatio * CGFloat(self.ratioChange))
             } else if self.inputMethodString == "position" {
                 let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
@@ -269,7 +272,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         //            changeRatio = 1
         //        }
 
-        print(changeRatio, "changeRatio")
+        // print(changeRatio, "changeRatio")
         //        if ratioValue < 0.25 {
         //            changeRatio = ratioValue * 0.2
         //        } else if ratioValue > 0.55 {
@@ -326,6 +329,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
 
+    var dataAppendBool = true
     // let firstConfig:[Float] = userDefaults.array(forKey: "firstConfig") as! [Float]
 
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
@@ -405,6 +409,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                     } else {
                         self.myCollectionView.contentOffset.y = 0
                         self.goalLabel.text = "終了"
+                        self.dataAppendBool = false
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
                             // self.NetWork.send(message: [0,0])
@@ -439,15 +444,17 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 //            //self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
 //        }
         // CSVを作るデータに足していく
-        DispatchQueue.main.async {
-            if Float(self.myCollectionViewPosition) > 5 {
-                // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
-                self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
-                self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+        if dataAppendBool == true {
+            DispatchQueue.main.async {
+                if Float(self.myCollectionViewPosition) > 5 {
+                    // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
+                    self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
+                    self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+                }
+                // print(Float(self.tableViewPosition))
+                // データをパソコンに送る(今の場所と目標地点)
+                // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
             }
-            // print(Float(self.tableViewPosition))
-            // データをパソコンに送る(今の場所と目標地点)
-            // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
         }
 
         let changeAction = changeNum % 7
@@ -462,22 +469,17 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             var mouthLeft: Float = 0
             var mouthRight: Float = 0
             if callibrationUseBool == true {
-                let mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
+                mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 // print("mouthLeft", mouthLeft)
-                let mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
+                mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
                 // print("mouthRight", mouthRight)
 
-                if mouthLeft < 0.1, mouthRight < 0.1 {
-                    return
-                }
+//                if mouthLeft < 0.1, mouthRight < 0.1 {
+//                    return
+//                }
+
                 // print(mouthLeftBS, mouthRightBS)
                 // mouthRightが逆を表す
-                if mouthLeft > mouthRight, mouthRightBS > 0.02 {
-                    scrollUpInMainThread(ratio: CGFloat(mouthLeft))
-
-                } else if mouthRight > mouthLeft, mouthLeftBS > 0.02 {
-                    scrollDownInMainThread(ratio: CGFloat(mouthRight))
-                }
             } else {
 //                if let mouthLeft = faceAnchor.blendShapes[.mouthLeft] as? Float {
 //                    if mouthLeft > 0.02 {
@@ -495,21 +497,44 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 // print("mouthLeft", mouthLeft)
                 mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: -0.004787985, minFaceAUVertex: -0.0196867)
                 // print("mouthRight", mouthRight)
-                if mouthLeft < 0.1, mouthRight < 0.1 {
-                    return
-                }
-                // print(mouthLeftBS, mouthRightBS)
-                if mouthLeft > mouthRight, mouthRightBS > 0.01 {
-                    scrollUpInMainThread(ratio: CGFloat(mouthLeft))
+//                if mouthLeft < 0.1, mouthRight < 0.1 {
+//                    return
+//                }
+//                // print(mouthLeftBS, mouthRightBS)
+//                if mouthLeft > mouthRight, mouthRightBS > 0.01 {
+//                    scrollUpInMainThread(ratio: CGFloat(mouthLeft))
+//
+//                } else if mouthRight > mouthLeft, mouthLeftBS > 0.01 {
+//                    scrollDownInMainThread(ratio: CGFloat(mouthRight))
+            }
+            if mouthLeft > mouthRight {
+                scrollUpInMainThread(ratio: CGFloat(mouthLeft))
 
-                } else if mouthRight > mouthLeft, mouthLeftBS > 0.01 {
-                    scrollDownInMainThread(ratio: CGFloat(mouthRight))
-                }
+            } else if mouthRight > mouthLeft {
+                scrollDownInMainThread(ratio: CGFloat(mouthRight))
             }
 
         case 1:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("Hands", for: .normal)
+                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+            }
+            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
+            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
+            var cheekR: Float = 0
+            var cheekL: Float = 0
+            if callibrationUseBool == true {
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+            } else {
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+            }
+            if cheekL > cheekR {
+                scrollUpInMainThread(ratio: CGFloat(cheekL))
+            } else {
+                scrollDownInMainThread(ratio: CGFloat(cheekR))
             }
 
             // 頰を動かす。口角のz座標
@@ -571,34 +596,26 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             var browDownLeft: Float = 0
             if callibrationUseBool == true {
                 browInnerUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[6], minFaceAUVertex: callibrationOrdinalPosition[6])
-                print("browInnerUp", browInnerUp)
                 browDownLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: callibrationPosition[7], minFaceAUVertex: callibrationOrdinalPosition[7])
-                print("browDownLeft", browDownLeft)
 
-                if browInnerUp < 0.1, browDownLeft < 0.1 {
-                    return
-                }
-                if browInnerUp > browDownLeft {
-                    scrollDownInMainThread(ratio: CGFloat(browInnerUp))
-
-                } else if browDownLeft > browInnerUp {
-                    scrollUpInMainThread(ratio: CGFloat(browDownLeft))
-                }
+//                if browInnerUp < 0.1, browDownLeft < 0.1 {
+//                    return
+//                }
             } else {
                 browInnerUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.053307146, minFaceAUVertex: 0.04667869)
                 // print("mouthLeft", mouthLeft)
                 browDownLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[762][1], maxFaceAUVertex: 0.043554213, minFaceAUVertex: 0.04667869)
-                print("browInnerUp:", browInnerUp, ",browDown:", browDownLeft)
-                if browInnerUp < 0.1, browDownLeft < 0.1 {
-                    return
-                }
-                // print(mouthLeftBS, mouthRightBS)
-                if browInnerUp > browDownLeft {
-                    scrollDownInMainThread(ratio: CGFloat(browInnerUp))
+//                if browInnerUp < 0.1, browDownLeft < 0.1 {
+//                    return
+//                }
+//                // print(mouthLeftBS, mouthRightBS)
+//                if browInnerUp > browDownLeft {
+//                    scrollDownInMainThread(ratio: CGFloat(browInnerUp))
+//
+//                } else if browDownLeft > browInnerUp {
+//                    scrollUpInMainThread(ratio: CGFloat(browDownLeft))
+//                }
 
-                } else if browDownLeft > browInnerUp {
-                    scrollUpInMainThread(ratio: CGFloat(browDownLeft))
-                }
 //                if let browInnerUp = faceAnchor.blendShapes[.browInnerUp] as? Float {
 //                    if browInnerUp > 0.5 {
 //                        leftScrollMainThread(ratio: CGFloat(browInnerUp - 0.4) * 1.5)
@@ -611,42 +628,47 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 //                    }
 //                }
             }
+            if browInnerUp > browDownLeft {
+                scrollDownInMainThread(ratio: CGFloat(browInnerUp))
+
+            } else if browDownLeft > browInnerUp {
+                scrollUpInMainThread(ratio: CGFloat(browDownLeft))
+            }
         case 3:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("mouthCentral", for: .normal)
+                self.buttonLabel.setTitle("mouthUpDown", for: .normal)
             }
             // let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
             var mouthUp: Float = 0
             var mouthDown: Float = 0
             if callibrationUseBool == true {
                 mouthUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[2], minFaceAUVertex: callibrationOrdinalPosition[2])
-                print("mouthUp", mouthUp)
-                mouthDown = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
-                print("mouthDown", mouthDown)
 
-                if mouthUp < 0.1, mouthDown < 0.1 {
-                    return
-                }
-                if mouthUp > mouthDown {
-                    scrollDownInMainThread(ratio: CGFloat(mouthUp))
-                } else {
-                    scrollUpInMainThread(ratio: CGFloat(mouthDown))
-                }
+                mouthDown = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: callibrationPosition[3], minFaceAUVertex: callibrationOrdinalPosition[3])
+
+//                if mouthUp < 0.1, mouthDown < 0.1 {
+//                    return
+//                }
             } else {
                 mouthUp = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.03719348, minFaceAUVertex: -0.04107782)
-                print("mouthUp", mouthUp)
-                mouthDown = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.04889179, minFaceAUVertex: -0.04107782)
-                print("mouthDown", mouthDown)
 
-                if mouthUp < 0.1, mouthDown < 0.1 {
-                    return
-                }
-                if mouthUp > mouthDown {
-                    scrollDownInMainThread(ratio: CGFloat(mouthUp))
-                } else {
-                    scrollUpInMainThread(ratio: CGFloat(mouthDown))
-                }
+                mouthDown = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][1], maxFaceAUVertex: -0.04889179, minFaceAUVertex: -0.04107782)
+
+//                if mouthUp < 0.1, mouthDown < 0.1 {
+//                    return
+//                }
+//                if mouthUp > mouthDown {
+//                    scrollDownInMainThread(ratio: CGFloat(mouthUp))
+//                } else {
+//                    scrollUpInMainThread(ratio: CGFloat(mouthDown))
+//                }
             }
+            if mouthUp > mouthDown {
+                scrollDownInMainThread(ratio: CGFloat(mouthUp))
+            } else {
+                scrollUpInMainThread(ratio: CGFloat(mouthDown))
+            }
+
         case 4:
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("cheekPuff", for: .normal)
@@ -671,6 +693,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             }
             let mouthRollUpper = faceAnchor.blendShapes[.mouthRollUpper] as! Float
             let mouthRollLower = faceAnchor.blendShapes[.mouthRollLower] as! Float
+            print("mouthRollUP:", mouthRollUpper, "mouthRollLower", mouthRollLower)
+            return
             if callibrationUseBool == true {
                 let mouthRollUp = Utility.faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
                 print("mouthRollUp", mouthRollUp)
@@ -697,33 +721,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             }
         default:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
-            }
-            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
-            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
-            if callibrationUseBool == true {
-                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
-                print("cheekR", cheekR)
-                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-                print("cheekL", cheekL)
-
-                if cheekR < 0.1, cheekL < 0.1 {
-                    return
-                }
-                if cheekL > cheekR {
-                    scrollUpInMainThread(ratio: CGFloat(cheekL))
-                } else {
-                    scrollDownInMainThread(ratio: CGFloat(cheekR))
-                }
-            } else {
-                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
-                    return
-                }
-                if cheekSquintLeft > cheekSquintRight {
-                    scrollDownInMainThread(ratio: CGFloat(cheekSquintLeft))
-                } else {
-                    scrollUpInMainThread(ratio: CGFloat(cheekSquintRight))
-                }
+                self.buttonLabel.setTitle("Hands", for: .normal)
             }
         }
     }

@@ -97,8 +97,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     @IBAction func startButton(_: Any) {
         nowgoal_Data = []
         i = 0
+        time = 0
+        goalLabel.text = String(goalPositionInt[i])
         myCollectionView.contentOffset.x = 0
         userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+        dataAppendBool = true
     }
 
     private let cellIdentifier = "cell"
@@ -110,9 +113,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // var NetWork = NetWorkViewController()
     // ゴールの目標セルを決める
-    var goalPositionInt: [Int] = [10, 15, 25, 50, 51, 50, 25, 15, 10]
-    // ゴールの目標位置を決める
-    var goalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var goalPositionInt: [Int] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
+    // ゴールの目標位置を決める.数だけは合わせる必要がある
+    var goalPosition: [Float] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float] = []
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
@@ -205,7 +208,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var lastValueR: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.8
+    var LPFRatio: CGFloat = 0.95
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -216,8 +219,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.functionalExpressionLabel.text = String(Float(ratio))
             let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
             self.lastValueL = outPutLPF
-            let changedRatio = self.scrollRatioChange(outPutLPF)
             if self.inputMethodString == "velocity" {
+                let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * changedRatio * CGFloat(self.ratioChange), y: 0)
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
@@ -240,8 +243,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.functionalExpressionLabel.text = String(Float(-ratio))
             let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
             self.lastValueL = outPutLPF
-            let changedRatio = self.scrollRatioChange(outPutLPF)
             if self.inputMethodString == "velocity" {
+                let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * changedRatio * CGFloat(self.ratioChange), y: 0)
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
@@ -265,6 +268,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            changeRatio = ratioValue - 0.25 + 0.05
 //        }
         changeRatio = tanh((ratioValue * 3 - 1.5 - 0.8) * 3.14 / 2) * 0.7 + 0.7
+
         // changeRatio = ratioValue
 
 //        if ratioValue < 0.55 {
@@ -273,7 +277,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            changeRatio = 1
 //        }
 
-        print(changeRatio, "changeRatio")
+        // print(changeRatio, "changeRatio")
 //        if ratioValue < 0.25 {
 //            changeRatio = ratioValue * 0.2
 //        } else if ratioValue > 0.55 {
@@ -309,10 +313,110 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
 
+    var faceNoseInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceNoseInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceLeftCheekInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceLeftCheekInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceRightCheekInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceRightCheekInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+
+    var distanceAtXYPoint: Float32 = Float32(0)
+    var dataAppendBool = true
+
+    var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
+        if 1 != 1 {
+            // 左447 右600 鼻８
+            faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
+            faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
+
+            faceLeftCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[449][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[449][1], faceAnchor.transform.columns.3.z)
+            faceLeftCheekInscreenPos = sceneView.projectPoint(faceLeftCheekInWorld)
+
+            faceRightCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[876][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[876][1], faceAnchor.transform.columns.3.z)
+            faceRightCheekInscreenPos = sceneView.projectPoint(faceRightCheekInWorld)
+
+            // print(faceCheekInWorld, faceNoseInWorld)
+            // print(faceCheekInscreenPos, faceNoseInscreenPos)
+            //        print("1", faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][1])
+            //        print("2", faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[447][1])
+            //        print("3", faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y)
+            // 鼻トラッキング
+            //        DispatchQueue.main.async {
+            //            let TestView = UIView(frame: CGRect(x: CGFloat(self.faceRightCheekInscreenPos.x), y: CGFloat(self.faceRightCheekInscreenPos.y), width: 10, height: 10))
+            //            let bgColor = UIColor.blue
+            //            TestView.backgroundColor = bgColor
+            //            self.view.addSubview(TestView)
+            //            // print(CGFloat(faceNoseInscreenPos.x), CGFloat(faceNoseInscreenPos.y))
+            //            // self.transTrans = CGAffineTransform(translationX: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y))
+            //            self.tracking.transform = self.transTrans
+            //        }
+
+            // print(faceNoseInscreenPos) // 横にしてx:0~1200, y:0~740  中心は600,420  たて400,600
+            // depth を直接取得          print(view.bounds)→1194*834
+            guard let frame = sceneView.session.currentFrame else { return }
+            let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
+            let depthDataMap = depthData?.depthDataMap
+            if depthDataMap != nil {
+                let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
+                let height = CVPixelBufferGetHeight(depthDataMap!) // 480
+                // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
+                // let floatBuffer = UnsafeMutablePointer<Float32>(baseAddress!)
+                CVPixelBufferLockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                let floatBuffer = unsafeBitCast(CVPixelBufferGetBaseAddress(depthDataMap!), to: UnsafeMutablePointer<Float32>.self)
+                // print(floatBuffer)
+                // let distanceAtXYPoint = floatBuffer[Int(x * y)]
+
+                distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * faceNoseInscreenPos.y / 4)]
+
+                // print(floatBuffer[(width / 2) * (height / 2)])
+                // print(width, height)
+                //            for i in 640 * 320 ... 640 * 321 {
+                //                print(i, floatBuffer[i])
+                //            }
+                print(distanceAtXYPoint)
+                // print(floatBuffer[Int(faceRightCheekInscreenPos.x * faceRightCheekInscreenPos.y / 4)])
+                // print(floatBuffer[Int(faceLeftCheekInscreenPos.x * faceLeftCheekInscreenPos.y / 4)])
+
+                // うまくdepthが取れた
+                //            for yMap in 0 ..< height {
+                //                let rowData = CVPixelBufferGetBaseAddress(depthDataMap!)! + yMap * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                //                let data = UnsafeMutableBufferPointer<Float32>(start: rowData.assumingMemoryBound(to: Float32.self), count: width)
+                //                for index in 0 ..< width {
+                //                    let depth = data[index]
+                //                    print("yMap:", yMap, "width:", index, "depth:", data[index])
+                //                    if depth.isNaN {
+                //                        data[index] = 1.0
+                //                    } else if depth <= 1.0 {
+                //                        // 前景
+                //                        data[index] = 1.0
+                //                    } else {
+                //                        // 背景
+                //                        data[index] = 0.0
+                //                    }
+                //                }
+                //            }
+
+                print(Int(faceNoseInscreenPos.y), Int(faceNoseInscreenPos.x))
+                let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
+                print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+                let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
+
+                // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+                print("Left:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceLeftCheekInscreenPos.x / 2)])
+                print("Right:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceRightCheekInscreenPos.x / 2)])
+                CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                return
+            }
+        }
+
+        // print(faceAnchor.transform.columns.3)
+
         //  認識していたら青色に
         DispatchQueue.main.async {
             // print(self.tableView.contentOffset.y)
@@ -360,6 +464,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     } else {
                         self.myCollectionView.contentOffset.x = 0
                         self.goalLabel.text = "終了"
+                        self.dataAppendBool = false
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
                             // self.NetWork.send(message: [0,0])
@@ -370,16 +475,19 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.time = 0
             }
         }
+
         // CSVを作るデータに足していく
-        DispatchQueue.main.async {
-            if Float(self.myCollectionViewPosition) > 5 {
-                // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
-                self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
-                self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+        if dataAppendBool == true {
+            DispatchQueue.main.async {
+                if Float(self.myCollectionViewPosition) > 5 {
+                    // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
+                    self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
+                    self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+                }
+                // print(Float(self.tableViewPosition))
+                // データをパソコンに送る(今の場所と目標地点)
+                // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
             }
-            // print(Float(self.tableViewPosition))
-            // データをパソコンに送る(今の場所と目標地点)
-            // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
         }
 
         let changeAction = changeNum % 7
@@ -394,9 +502,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             var mouthLeft: Float = 0
             var mouthRight: Float = 0
             if callibrationUseBool == true {
-                mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
+                mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 // print("mouthLeft", mouthLeft)
-                mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
+                mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
             } else {
                 mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
                 // print("mouthLeft", mouthLeft)
@@ -405,17 +513,54 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            if mouthLeft < 0.1, mouthRight < 0.1 {
 //                return
 //            }
-            if mouthLeft > mouthRight, mouthRightBS > 0.01 {
+
+//            print(mouthLeft, mouthRight)
+//            if mouthLeft > mouthRight, mouthRightBS > 0.001 {
+//                leftScrollMainThread(ratio: CGFloat(mouthLeft))
+//
+//            } else if mouthRight > mouthLeft, mouthLeftBS > 0.001 {
+//                rightScrollMainThread(ratio: CGFloat(mouthRight))
+//            }
+            // print(mouthLeft, mouthRight)
+            if mouthLeft > mouthRight {
                 leftScrollMainThread(ratio: CGFloat(mouthLeft))
 
-            } else if mouthRight > mouthLeft, mouthLeftBS > 0.01 {
+            } else if mouthRight > mouthLeft {
                 rightScrollMainThread(ratio: CGFloat(mouthRight))
             }
-            
-            
+
         case 1:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("Hands", for: .normal)
+                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+            }
+            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
+            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
+            var cheekR: Float = 0
+            var cheekL: Float = 0
+            if callibrationUseBool == true {
+                //                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+                //
+                //                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                //
+                //                if cheekR < 0.1, cheekL < 0.1 {
+                //                    return
+                //                }
+            } else {
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                //
+                //                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
+                //                    return
+                //                }
+            }
+            if cheekL > cheekR {
+                leftScrollMainThread(ratio: CGFloat(cheekL))
+            } else {
+                rightScrollMainThread(ratio: CGFloat(cheekR))
             }
 
         case 2:
@@ -454,7 +599,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
         case 3:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("mouthCentral", for: .normal)
+                self.buttonLabel.setTitle("mouthUpDown", for: .normal)
             }
             // let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
             var mouthUp: Float = 0
@@ -521,34 +666,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
         default:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+                self.buttonLabel.setTitle("Hands", for: .normal)
             }
-            let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
-            let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
-            if callibrationUseBool == true {
-                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
-                print("cheekR", cheekR)
-                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-                print("cheekL", cheekL)
 
-                if cheekR < 0.1, cheekL < 0.1 {
-                    return
-                }
-                if cheekL > cheekR {
-                    leftScrollMainThread(ratio: CGFloat(cheekL))
-                } else {
-                    rightScrollMainThread(ratio: CGFloat(cheekR))
-                }
-            } else {
-                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
-                    return
-                }
-                if cheekSquintLeft > cheekSquintRight {
-                    rightScrollMainThread(ratio: CGFloat(cheekSquintLeft))
-                } else {
-                    leftScrollMainThread(ratio: CGFloat(cheekSquintRight))
-                }
-            }
+//            if cheekSquintLeft > cheekSquintRight {
+//                rightScrollMainThread(ratio: CGFloat(cheekSquintLeft))
+//            } else {
+//                leftScrollMainThread(ratio: CGFloat(cheekSquintRight))
+//            }
 
 //        default:
 //            buttonLabel.setTitle("Rip", for: .normal)
