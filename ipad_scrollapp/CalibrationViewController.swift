@@ -139,9 +139,11 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
 //        let callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
         // print(faceAnchor.geometry.vertices[24][1],"24")
         // print(faceAnchor.geometry.vertices[25][1],"25")
-        // 口の右側の座標:638,口の左側の座標:405
-        callibrationPosition[0] = faceAnchor.geometry.vertices[638][0]
-        callibrationPosition[1] = faceAnchor.geometry.vertices[405][0]
+        // 口の右側の座標:638,口の左側の座標:405, 中心をみる
+        // callibrationPosition[0] = faceAnchor.geometry.vertices[638][0]
+        // callibrationPosition[1] = faceAnchor.geometry.vertices[405][0]
+        callibrationPosition[0] = faceAnchor.geometry.vertices[24][0]
+        callibrationPosition[1] = faceAnchor.geometry.vertices[24][0]
         // 口24を見る。口を上にしたときのy座標と口を下にしたときのy座標:
         callibrationPosition[2] = faceAnchor.geometry.vertices[24][1]
         callibrationPosition[3] = faceAnchor.geometry.vertices[24][1]

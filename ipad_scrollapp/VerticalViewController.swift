@@ -97,7 +97,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         i = 0
         myCollectionView.contentOffset.y = 0
         userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
-        self.dataAppendBool = true
+        dataAppendBool = true
     }
 
     private let cellIdentifier = "cell"
@@ -109,9 +109,9 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     // var NetWork = NetWorkViewController()
     // ゴールの目標セルを決める
-    var goalPositionInt: [Int] = [10, 15, 25, 50, 51, 50, 25, 15, 10]
-    // ゴールの目標位置を決める
-    var goalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var goalPositionInt: [Int] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
+    // ゴールの目標位置を決める.数だけは合わせる必要がある
+    var goalPosition: [Float] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float] = []
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
@@ -327,7 +327,6 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
 
-    
     var dataAppendBool = true
     // let firstConfig:[Float] = userDefaults.array(forKey: "firstConfig") as! [Float]
 
@@ -443,7 +442,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 //            //self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
 //        }
         // CSVを作るデータに足していく
-        if dataAppendBool == true{
+        if dataAppendBool == true {
             DispatchQueue.main.async {
                 if Float(self.myCollectionViewPosition) > 5 {
                     // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
@@ -454,7 +453,6 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 // データをパソコンに送る(今の場所と目標地点)
                 // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
             }
-
         }
 
         let changeAction = changeNum % 7
@@ -469,9 +467,9 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             var mouthLeft: Float = 0
             var mouthRight: Float = 0
             if callibrationUseBool == true {
-                let mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
+                let mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 // print("mouthLeft", mouthLeft)
-                let mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
+                let mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
                 // print("mouthRight", mouthRight)
 
                 if mouthLeft < 0.1, mouthRight < 0.1 {
@@ -479,10 +477,10 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 }
                 // print(mouthLeftBS, mouthRightBS)
                 // mouthRightが逆を表す
-                if mouthLeft > mouthRight, mouthRightBS > 0.02 {
+                if mouthLeft > mouthRight {
                     scrollUpInMainThread(ratio: CGFloat(mouthLeft))
 
-                } else if mouthRight > mouthLeft, mouthLeftBS > 0.02 {
+                } else if mouthRight > mouthLeft {
                     scrollDownInMainThread(ratio: CGFloat(mouthRight))
                 }
             } else {
@@ -620,7 +618,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             }
         case 3:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("mouthCentral", for: .normal)
+                self.buttonLabel.setTitle("mouthUpDown", for: .normal)
             }
             // let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
             var mouthUp: Float = 0

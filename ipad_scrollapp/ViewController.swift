@@ -499,9 +499,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             var mouthLeft: Float = 0
             var mouthRight: Float = 0
             if callibrationUseBool == true {
-                mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
+                mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[0], minFaceAUVertex: callibrationOrdinalPosition[0])
                 // print("mouthLeft", mouthLeft)
-                mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
+                mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
             } else {
                 mouthLeft = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: 0.008952, minFaceAUVertex: 0.021727568)
                 // print("mouthLeft", mouthLeft)
@@ -510,10 +510,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            if mouthLeft < 0.1, mouthRight < 0.1 {
 //                return
 //            }
-            if mouthLeft > mouthRight, mouthRightBS > 0.01 {
+
+//            print(mouthLeft, mouthRight)
+//            if mouthLeft > mouthRight, mouthRightBS > 0.001 {
+//                leftScrollMainThread(ratio: CGFloat(mouthLeft))
+//
+//            } else if mouthRight > mouthLeft, mouthLeftBS > 0.001 {
+//                rightScrollMainThread(ratio: CGFloat(mouthRight))
+//            }
+            if mouthLeft > mouthRight {
                 leftScrollMainThread(ratio: CGFloat(mouthLeft))
 
-            } else if mouthRight > mouthLeft, mouthLeftBS > 0.01 {
+            } else if mouthRight > mouthLeft {
                 rightScrollMainThread(ratio: CGFloat(mouthRight))
             }
 
@@ -558,7 +566,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
         case 3:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("mouthCentral", for: .normal)
+                self.buttonLabel.setTitle("mouthUpDown", for: .normal)
             }
             // let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
             var mouthUp: Float = 0
