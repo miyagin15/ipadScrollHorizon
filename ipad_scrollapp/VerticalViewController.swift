@@ -97,6 +97,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         i = 0
         myCollectionView.contentOffset.y = 0
         userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+        self.dataAppendBool = true
     }
 
     private let cellIdentifier = "cell"
@@ -326,6 +327,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
 
+    
+    var dataAppendBool = true
     // let firstConfig:[Float] = userDefaults.array(forKey: "firstConfig") as! [Float]
 
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
@@ -405,6 +408,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                     } else {
                         self.myCollectionView.contentOffset.y = 0
                         self.goalLabel.text = "終了"
+                        self.dataAppendBool = false
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
                             // self.NetWork.send(message: [0,0])
@@ -439,15 +443,18 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 //            //self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
 //        }
         // CSVを作るデータに足していく
-        DispatchQueue.main.async {
-            if Float(self.myCollectionViewPosition) > 5 {
-                // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
-                self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
-                self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+        if dataAppendBool == true{
+            DispatchQueue.main.async {
+                if Float(self.myCollectionViewPosition) > 5 {
+                    // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
+                    self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
+                    self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+                }
+                // print(Float(self.tableViewPosition))
+                // データをパソコンに送る(今の場所と目標地点)
+                // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
             }
-            // print(Float(self.tableViewPosition))
-            // データをパソコンに送る(今の場所と目標地点)
-            // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
+
         }
 
         let changeAction = changeNum % 7

@@ -99,6 +99,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         i = 0
         myCollectionView.contentOffset.x = 0
         userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+        dataAppendBool = true
     }
 
     private let cellIdentifier = "cell"
@@ -110,9 +111,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // var NetWork = NetWorkViewController()
     // ゴールの目標セルを決める
-    var goalPositionInt: [Int] = [10, 15, 25, 50, 51, 50, 25, 15, 10]
-    // ゴールの目標位置を決める
-    var goalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var goalPositionInt: [Int] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
+    // ゴールの目標位置を決める.数だけは合わせる必要がある
+    var goalPosition: [Float] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
     private var tapData: [[Float]] = [[]]
     private var nowgoal_Data: [Float] = []
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
@@ -317,105 +318,108 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var faceRightCheekInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
 
     var distanceAtXYPoint: Float32 = Float32(0)
+    var dataAppendBool = true
 
     var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
-        // 左447 右600 鼻８
-        faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
-        faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
+        if 1 != 1 {
+            // 左447 右600 鼻８
+            faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
+            faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
 
-        faceLeftCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[449][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[449][1], faceAnchor.transform.columns.3.z)
-        faceLeftCheekInscreenPos = sceneView.projectPoint(faceLeftCheekInWorld)
+            faceLeftCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[449][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[449][1], faceAnchor.transform.columns.3.z)
+            faceLeftCheekInscreenPos = sceneView.projectPoint(faceLeftCheekInWorld)
 
-        faceRightCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[876][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[876][1], faceAnchor.transform.columns.3.z)
-        faceRightCheekInscreenPos = sceneView.projectPoint(faceRightCheekInWorld)
+            faceRightCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[876][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[876][1], faceAnchor.transform.columns.3.z)
+            faceRightCheekInscreenPos = sceneView.projectPoint(faceRightCheekInWorld)
 
-        // print(faceCheekInWorld, faceNoseInWorld)
-        // print(faceCheekInscreenPos, faceNoseInscreenPos)
-//        print("1", faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][1])
-//        print("2", faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[447][1])
-//        print("3", faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y)
-        // 鼻トラッキング
-//        DispatchQueue.main.async {
-//            let TestView = UIView(frame: CGRect(x: CGFloat(self.faceRightCheekInscreenPos.x), y: CGFloat(self.faceRightCheekInscreenPos.y), width: 10, height: 10))
-//            let bgColor = UIColor.blue
-//            TestView.backgroundColor = bgColor
-//            self.view.addSubview(TestView)
-//            // print(CGFloat(faceNoseInscreenPos.x), CGFloat(faceNoseInscreenPos.y))
-//            // self.transTrans = CGAffineTransform(translationX: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y))
-//            self.tracking.transform = self.transTrans
-//        }
+            // print(faceCheekInWorld, faceNoseInWorld)
+            // print(faceCheekInscreenPos, faceNoseInscreenPos)
+            //        print("1", faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.geometry.vertices[8][0], faceAnchor.geometry.vertices[447][1])
+            //        print("2", faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[447][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[447][1])
+            //        print("3", faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y)
+            // 鼻トラッキング
+            //        DispatchQueue.main.async {
+            //            let TestView = UIView(frame: CGRect(x: CGFloat(self.faceRightCheekInscreenPos.x), y: CGFloat(self.faceRightCheekInscreenPos.y), width: 10, height: 10))
+            //            let bgColor = UIColor.blue
+            //            TestView.backgroundColor = bgColor
+            //            self.view.addSubview(TestView)
+            //            // print(CGFloat(faceNoseInscreenPos.x), CGFloat(faceNoseInscreenPos.y))
+            //            // self.transTrans = CGAffineTransform(translationX: CGFloat(faceNoseInscreenPos.x), y: CGFloat(faceNoseInscreenPos.y))
+            //            self.tracking.transform = self.transTrans
+            //        }
 
-        // print(faceNoseInscreenPos) // 横にしてx:0~1200, y:0~740  中心は600,420  たて400,600
-        // depth を直接取得          print(view.bounds)→1194*834
-        guard let frame = sceneView.session.currentFrame else { return }
-        let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
-        let depthDataMap = depthData?.depthDataMap
-        if depthDataMap != nil {
-            let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
-            let height = CVPixelBufferGetHeight(depthDataMap!) // 480
-            // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
-            // let floatBuffer = UnsafeMutablePointer<Float32>(baseAddress!)
-            CVPixelBufferLockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
-            let floatBuffer = unsafeBitCast(CVPixelBufferGetBaseAddress(depthDataMap!), to: UnsafeMutablePointer<Float32>.self)
-            // print(floatBuffer)
-            // let distanceAtXYPoint = floatBuffer[Int(x * y)]
+            // print(faceNoseInscreenPos) // 横にしてx:0~1200, y:0~740  中心は600,420  たて400,600
+            // depth を直接取得          print(view.bounds)→1194*834
+            guard let frame = sceneView.session.currentFrame else { return }
+            let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
+            let depthDataMap = depthData?.depthDataMap
+            if depthDataMap != nil {
+                let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
+                let height = CVPixelBufferGetHeight(depthDataMap!) // 480
+                // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
+                // let floatBuffer = UnsafeMutablePointer<Float32>(baseAddress!)
+                CVPixelBufferLockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                let floatBuffer = unsafeBitCast(CVPixelBufferGetBaseAddress(depthDataMap!), to: UnsafeMutablePointer<Float32>.self)
+                // print(floatBuffer)
+                // let distanceAtXYPoint = floatBuffer[Int(x * y)]
 
-            distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * faceNoseInscreenPos.y / 4)]
+                distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * faceNoseInscreenPos.y / 4)]
 
-            // print(floatBuffer[(width / 2) * (height / 2)])
-            // print(width, height)
-            //            for i in 640 * 320 ... 640 * 321 {
-            //                print(i, floatBuffer[i])
-            //            }
-            print(distanceAtXYPoint)
-            // print(floatBuffer[Int(faceRightCheekInscreenPos.x * faceRightCheekInscreenPos.y / 4)])
-            // print(floatBuffer[Int(faceLeftCheekInscreenPos.x * faceLeftCheekInscreenPos.y / 4)])
+                // print(floatBuffer[(width / 2) * (height / 2)])
+                // print(width, height)
+                //            for i in 640 * 320 ... 640 * 321 {
+                //                print(i, floatBuffer[i])
+                //            }
+                print(distanceAtXYPoint)
+                // print(floatBuffer[Int(faceRightCheekInscreenPos.x * faceRightCheekInscreenPos.y / 4)])
+                // print(floatBuffer[Int(faceLeftCheekInscreenPos.x * faceLeftCheekInscreenPos.y / 4)])
 
-            // うまくdepthが取れた
-//            for yMap in 0 ..< height {
-//                let rowData = CVPixelBufferGetBaseAddress(depthDataMap!)! + yMap * CVPixelBufferGetBytesPerRow(depthDataMap!)
-//                let data = UnsafeMutableBufferPointer<Float32>(start: rowData.assumingMemoryBound(to: Float32.self), count: width)
-//                for index in 0 ..< width {
-//                    let depth = data[index]
-//                    print("yMap:", yMap, "width:", index, "depth:", data[index])
-//                    if depth.isNaN {
-//                        data[index] = 1.0
-//                    } else if depth <= 1.0 {
-//                        // 前景
-//                        data[index] = 1.0
-//                    } else {
-//                        // 背景
-//                        data[index] = 0.0
-//                    }
-//                }
-//            }
+                // うまくdepthが取れた
+                //            for yMap in 0 ..< height {
+                //                let rowData = CVPixelBufferGetBaseAddress(depthDataMap!)! + yMap * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                //                let data = UnsafeMutableBufferPointer<Float32>(start: rowData.assumingMemoryBound(to: Float32.self), count: width)
+                //                for index in 0 ..< width {
+                //                    let depth = data[index]
+                //                    print("yMap:", yMap, "width:", index, "depth:", data[index])
+                //                    if depth.isNaN {
+                //                        data[index] = 1.0
+                //                    } else if depth <= 1.0 {
+                //                        // 前景
+                //                        data[index] = 1.0
+                //                    } else {
+                //                        // 背景
+                //                        data[index] = 0.0
+                //                    }
+                //                }
+                //            }
 
-            print(Int(faceNoseInscreenPos.y), Int(faceNoseInscreenPos.x))
-            let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
-            let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
-            print(dataNose[Int(faceNoseInscreenPos.x / 2)])
-            let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
-            let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
+                print(Int(faceNoseInscreenPos.y), Int(faceNoseInscreenPos.x))
+                let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
+                print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+                let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
 
-            // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
-            print("Left:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceLeftCheekInscreenPos.x / 2)])
-            print("Right:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceRightCheekInscreenPos.x / 2)])
-            CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
-            return
-        }
-        return
-            // print(faceAnchor.transform.columns.3)
-
-            //  認識していたら青色に
-            DispatchQueue.main.async {
-                // print(self.tableView.contentOffset.y)
-                self.inputClutchView.backgroundColor = UIColor.red
-                self.tracking.backgroundColor = UIColor.blue
+                // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+                print("Left:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceLeftCheekInscreenPos.x / 2)])
+                print("Right:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceRightCheekInscreenPos.x / 2)])
+                CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                return
             }
+        }
+
+        // print(faceAnchor.transform.columns.3)
+
+        //  認識していたら青色に
+        DispatchQueue.main.async {
+            // print(self.tableView.contentOffset.y)
+            self.inputClutchView.backgroundColor = UIColor.red
+            self.tracking.backgroundColor = UIColor.blue
+        }
         // 顔のxyz位置
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
         // 下を向いている時の処理
@@ -457,6 +461,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     } else {
                         self.myCollectionView.contentOffset.x = 0
                         self.goalLabel.text = "終了"
+                        self.dataAppendBool = false
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
                             // self.NetWork.send(message: [0,0])
@@ -469,15 +474,17 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
 
         // CSVを作るデータに足していく
-        DispatchQueue.main.async {
-            if Float(self.myCollectionViewPosition) > 5 {
-                // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
-                self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
-                self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+        if dataAppendBool == true {
+            DispatchQueue.main.async {
+                if Float(self.myCollectionViewPosition) > 5 {
+                    // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
+                    self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
+                    self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
+                }
+                // print(Float(self.tableViewPosition))
+                // データをパソコンに送る(今の場所と目標地点)
+                // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
             }
-            // print(Float(self.tableViewPosition))
-            // データをパソコンに送る(今の場所と目標地点)
-            // self.NetWork.send(message: [Float(self.tableViewPosition),self.goalPosition[self.i]])
         }
 
         let changeAction = changeNum % 7
