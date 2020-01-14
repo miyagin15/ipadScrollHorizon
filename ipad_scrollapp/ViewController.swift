@@ -322,13 +322,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var distanceAtXYPoint: Float32 = Float32(0)
     var dataAppendBool = true
-
+    let widthIpad: Float = 1194.0
+    let heightIpad: Float = 834.0
     var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
-        if 1 != 1 {
+        if 1 == 1 {
             // 左447 右600 鼻８
             faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
             faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
@@ -400,17 +401,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 //                }
                 //            }
 
-                print(Int(faceNoseInscreenPos.y), Int(faceNoseInscreenPos.x))
-                let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
-                let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
-                print(dataNose[Int(faceNoseInscreenPos.x / 2)])
-                let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
-                let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
-
-                // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
-                print("Left:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceLeftCheekInscreenPos.x / 2)])
-                print("Right:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceRightCheekInscreenPos.x / 2)])
-                CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                print(Int(faceNoseInscreenPos.x), Int(faceNoseInscreenPos.y))
+                print(Int(faceNoseInscreenPos.x * (Float(width) / widthIpad)), Int(faceNoseInscreenPos.y * Float(height) / heightIpad))
+//                let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+//                let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
+//                print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+//                let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+//                let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
+//
+//                // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+//                print("Left:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceLeftCheekInscreenPos.x / 2)])
+//                print("Right:", dataNose[Int(faceNoseInscreenPos.x / 2)] - dataCheek[Int(faceRightCheekInscreenPos.x / 2)])
+//                CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
                 return
             }
         }
