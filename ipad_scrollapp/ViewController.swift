@@ -206,7 +206,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var lastValueR: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.8
+    var LPFRatio: CGFloat = 0.95
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -217,8 +217,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.functionalExpressionLabel.text = String(Float(ratio))
             let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
             self.lastValueL = outPutLPF
-            let changedRatio = self.scrollRatioChange(outPutLPF)
             if self.inputMethodString == "velocity" {
+                let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x + 10 * changedRatio * CGFloat(self.ratioChange), y: 0)
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
@@ -241,8 +241,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             self.functionalExpressionLabel.text = String(Float(-ratio))
             let outPutLPF = self.LPFRatio * self.lastValueL + (1 - self.LPFRatio) * ratio
             self.lastValueL = outPutLPF
-            let changedRatio = self.scrollRatioChange(outPutLPF)
             if self.inputMethodString == "velocity" {
+                let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: self.myCollectionView.contentOffset.x - 10 * changedRatio * CGFloat(self.ratioChange), y: 0)
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
@@ -266,6 +266,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            changeRatio = ratioValue - 0.25 + 0.05
 //        }
         changeRatio = tanh((ratioValue * 3 - 1.5 - 0.8) * 3.14 / 2) * 0.7 + 0.7
+
         // changeRatio = ratioValue
 
 //        if ratioValue < 0.55 {
@@ -274,7 +275,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            changeRatio = 1
 //        }
 
-        print(changeRatio, "changeRatio")
+        // print(changeRatio, "changeRatio")
 //        if ratioValue < 0.25 {
 //            changeRatio = ratioValue * 0.2
 //        } else if ratioValue > 0.55 {
@@ -518,6 +519,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            } else if mouthRight > mouthLeft, mouthLeftBS > 0.001 {
 //                rightScrollMainThread(ratio: CGFloat(mouthRight))
 //            }
+            // print(mouthLeft, mouthRight)
             if mouthLeft > mouthRight {
                 leftScrollMainThread(ratio: CGFloat(mouthLeft))
 

@@ -15,7 +15,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var myCollectionView: UICollectionView!
 
     var changeNum = 0
-    var callibrationUseBool = false
+    var callibrationUseBool = true
 
     var inputMethodString = "velocity"
 
@@ -472,9 +472,10 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 let mouthRight = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[24][0], maxFaceAUVertex: callibrationPosition[1], minFaceAUVertex: callibrationOrdinalPosition[1])
                 // print("mouthRight", mouthRight)
 
-                if mouthLeft < 0.1, mouthRight < 0.1 {
-                    return
-                }
+//                if mouthLeft < 0.1, mouthRight < 0.1 {
+//                    return
+//                }
+
                 // print(mouthLeftBS, mouthRightBS)
                 // mouthRightが逆を表す
                 if mouthLeft > mouthRight {
