@@ -97,6 +97,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     @IBAction func startButton(_: Any) {
         nowgoal_Data = []
         i = 0
+        time = 0
+        goalLabel.text = String(goalPositionInt[i])
         myCollectionView.contentOffset.x = 0
         userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
         dataAppendBool = true
@@ -639,30 +641,38 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
             let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
+            var cheekR: Float = 0
+            var cheekL: Float = 0
             if callibrationUseBool == true {
-                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
-                print("cheekR", cheekR)
-                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
-                print("cheekL", cheekL)
+//                let cheekR = Utility.faceAURangeChange(faceAUVertex: cheekSquintLeft, maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+//
+//                let cheekL = Utility.faceAURangeChange(faceAUVertex: cheekSquintRight, maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
 
-                if cheekR < 0.1, cheekL < 0.1 {
-                    return
-                }
-                if cheekL > cheekR {
-                    leftScrollMainThread(ratio: CGFloat(cheekL))
-                } else {
-                    rightScrollMainThread(ratio: CGFloat(cheekR))
-                }
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+//
+//                if cheekR < 0.1, cheekL < 0.1 {
+//                    return
+//                }
             } else {
-                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
-                    return
-                }
-                if cheekSquintLeft > cheekSquintRight {
-                    rightScrollMainThread(ratio: CGFloat(cheekSquintLeft))
-                } else {
-                    leftScrollMainThread(ratio: CGFloat(cheekSquintRight))
-                }
+                cheekR = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[638][0], maxFaceAUVertex: callibrationPosition[8], minFaceAUVertex: callibrationOrdinalPosition[8])
+
+                cheekL = Utility.faceAURangeChange(faceAUVertex: faceAnchor.geometry.vertices[405][0], maxFaceAUVertex: callibrationPosition[9], minFaceAUVertex: callibrationOrdinalPosition[9])
+                //
+//                if cheekSquintLeft < 0.1, cheekSquintRight < 0.1 {
+//                    return
+//                }
             }
+            if cheekL > cheekR {
+                leftScrollMainThread(ratio: CGFloat(cheekL))
+            } else {
+                rightScrollMainThread(ratio: CGFloat(cheekR))
+            }
+//            if cheekSquintLeft > cheekSquintRight {
+//                rightScrollMainThread(ratio: CGFloat(cheekSquintLeft))
+//            } else {
+//                leftScrollMainThread(ratio: CGFloat(cheekSquintRight))
+//            }
 
 //        default:
 //            buttonLabel.setTitle("Rip", for: .normal)

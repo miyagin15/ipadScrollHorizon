@@ -154,8 +154,11 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         callibrationPosition[6] = faceAnchor.geometry.vertices[762][1]
         callibrationPosition[7] = faceAnchor.geometry.vertices[762][1]
         // 半笑い
-        callibrationPosition[8] = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
-        callibrationPosition[9] = faceAnchor.blendShapes[.mouthSmileRight] as! Float
+        callibrationPosition[8] = faceAnchor.geometry.vertices[638][0]
+        callibrationPosition[9] = faceAnchor.geometry.vertices[405][0]
+
+//        callibrationPosition[8] = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
+//        callibrationPosition[9] = faceAnchor.blendShapes[.mouthSmileRight] as! Float
         // 唇の丸まり具合
         callibrationPosition[10] = faceAnchor.blendShapes[.mouthRollUpper] as! Float
         callibrationPosition[11] = faceAnchor.blendShapes[.mouthRollLower] as! Float
