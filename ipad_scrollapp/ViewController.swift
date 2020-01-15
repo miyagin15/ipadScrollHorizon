@@ -125,6 +125,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var callibrationOrdinalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var documentInteraction: UIDocumentInteractionController!
 
+    @IBOutlet var depthImageView: UIImageView!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         goalPositionInt = Utility.goalPositionInt
@@ -365,6 +367,20 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
             let depthDataMap = depthData?.depthDataMap
             if depthDataMap != nil {
+                DispatchQueue.main.async {
+                    // let uiImage = UIImageView()
+                    let depthDataImgae = CIImage(cvPixelBuffer: depthDataMap!)
+                    let uiImage = UIImage(ciImage: depthDataImgae)
+//                    uiImage.image = UIImage(ciImage: depthDataImgae)
+//                    // 画像のフレームを設定
+//                    uiImage.frame = CGRect(x: 0, y: 0, width: 640, height: 480)
+//                    // 画像を中央に設定
+//                    uiImage.center = CGPoint(x: 500 / 2, y: 500 / 2)
+                    // 設定した画像をスクリーンに表示する
+                    // self.view.addSubview(uiImage)
+                    self.depthImageView.image = uiImage
+                    self.depthImageView.setNeedsLayout()
+                }
                 let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
                 let height = CVPixelBufferGetHeight(depthDataMap!) // 480
                 // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
