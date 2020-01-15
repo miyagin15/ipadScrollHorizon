@@ -375,13 +375,16 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 // let distanceAtXYPoint = floatBuffer[Int(x * y)]
 
                 distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * faceNoseInscreenPos.y / 4)]
+                distanceAtXYPoint = floatBuffer[Int(faceNoseInscreenPos.x * widthRatio) * Int(faceNoseInscreenPos.y * heightRatio)]
 
                 // print(floatBuffer[(width / 2) * (height / 2)])
                 // print(width, height)
                 //            for i in 640 * 320 ... 640 * 321 {
                 //                print(i, floatBuffer[i])
                 //            }
-                print(distanceAtXYPoint)
+
+                // print(distanceAtXYPoint)
+
                 // print(floatBuffer[Int(faceRightCheekInscreenPos.x * faceRightCheekInscreenPos.y / 4)])
                 // print(floatBuffer[Int(faceLeftCheekInscreenPos.x * faceLeftCheekInscreenPos.y / 4)])
 
@@ -415,8 +418,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
 
                 // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
-                print("Left:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)] - dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
-                print("Right:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)] - dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
+//                print("Left:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)] - dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
+//                print("Right:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)] - dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
+                print("Left:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
+                print("Right:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
                 CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
                 return
             }
