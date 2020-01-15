@@ -434,10 +434,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
 
                 // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
-//                print("Left:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)] - dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
-//                print("Right:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)] - dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
+
                 print("Left:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
                 print("Right:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
+                print("Left-Nose:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+                print("Right-Nose:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
                 CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
                 return
             }
