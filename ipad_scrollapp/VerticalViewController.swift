@@ -210,7 +210,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     // up scroll
     private func scrollUpInMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
-            if self.myCollectionView.contentOffset.y > 8000 {
+            if self.myCollectionView.contentOffset.y > 6000 {
                 return
             }
             self.functionalExpression.value = -Float(ratio)
