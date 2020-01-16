@@ -125,10 +125,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var callibrationOrdinalPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
     var documentInteraction: UIDocumentInteractionController!
 
-    @IBOutlet var depthImageView: UIImageView!
-
+    var depthImageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        // depthMap
+        depthImageView = UIImageView()
+        depthImageView!.frame = CGRect(x: 550, y: 280, width: 640, height: 480)
+        view.addSubview(depthImageView)
+
         goalPositionInt = Utility.goalPositionInt
         createScrollVIew()
         decideGoalpositionTimeCount()
@@ -369,8 +373,8 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             guard let frame = sceneView.session.currentFrame else { return }
             let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
             let depthDataMap = depthData?.depthDataMap
+            print(depthDataMap)
             if depthDataMap == nil {
-                return
             } else if depthDataMap != nil {
                 DispatchQueue.main.async {
                     // let uiImage = UIImageView()
