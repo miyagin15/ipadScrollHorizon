@@ -47,7 +47,7 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     }
 
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
-    var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0]
 
     var mouthDown: Float = 0
     var mouthUp: Float = 0
@@ -188,39 +188,40 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         faceRightCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[876][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[876][1], faceAnchor.transform.columns.3.z)
         faceRightCheekInscreenPos = sceneView.projectPoint(faceRightCheekInWorld)
         // depth を直接取得          print(view.bounds)→1194*834
-        guard let frame = sceneView.session.currentFrame else { return }
-        let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
-        let depthDataMap = depthData?.depthDataMap
-        if depthDataMap != nil {
-            let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
-            let height = CVPixelBufferGetHeight(depthDataMap!) // 480
-            // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
-            // let floatBuffer = UnsafeMutablePointer<Float32>(baseAddress!)
-            CVPixelBufferLockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
-            let floatBuffer = unsafeBitCast(CVPixelBufferGetBaseAddress(depthDataMap!), to: UnsafeMutablePointer<Float32>.self)
-            // print(floatBuffer)
-            // let distanceAtXYPoint = floatBuffer[Int(x * y)]
-            let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
-            let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
-            print("Nose:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+        if 2 == 1 {
+            guard let frame = sceneView.session.currentFrame else { return }
+            let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
+            let depthDataMap = depthData?.depthDataMap
+            if depthDataMap != nil {
+                let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
+                let height = CVPixelBufferGetHeight(depthDataMap!) // 480
+                // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
+                // let floatBuffer = UnsafeMutablePointer<Float32>(baseAddress!)
+                CVPixelBufferLockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                let floatBuffer = unsafeBitCast(CVPixelBufferGetBaseAddress(depthDataMap!), to: UnsafeMutablePointer<Float32>.self)
+                // print(floatBuffer)
+                // let distanceAtXYPoint = floatBuffer[Int(x * y)]
+                let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
+                print("Nose:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
 
-            let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
-            let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
+                let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
 
-            // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+                // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
 
-            print("Left:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
-            print("Right:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
-            print("Left-Nose:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
-            print("Right-Nose:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+                print("Left:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
+                print("Right:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
+                print("Left-Nose:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+                print("Right-Nose:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
 
-            // 座標保存用
-            callibrationPosition[10] = dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
-            callibrationPosition[11] = dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
+                // 座標保存用
+                callibrationPosition[10] = dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
+                callibrationPosition[11] = dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
 
-            CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+            }
         }
-
         //  認識していたら青色に
         DispatchQueue.main.async {
             // print(self.tableView.contentOffset.y)
