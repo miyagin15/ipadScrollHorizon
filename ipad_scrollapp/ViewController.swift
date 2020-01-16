@@ -329,11 +329,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     let widthRatio: Float = 0.536
     let heightRatio: Float = 0.57554
+
     var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
+        var depthRightCheek: Float = 0
+        var depthLeftCheek: Float = 0
         if 1 == 1 {
             // 左447 右600 鼻８
             faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
@@ -366,7 +369,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             guard let frame = sceneView.session.currentFrame else { return }
             let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
             let depthDataMap = depthData?.depthDataMap
-            if depthDataMap != nil {
+            if depthDataMap == nil {
+                return
+            } else if depthDataMap != nil {
                 DispatchQueue.main.async {
                     // let uiImage = UIImageView()
                     let depthDataImgae = CIImage(cvPixelBuffer: depthDataMap!)
@@ -423,24 +428,27 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 //                }
                 //            }
 
-                print(Int(faceNoseInscreenPos.x), Int(faceNoseInscreenPos.y))
-                print(Int(faceNoseInscreenPos.x * widthRatio), Int(faceNoseInscreenPos.y * heightRatio))
+                // print(Int(faceNoseInscreenPos.x), Int(faceNoseInscreenPos.y))
+                // print(Int(faceNoseInscreenPos.x * widthRatio), Int(faceNoseInscreenPos.y * heightRatio))
 //                print(Int(faceNoseInscreenPos.x * (Float(width) / widthIpad)), Int(faceNoseInscreenPos.y * Float(height) / heightIpad))
                 let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
                 let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
-                print("Nose:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+                // print("Nose:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
 
                 let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
                 let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
 
                 // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
 
-                print("Left:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
-                print("Right:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
-                print("Left-Nose:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
-                print("Right-Nose:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+//                print("Left:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
+//                print("Right:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
+
+                depthRightCheek = dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
+                depthLeftCheek = dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
+
+                // print("Left-Nose:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+                // print("Right-Nose:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
                 CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
-                return
             }
         }
 
@@ -669,20 +677,26 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             let mouthRollUpper = faceAnchor.blendShapes[.mouthRollUpper] as! Float
             let mouthRollLower = faceAnchor.blendShapes[.mouthRollLower] as! Float
+            var leftCheek: Float = 0
+            var rightCheek: Float = 0
             if callibrationUseBool == true {
-                let mouthRollUp = Utility.faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
-                print("mouthRollUp", mouthRollUp)
-                let mouthRollDown = Utility.faceAURangeChange(faceAUVertex: mouthRollLower, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
-                print("mouthRollDown", mouthRollDown)
-
-                if mouthRollUp < 0.1, mouthRollDown < 0.1 {
-                    return
-                }
-                if mouthRollDown > mouthRollUp {
-                    leftScrollMainThread(ratio: CGFloat(mouthRollDown))
-                } else {
-                    rightScrollMainThread(ratio: CGFloat(mouthRollUp))
-                }
+//                let mouthRollUp = Utility.faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
+//                print("mouthRollUp", mouthRollUp)
+//                let mouthRollDown = Utility.faceAURangeChange(faceAUVertex: mouthRollLower, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
+//                print("mouthRollDown", mouthRollDown)
+                leftCheek = Utility.faceAURangeChange(faceAUVertex: depthLeftCheek, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
+                print("rawdata:L,R", depthLeftCheek, depthRightCheek)
+                print("leftCheek", leftCheek)
+                rightCheek = Utility.faceAURangeChange(faceAUVertex: depthRightCheek, maxFaceAUVertex: callibrationPosition[11], minFaceAUVertex: callibrationOrdinalPosition[11])
+                print("rightCheek", rightCheek)
+//                if mouthRollUp < 0.1, mouthRollDown < 0.1 {
+//                    return
+//                }
+//                if mouthRollDown > mouthRollUp {
+//                    leftScrollMainThread(ratio: CGFloat(mouthRollDown))
+//                } else {
+//                    rightScrollMainThread(ratio: CGFloat(mouthRollUp))
+//                }
             } else {
                 if mouthRollUpper < 0.1, mouthRollLower < 0.1 {
                     return
@@ -692,6 +706,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 } else {
                     leftScrollMainThread(ratio: CGFloat(mouthRollLower))
                 }
+            }
+            if rightCheek > leftCheek {
+                leftScrollMainThread(ratio: CGFloat(rightCheek))
+            } else {
+                rightScrollMainThread(ratio: CGFloat(leftCheek))
             }
         default:
             DispatchQueue.main.async {
