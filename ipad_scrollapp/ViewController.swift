@@ -128,10 +128,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var depthImageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // depthMap
-        depthImageView = UIImageView()
-        depthImageView!.frame = CGRect(x: 550, y: 280, width: 640, height: 480)
-        view.addSubview(depthImageView)
+        // depthMap generate by code
+//        depthImageView = UIImageView()
+//        depthImageView!.frame = CGRect(x: 550, y: 280, width: 640, height: 480)
+//        view.addSubview(depthImageView)
 
         goalPositionInt = Utility.goalPositionInt
         createScrollVIew()
@@ -231,8 +231,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else if self.inputMethodString == "position" {
-                let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                if self.ratioLookDown > 0.65 {
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+                } else {
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                }
             }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
@@ -255,8 +259,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else if self.inputMethodString == "position" {
-                let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                if self.ratioLookDown > 0.65 {
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+                } else {
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                }
+//                self.myCollectionView.contentOffset = CGPoint(x: -100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
         }
     }
@@ -333,15 +342,15 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     let widthRatio: Float = 0.536
     let heightRatio: Float = 0.57554
-
+    var depthRightCheek: Float = 0
+    var depthLeftCheek: Float = 0
+    var ratioLookDown: Float = 0
     var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
-        var depthRightCheek: Float = 0
-        var depthLeftCheek: Float = 0
-        if 1 == 1 {
+        if 2 == 1 {
             // 左447 右600 鼻８
             faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
             faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
@@ -467,19 +476,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // 顔のxyz位置
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
         // 下を向いている時の処理
-        let ratioLookDown = faceAnchor.transform.columns.1.z
+        ratioLookDown = faceAnchor.transform.columns.1.z
         DispatchQueue.main.async {
-            self.orietationLabel.text = String(ratioLookDown)
+            self.orietationLabel.text = String(self.ratioLookDown)
         }
         if ratioLookDown > 0.65 {
             //  認識していたら青色に
             DispatchQueue.main.async {
-                self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+//                self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
                 // print(self.tableView.contentOffset.y)
                 self.inputClutchView.backgroundColor = UIColor.white
             }
             print("うなづき")
-            return
         }
 
         let goal = goalPosition[self.i]
