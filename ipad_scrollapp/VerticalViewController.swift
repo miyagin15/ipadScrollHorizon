@@ -206,7 +206,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     var lastValueU: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.8
+    var LPFRatio: CGFloat = 0.95
     // up scroll
     private func scrollUpInMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
