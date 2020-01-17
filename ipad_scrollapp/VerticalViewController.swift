@@ -92,8 +92,18 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     // 値を端末に保存するために宣言
     let userDefaults = UserDefaults.standard
 
-    @IBAction func startButton(_: Any) {
+    @IBAction func deleteButton(_: Any) {
         nowgoal_Data = []
+        i = 0
+        time = 0
+        goalLabel.text = String(goalPositionInt[i])
+        myCollectionView.contentOffset.y = 0
+        userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+        dataAppendBool = true
+    }
+
+    @IBAction func startButton(_: Any) {
+        // nowgoal_Data = []
         i = 0
         time = 0
         goalLabel.text = String(goalPositionInt[i])
@@ -206,11 +216,11 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     var lastValueU: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.8
+    var LPFRatio: CGFloat = 0.95
     // up scroll
     private func scrollUpInMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
-            if self.myCollectionView.contentOffset.y > 8000 {
+            if self.myCollectionView.contentOffset.y > 6000 {
                 return
             }
             self.functionalExpression.value = -Float(ratio)
@@ -222,8 +232,12 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y + 10 * changedRatio * CGFloat(self.ratioChange))
             } else if self.inputMethodString == "position" {
-                let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange))
+                if self.ratioLookDown > 0.65 {
+                    self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+                } else {
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange))
+                }
             }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
@@ -244,8 +258,12 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 let changedRatio = self.scrollRatioChange(ratio)
                 self.myCollectionView.contentOffset = CGPoint(x: 0, y: self.myCollectionView.contentOffset.y - 10 * changedRatio * CGFloat(self.ratioChange))
             } else if self.inputMethodString == "position" {
-                let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
-                self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange))
+                if self.ratioLookDown > 0.65 {
+                    self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+                } else {
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange))
+                }
             }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y - 10*ratio*CGFloat(self.ratioChange))
         }
@@ -328,6 +346,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var before_cheek_left: Float = 0
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
+    var ratioLookDown: Float = 0
 
     var dataAppendBool = true
     // let firstConfig:[Float] = userDefaults.array(forKey: "firstConfig") as! [Float]
@@ -343,19 +362,17 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             self.tracking.backgroundColor = UIColor.blue
         }
         // 下を向いている時の処理
-        let ratioLookDown = faceAnchor.transform.columns.1.z
+        ratioLookDown = faceAnchor.transform.columns.1.z
         DispatchQueue.main.async {
-            self.orietationLabel.text = String(ratioLookDown)
+            self.orietationLabel.text = String(self.ratioLookDown)
         }
         if ratioLookDown > 0.65 {
             //  認識していたら青色に
             DispatchQueue.main.async {
-                self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
                 // print(self.tableView.contentOffset.y)
                 self.inputClutchView.backgroundColor = UIColor.white
             }
             print("うなづき")
-            return
         }
         let goal = goalPosition[self.i]
 //        DispatchQueue.main.async {

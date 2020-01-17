@@ -47,7 +47,7 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     }
 
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
-    var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+    var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0]
 
     var mouthDown: Float = 0
     var mouthUp: Float = 0
@@ -131,10 +131,25 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
         // NetWork.stopConnection()
     }
 
+    var faceNoseInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceNoseInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceLeftCheekInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceLeftCheekInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceRightCheekInWorld: SCNVector3 = SCNVector3(0, 0, 0)
+    var faceRightCheekInscreenPos: SCNVector3 = SCNVector3(0, 0, 0)
+    var distanceAtXYPoint: Float32 = Float32(0)
+    var dataAppendBool = true
+    let widthIpad: Float = 1194.0
+    let heightIpad: Float = 834.0
+
+    let widthRatio: Float = 0.536
+    let heightRatio: Float = 0.57554
+
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
             return
         }
+
 //        let callibrationArr:[String]=["口左","口右","口上","口下","頰右","頰左","眉上","眉下","右笑","左笑","普通","a","b"]
 //        let callibrationPosition:[Float]=[0,0,0,0,0,0,0,0,0,0,0,0,0]
         // print(faceAnchor.geometry.vertices[24][1],"24")
@@ -160,8 +175,53 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
 //        callibrationPosition[8] = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
 //        callibrationPosition[9] = faceAnchor.blendShapes[.mouthSmileRight] as! Float
         // 唇の丸まり具合
-        callibrationPosition[10] = faceAnchor.blendShapes[.mouthRollUpper] as! Float
-        callibrationPosition[11] = faceAnchor.blendShapes[.mouthRollLower] as! Float
+//        callibrationPosition[10] = faceAnchor.blendShapes[.mouthRollUpper] as! Float
+//        callibrationPosition[11] = faceAnchor.blendShapes[.mouthRollLower] as! Float
+        // ＊＊＊＊＊＊＊＊depth 頰＊＊＊＊＊＊＊＊
+        // 左447 右600 鼻８
+        faceNoseInWorld = SCNVector3(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
+        faceNoseInscreenPos = sceneView.projectPoint(faceNoseInWorld)
+
+        faceLeftCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[449][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[449][1], faceAnchor.transform.columns.3.z)
+        faceLeftCheekInscreenPos = sceneView.projectPoint(faceLeftCheekInWorld)
+
+        faceRightCheekInWorld = SCNVector3(faceAnchor.transform.columns.3.x + faceAnchor.geometry.vertices[876][0], faceAnchor.transform.columns.3.y + faceAnchor.geometry.vertices[876][1], faceAnchor.transform.columns.3.z)
+        faceRightCheekInscreenPos = sceneView.projectPoint(faceRightCheekInWorld)
+        // depth を直接取得          print(view.bounds)→1194*834
+        if 2 == 1 {
+            guard let frame = sceneView.session.currentFrame else { return }
+            let depthData = frame.capturedDepthData?.converting(toDepthDataType: kCVPixelFormatType_DepthFloat32)
+            let depthDataMap = depthData?.depthDataMap
+            if depthDataMap != nil {
+                let width = CVPixelBufferGetWidth(depthDataMap!) // 640  ipad2,388 x 1,668
+                let height = CVPixelBufferGetHeight(depthDataMap!) // 480
+                // let baseAddress = CVPixelBufferGetBaseAddress(depthDataMap!)
+                // let floatBuffer = UnsafeMutablePointer<Float32>(baseAddress!)
+                CVPixelBufferLockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+                let floatBuffer = unsafeBitCast(CVPixelBufferGetBaseAddress(depthDataMap!), to: UnsafeMutablePointer<Float32>.self)
+                // print(floatBuffer)
+                // let distanceAtXYPoint = floatBuffer[Int(x * y)]
+                let rowDataNose = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceNoseInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataNose = UnsafeMutableBufferPointer<Float32>(start: rowDataNose.assumingMemoryBound(to: Float32.self), count: width)
+                print("Nose:", dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+
+                let rowDataCheek = CVPixelBufferGetBaseAddress(depthDataMap!)! + Int(faceLeftCheekInscreenPos.y * heightRatio) * CVPixelBufferGetBytesPerRow(depthDataMap!)
+                let dataCheek = UnsafeMutableBufferPointer<Float32>(start: rowDataCheek.assumingMemoryBound(to: Float32.self), count: width)
+
+                // print(dataNose[Int(faceNoseInscreenPos.x / 2)])
+
+                print("Left:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)])
+                print("Right:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)])
+                print("Left-Nose:", dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+                print("Right-Nose:", dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)])
+
+                // 座標保存用
+                callibrationPosition[10] = dataCheek[Int(faceLeftCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
+                callibrationPosition[11] = dataCheek[Int(faceRightCheekInscreenPos.x * widthRatio)] - dataNose[Int(faceNoseInscreenPos.x * widthRatio)]
+
+                CVPixelBufferUnlockBaseAddress(depthDataMap!, CVPixelBufferLockFlags(rawValue: 0))
+            }
+        }
         //  認識していたら青色に
         DispatchQueue.main.async {
             // print(self.tableView.contentOffset.y)
