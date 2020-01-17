@@ -93,9 +93,18 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // 値を端末に保存するために宣言
     let userDefaults = UserDefaults.standard
+    @IBAction func deleteData(_: Any) {
+        nowgoal_Data = []
+        i = 0
+        time = 0
+        goalLabel.text = String(goalPositionInt[i])
+        myCollectionView.contentOffset.x = 0
+        userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+        dataAppendBool = true
+    }
 
     @IBAction func startButton(_: Any) {
-        nowgoal_Data = []
+        // nowgoal_Data = []
         i = 0
         time = 0
         goalLabel.text = String(goalPositionInt[i])

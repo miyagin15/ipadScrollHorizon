@@ -161,12 +161,22 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N2A-jL-k40">
-                                <rect key="frame" x="849" y="762" width="129" height="34"/>
+                                <rect key="frame" x="809" y="762" width="129" height="34"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <state key="normal" title="スタートボタン"/>
                                 <connections>
                                     <action selector="startButton:" destination="BV1-FR-VrT" eventType="touchUpInside" id="vM7-8R-HJZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ntU-gV-iPl">
+                                <rect key="frame" x="1026" y="760" width="102" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.86983146649999998" green="0.87379523199999998" blue="0.88568652849999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="軌跡削除"/>
+                                <connections>
+                                    <action selector="deleteData:" destination="BV1-FR-VrT" eventType="touchUpInside" id="4DA-3M-kcV"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -430,7 +440,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7gl-wc-HRb">
-                                <rect key="frame" x="899" y="743" width="118" height="47"/>
+                                <rect key="frame" x="759" y="748" width="118" height="47"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="29"/>
@@ -450,6 +460,16 @@
                                     <constraint firstAttribute="width" constant="545" id="e97-EI-gHS"/>
                                 </constraints>
                             </slider>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q22-kJ-41b">
+                                <rect key="frame" x="982" y="748" width="143" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="25"/>
+                                <state key="normal" title="軌跡削除"/>
+                                <connections>
+                                    <action selector="deleteButton:" destination="8lW-eI-KZf" eventType="touchUpInside" id="imb-Lp-gZX"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -485,7 +505,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="X1X-le-1Dj" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="1713"/>
+            <point key="canvasLocation" x="138.69346733668343" y="1712.9496402877699"/>
         </scene>
     </scenes>
     <resources>

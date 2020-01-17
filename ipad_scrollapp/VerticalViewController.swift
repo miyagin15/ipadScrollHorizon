@@ -92,8 +92,18 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     // 値を端末に保存するために宣言
     let userDefaults = UserDefaults.standard
 
-    @IBAction func startButton(_: Any) {
+    @IBAction func deleteButton(_: Any) {
         nowgoal_Data = []
+        i = 0
+        time = 0
+        goalLabel.text = String(goalPositionInt[i])
+        myCollectionView.contentOffset.y = 0
+        userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+        dataAppendBool = true
+    }
+
+    @IBAction func startButton(_: Any) {
+        // nowgoal_Data = []
         i = 0
         time = 0
         goalLabel.text = String(goalPositionInt[i])
