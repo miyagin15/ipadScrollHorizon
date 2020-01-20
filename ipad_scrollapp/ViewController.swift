@@ -683,13 +683,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             }
             let cheekR = Utility.faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[697][2] + faceAnchor.geometry.vertices[826][2] + faceAnchor.geometry.vertices[839][2]) / 3, maxFaceAUVertex: callibrationPosition[4], minFaceAUVertex: callibrationOrdinalPosition[4])
             let cheekL = Utility.faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[245][2] + faceAnchor.geometry.vertices[397][2] + faceAnchor.geometry.vertices[172][2]) / 3, maxFaceAUVertex: callibrationPosition[5], minFaceAUVertex: callibrationOrdinalPosition[5])
-
-            if cheekR < 0.1, cheekL < 0.1 {
-                return
-            }
-            if cheekL > cheekR {
+//            if cheekR < 0.1, cheekL < 0.1 {
+//                return
+//            }
+            print(cheekL, cheekR, faceAnchor.geometry.vertices[24][0])
+            if cheekL > cheekR, faceAnchor.geometry.vertices[24][0] > 0 {
                 leftScrollMainThread(ratio: CGFloat(cheekL))
-            } else {
+            } else if cheekR > cheekL, faceAnchor.geometry.vertices[24][0] < 0 {
                 rightScrollMainThread(ratio: CGFloat(cheekR))
             }
         case 5:
@@ -700,6 +700,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
             let mouthRollLower = faceAnchor.blendShapes[.mouthRollLower] as! Float
             var leftCheek: Float = 0
             var rightCheek: Float = 0
+            return
             if callibrationUseBool == true {
 //                let mouthRollUp = Utility.faceAURangeChange(faceAUVertex: mouthRollUpper, maxFaceAUVertex: callibrationPosition[10], minFaceAUVertex: callibrationOrdinalPosition[10])
 //                print("mouthRollUp", mouthRollUp)

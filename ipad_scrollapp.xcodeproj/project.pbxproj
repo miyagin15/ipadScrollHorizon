@@ -47,7 +47,7 @@
 		5E0AB8282397D37400C8F2D0 /* CalibrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalibrationViewController.swift; sourceTree = "<group>"; };
 		5E0AB82A239896B100C8F2D0 /* VerticalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VerticalViewController.swift; sourceTree = "<group>"; };
 		5E21C6B723C3130F0040767A /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
-		5E2DC56E238BB13E0012A8AD /* ipad_scroll_horizon.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ipad_scroll_horizon.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		5E2DC56E238BB13E0012A8AD /* ipad_scroll_horizon1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ipad_scroll_horizon1.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5E2DC571238BB13E0012A8AD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5E2DC573238BB13E0012A8AD /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
 		5E2DC575238BB13E0012A8AD /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -125,7 +125,7 @@
 		5E2DC56F238BB13E0012A8AD /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5E2DC56E238BB13E0012A8AD /* ipad_scroll_horizon.app */,
+				5E2DC56E238BB13E0012A8AD /* ipad_scroll_horizon1.app */,
 				5E2DC584238BB1410012A8AD /* ipad_scrollappTests.xctest */,
 				5E2DC58F238BB1410012A8AD /* ipad_scrollappUITests.xctest */,
 			);
@@ -197,7 +197,7 @@
 			);
 			name = ipad_scrollapp;
 			productName = ipad_scrollapp;
-			productReference = 5E2DC56E238BB13E0012A8AD /* ipad_scroll_horizon.app */;
+			productReference = 5E2DC56E238BB13E0012A8AD /* ipad_scroll_horizon1.app */;
 			productType = "com.apple.product-type.application";
 		};
 		5E2DC583238BB1410012A8AD /* ipad_scrollappTests */ = {
@@ -586,8 +586,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.miyagin.ipad-scroll.ipad-scrollapp-horizon";
-				PRODUCT_NAME = ipad_scroll_horizon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.miyagin.depth;
+				PRODUCT_NAME = ipad_scroll_horizon1;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -605,8 +605,8 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.miyagin.ipad-scroll.ipad-scrollapp-horizon";
-				PRODUCT_NAME = ipad_scroll_horizon;
+				PRODUCT_BUNDLE_IDENTIFIER = com.miyagin.depth;
+				PRODUCT_NAME = ipad_scroll_horizon1;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

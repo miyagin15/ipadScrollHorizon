@@ -47,7 +47,7 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     }
 
     let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
-    var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0]
+    var callibrationPosition: [Float] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0.5, 1, 0]
 
     var mouthDown: Float = 0
     var mouthUp: Float = 0
