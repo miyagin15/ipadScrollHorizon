@@ -179,6 +179,10 @@
                                     <action selector="deleteData:" destination="BV1-FR-VrT" eventType="touchUpInside" id="4DA-3M-kcV"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="SsT-pa-9xV">
+                                <rect key="frame" x="655" y="535" width="521" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </slider>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -203,6 +207,7 @@
                         <outlet property="functionalExpression" destination="3Mr-z6-nJ4" id="6bp-PO-JFV"/>
                         <outlet property="functionalExpressionLabel" destination="ZR1-g8-nJ2" id="D5x-JR-f3x"/>
                         <outlet property="goalLabel" destination="nPB-qJ-nXg" id="yzk-7b-TmJ"/>
+                        <outlet property="handsSlider" destination="SsT-pa-9xV" id="mmK-3C-lu0"/>
                         <outlet property="inputClutchView" destination="BaT-Nf-PZS" id="xwf-XA-eZt"/>
                         <outlet property="inputMethodLabel" destination="9Mc-Vs-3uY" id="9Tg-IP-9w4"/>
                         <outlet property="orietationLabel" destination="inW-SV-gjn" id="RuT-Gx-mGi"/>

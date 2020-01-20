@@ -91,6 +91,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
     }
 
+    @IBOutlet var handsSlider: UISlider!
     // 値を端末に保存するために宣言
     let userDefaults = UserDefaults.standard
     @IBAction func deleteData(_: Any) {
@@ -354,6 +355,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var depthRightCheek: Float = 0
     var depthLeftCheek: Float = 0
     var ratioLookDown: Float = 0
+    var handsSliderValue: Float = 0
     var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
@@ -737,8 +739,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         default:
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Hands", for: .normal)
+                self.handsSliderValue = self.handsSlider.value
             }
-
+            print(handsSliderValue)
+            if handsSliderValue > 0 {
+                rightScrollMainThread(ratio: CGFloat(handsSliderValue))
+            } else {
+                leftScrollMainThread(ratio: CGFloat(-handsSliderValue))
+            }
 //            if cheekSquintLeft > cheekSquintRight {
 //                rightScrollMainThread(ratio: CGFloat(cheekSquintLeft))
 //            } else {
