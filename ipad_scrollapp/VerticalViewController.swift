@@ -194,7 +194,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         for i in 0 ..< goalPositionInt.count {
             goalPosition[i] = Float(goalPositionInt[i] * 100 - 200)
         }
-        timeCount.maximumValue = 50
+        timeCount.maximumValue = 60
         timeCount.minimumValue = 0
         timeCount.value = 0
     }
@@ -417,7 +417,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 print("クリア")
                 self.time = self.time + 1
                 self.timeCount.value = Float(self.time)
-                if self.time > 50 {
+                if self.time > 60 {
                     print("クリア2")
                     AudioServicesPlaySystemSound(self.sound)
                     if self.i < self.goalPositionInt.count - 1 {
