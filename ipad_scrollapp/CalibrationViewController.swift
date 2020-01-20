@@ -14,17 +14,24 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet var tracking: UIView!
     @IBOutlet var sceneView: ARSCNView!
     @IBAction func goToVeticalScroll(_: Any) {
+        nameCSVtextString = nameCSVField.text!
+        userDefaults.set(nameCSVtextString, forKey: "name")
         let verticalViewController = storyboard?.instantiateViewController(withIdentifier: "VerticalViewController") as! VerticalViewController
         verticalViewController.modalPresentationStyle = .fullScreen
         present(verticalViewController, animated: true, completion: nil)
     }
 
+    var nameCSVtextString = ""
+
     @IBAction func goToHorizonalScroll(_: Any) {
+        nameCSVtextString = nameCSVField.text!
+        userDefaults.set(nameCSVtextString, forKey: "name")
         let horizonalViewController = storyboard?.instantiateViewController(withIdentifier: "HorizonalViewController") as! ViewController
         horizonalViewController.modalPresentationStyle = .fullScreen
         present(horizonalViewController, animated: true, completion: nil)
     }
 
+    @IBOutlet var nameCSVField: UITextField!
     // ウインクした場所を特定するために定義
     let userDefaults = UserDefaults.standard
     // Trackingfaceを使うための設定
@@ -56,6 +63,8 @@ class CalibrationViewController: UIViewController, ARSCNViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        nameCSVField.text = userDefaults.string(forKey: "name")
         sceneView.delegate = self
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)

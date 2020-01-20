@@ -272,6 +272,13 @@
                                     </navigationItem>
                                 </items>
                             </navigationBar>
+                            <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="uhh-Be-aNv">
+                                <rect key="frame" x="489" y="89" width="216" height="35"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" red="0.86983146649999998" green="0.87379523199999998" blue="0.88568652849999996" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="22"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -287,6 +294,7 @@
                         <viewLayoutGuide key="safeArea" id="unn-k1-hVc"/>
                     </view>
                     <connections>
+                        <outlet property="nameCSVField" destination="uhh-Be-aNv" id="d2u-7E-CFB"/>
                         <outlet property="sceneView" destination="BjY-dN-mmH" id="ox1-2G-eTk"/>
                         <outlet property="tracking" destination="GxE-lQ-HwJ" id="kym-8V-nFd"/>
                     </connections>

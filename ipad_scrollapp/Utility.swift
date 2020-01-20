@@ -81,7 +81,11 @@ class Utility {
 
     class func createCSVFileData(fileArrData: [Float], facailAU: String, direction: String, inputMethod: String) -> (fileName: String, fileData: String) {
         var fileStrData: String = ""
-        let fileName = facailAU + "_" + direction + "_" + inputMethod + ".csv"
+        // ウインクした場所を特定するために定義
+        let userDefaults = UserDefaults.standard
+        let name: String = userDefaults.string(forKey: "name") ?? "noName"
+        let fileName1 = name + "_" + facailAU + "_"
+        let fileName = fileName1 + direction + "_" + inputMethod + ".csv"
 
         // StringのCSV用データを準備
         // print(fileArrData)
@@ -96,7 +100,6 @@ class Utility {
                 fileStrData += String(callibrationArr[x]) + "\n"
             }
         }
-        let userDefaults = UserDefaults.standard
         // キャリブレーションMAX座標の値
         for x in 0 ... 11 {
             if x != 11 {

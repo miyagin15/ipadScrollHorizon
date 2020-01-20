@@ -465,7 +465,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             DispatchQueue.main.async {
                 if Float(self.myCollectionViewPosition) > 5 {
                     // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
-                    self.nowgoal_Data.append(Float(self.myCollectionViewPosition))
+                    self.nowgoal_Data.append(Float(self.myCollectionViewPosition + 25))
                     self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
                 }
                 // print(Float(self.tableViewPosition))
