@@ -224,7 +224,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var lastValueR: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.95
+    var LPFRatio: CGFloat = 0.85
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -741,7 +741,6 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 self.buttonLabel.setTitle("Hands", for: .normal)
                 self.handsSliderValue = self.handsSlider.value
             }
-            print(handsSliderValue)
             if handsSliderValue > 0 {
                 rightScrollMainThread(ratio: CGFloat(handsSliderValue))
             } else {

@@ -112,6 +112,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         dataAppendBool = true
     }
 
+    @IBOutlet var handsSlider: UISlider!
+
     private let cellIdentifier = "cell"
     // Trackingfaceを使うための設定
     private let defaultConfiguration: ARFaceTrackingConfiguration = {
@@ -136,6 +138,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     override func viewDidLoad() {
         super.viewDidLoad()
         functionalExpression.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+        handsSlider.transform = CGAffineTransform(rotationAngle: -CGFloat.pi / 2)
+
         goalPositionInt = Utility.goalPositionInt
         createScrollVIew()
         decideGoalpositionTimeCount()
@@ -216,7 +220,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     var lastValueU: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.95
+    var LPFRatio: CGFloat = 0.85
     // up scroll
     private func scrollUpInMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -347,6 +351,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var after_cheek_left: Float = 0
     let sound: SystemSoundID = 1013
     var ratioLookDown: Float = 0
+
+    var handsSliderValue: Float = 0
 
     var dataAppendBool = true
     // let firstConfig:[Float] = userDefaults.array(forKey: "firstConfig") as! [Float]
@@ -739,6 +745,12 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         default:
             DispatchQueue.main.async {
                 self.buttonLabel.setTitle("Hands", for: .normal)
+                self.handsSliderValue = self.handsSlider.value
+            }
+            if handsSliderValue > 0 {
+                scrollDownInMainThread(ratio: CGFloat(handsSliderValue))
+            } else {
+                scrollUpInMainThread(ratio: CGFloat(-handsSliderValue))
             }
         }
     }

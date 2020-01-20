@@ -462,6 +462,10 @@
                                     <action selector="startButton:" destination="8lW-eI-KZf" eventType="touchUpInside" id="nfc-iM-XyP"/>
                                 </connections>
                             </button>
+                            <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="neD-Le-7hX">
+                                <rect key="frame" x="318" y="430" width="675" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </slider>
                             <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="-1" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="Vhm-hR-QD7">
                                 <rect key="frame" x="347" y="431" width="549" height="31"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -508,6 +512,7 @@
                         <outlet property="functionalExpression" destination="Vhm-hR-QD7" id="nGl-F4-iuP"/>
                         <outlet property="functionalExpressionLabel" destination="TL4-y5-sPX" id="0VE-7E-Fp3"/>
                         <outlet property="goalLabel" destination="p54-oq-v2p" id="d7a-2e-U02"/>
+                        <outlet property="handsSlider" destination="neD-Le-7hX" id="z6v-50-zd0"/>
                         <outlet property="inputClutchView" destination="HW6-j4-kin" id="fb0-zI-JyT"/>
                         <outlet property="inputMethodLabel" destination="Jc7-DX-kiO" id="rQo-sC-fbG"/>
                         <outlet property="orietationLabel" destination="hFM-Z1-pME" id="aex-aX-RpY"/>
