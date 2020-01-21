@@ -97,7 +97,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         i = 0
         time = 0
         goalLabel.text = String(goalPositionInt[i])
-        myCollectionView.contentOffset.y = 0
+        myCollectionView.contentOffset.y = firstStartPosition
         userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
         dataAppendBool = true
     }
@@ -107,7 +107,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         i = 0
         time = 0
         goalLabel.text = String(goalPositionInt[i])
-        myCollectionView.contentOffset.y = 0
+        myCollectionView.contentOffset.y = firstStartPosition
         userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
         dataAppendBool = true
     }
@@ -148,6 +148,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         createGoalView()
         initialCallibrationSettings()
         sceneView.delegate = self
+        myCollectionView.contentOffset.y = firstStartPosition
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
@@ -432,10 +433,12 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                             self.goalLabel.text = "次:" + String(goalPositionInt[self.i]) + "---次の次:" + String(goalPositionInt[self.i + 1])
                         }
                     } else {
-                        self.myCollectionView.contentOffset.y = 0
+                        self.myCollectionView.contentOffset.y = firstStartPosition
                         self.goalLabel.text = "終了"
                         self.dataAppendBool = false
                         self.repeatNumber = self.repeatNumber + 1
+                        self.time = 0
+                        self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
                             self.repeatNumberLabel.text = String(self.repeatNumber) + "回目"

@@ -99,7 +99,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         i = 0
         time = 0
         goalLabel.text = String(goalPositionInt[i])
-        myCollectionView.contentOffset.x = 0
+        myCollectionView.contentOffset.x = firstStartPosition
         userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
         dataAppendBool = true
     }
@@ -109,7 +109,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         i = 0
         time = 0
         goalLabel.text = String(goalPositionInt[i])
-        myCollectionView.contentOffset.x = 0
+        myCollectionView.contentOffset.x = firstStartPosition
         userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
         dataAppendBool = true
     }
@@ -153,6 +153,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         initialCallibrationSettings()
 
         sceneView.delegate = self
+        myCollectionView.contentOffset.x = firstStartPosition
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
@@ -525,10 +526,12 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                             self.goalLabel.text = "次:" + String(goalPositionInt[self.i]) + "---次の次:" + String(goalPositionInt[self.i + 1])
                         }
                     } else {
-                        self.myCollectionView.contentOffset.x = 0
+                        self.myCollectionView.contentOffset.x = firstStartPosition
                         self.goalLabel.text = "終了"
                         self.dataAppendBool = false
                         self.repeatNumber = self.repeatNumber + 1
+                        self.time = 0
+                        self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
                             self.repeatNumberLabel.text = String(self.repeatNumber) + "回目"
@@ -544,7 +547,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // CSVを作るデータに足していく
         if dataAppendBool == true {
             DispatchQueue.main.async {
-                if Float(self.myCollectionViewPosition) > 5 {
+                if self.myCollectionViewPosition > firstStartPosition {
                     // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
                     self.nowgoal_Data.append(Float(self.myCollectionViewPosition + 25))
                     self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
