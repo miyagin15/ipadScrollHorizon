@@ -123,7 +123,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     // var NetWork = NetWorkViewController()
     // ゴールの目標セルを決める
-    var goalPositionInt: [Int] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
+    // var goalPositionInt: [Int] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
     // ゴールの目標位置を決める.数だけは合わせる必要がある
     var goalPosition: [Float] = [15, 14, 13, 12, 11, 10, 20, 16, 17, 18, 19]
     private var tapData: [[Float]] = [[]]
@@ -143,7 +143,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //        depthImageView!.frame = CGRect(x: 550, y: 280, width: 640, height: 480)
 //        view.addSubview(depthImageView)
 
-        goalPositionInt = Utility.goalPositionInt
+        // goalPositionInt = Utility.goalPositionInt
         createScrollVIew()
         decideGoalpositionTimeCount()
         createGoalView()
@@ -512,14 +512,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                 if self.time > 60 {
                     print("クリア2")
                     AudioServicesPlaySystemSound(self.sound)
-                    if self.i < self.goalPositionInt.count - 1 {
+                    if self.i < goalPositionInt.count - 1 {
                         self.i = self.i + 1
                         self.timeCount.value = 0
                         self.buttonLabel.backgroundColor = UIColor.blue
-                        if self.i == self.goalPosition.count - 1 {
-                            self.goalLabel.text = "次:" + String(self.goalPositionInt[self.i])
+                        if self.i == goalPositionInt.count - 1 {
+                            self.goalLabel.text = "次:" + String(goalPositionInt[self.i])
                         } else {
-                            self.goalLabel.text = "次:" + String(self.goalPositionInt[self.i]) + "---次の次:" + String(self.goalPositionInt[self.i + 1])
+                            self.goalLabel.text = "次:" + String(goalPositionInt[self.i]) + "---次の次:" + String(goalPositionInt[self.i + 1])
                         }
                     } else {
                         self.myCollectionView.contentOffset.x = 0
