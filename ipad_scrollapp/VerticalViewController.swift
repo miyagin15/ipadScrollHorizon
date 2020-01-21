@@ -114,8 +114,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
     @IBOutlet var handsSlider: UISlider!
     @IBOutlet var repeatNumberLabel: UILabel!
-    var repeatNumber:Int = 1
-    
+    var repeatNumber: Int = 1
+
     private let cellIdentifier = "cell"
     // Trackingfaceを使うための設定
     private let defaultConfiguration: ARFaceTrackingConfiguration = {
@@ -438,7 +438,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                         self.repeatNumber = self.repeatNumber + 1
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
-                            self.repeatNumberLabel.text = String(self.repeatNumber)+"回目"
+                            self.repeatNumberLabel.text = String(self.repeatNumber) + "回目"
                             // self.NetWork.send(message: [0,0])
                         }
                     }
