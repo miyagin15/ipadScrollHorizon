@@ -114,6 +114,9 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         dataAppendBool = true
     }
 
+    @IBOutlet var repeatNumberLabel: UILabel!
+    var repeatNumber: Int = 1
+
     private let cellIdentifier = "cell"
     // Trackingfaceを使うための設定
     private let defaultConfiguration: ARFaceTrackingConfiguration = {
@@ -525,8 +528,10 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                         self.myCollectionView.contentOffset.x = 0
                         self.goalLabel.text = "終了"
                         self.dataAppendBool = false
+                        self.repeatNumber = self.repeatNumber + 1
                         // データをパソコンに送る(今の場所と目標地点)
                         DispatchQueue.main.async {
+                            self.repeatNumberLabel.text = String(self.repeatNumber) + "回目"
                             // self.NetWork.send(message: [0,0])
                         }
                     }
@@ -789,5 +794,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         documentInteraction = UIDocumentInteractionController(url: FilePath)
         documentInteraction.presentOpenInMenu(from: CGRect(x: 10, y: 10, width: 100, height: 50), in: view, animated: true)
         nowgoal_Data = []
+        repeatNumber = 1
+        repeatNumberLabel.text = String(repeatNumber) + "回目"
     }
 }
