@@ -154,6 +154,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
         sceneView.delegate = self
         myCollectionView.contentOffset.x = firstStartPosition
+        userDefaults.set(myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
@@ -547,7 +548,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         // CSVを作るデータに足していく
         if dataAppendBool == true {
             DispatchQueue.main.async {
-                if self.myCollectionViewPosition > firstStartPosition {
+                if self.i > 0 {
                     // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
                     self.nowgoal_Data.append(Float(self.myCollectionViewPosition + 25))
                     self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
@@ -599,7 +600,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
         case 1:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+                self.buttonLabel.setTitle("mouthHalfSmile", for: .normal)
             }
             let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
             let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
@@ -696,7 +697,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            if cheekR < 0.1, cheekL < 0.1 {
 //                return
 //            }
-            print(cheekL, cheekR, faceAnchor.geometry.vertices[24][0])
+            // print(cheekL, cheekR, faceAnchor.geometry.vertices[24][0])
             if cheekL > cheekR, faceAnchor.geometry.vertices[24][0] > 0 {
                 leftScrollMainThread(ratio: CGFloat(cheekL))
             } else if cheekR > cheekL, faceAnchor.geometry.vertices[24][0] < 0 {

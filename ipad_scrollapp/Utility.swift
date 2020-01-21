@@ -8,7 +8,7 @@
 
 import Foundation
 import UIKit
-let goalPositionInt: [Int] = [9, 11, 8, 12, 7, 13, 30, 10]
+let goalPositionInt: [Int] = [9, 11, 8, 12, 7, 13, 40, 13]
 let firstStartPosition: CGFloat = 800
 class Utility {
     static let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]

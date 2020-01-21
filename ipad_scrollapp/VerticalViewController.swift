@@ -149,6 +149,8 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         initialCallibrationSettings()
         sceneView.delegate = self
         myCollectionView.contentOffset.y = firstStartPosition
+        userDefaults.set(myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
+
         //timeInterval秒に一回update関数を動かす
         _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(ViewController.update), userInfo: nil, repeats: true)
     }
@@ -476,7 +478,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
         // CSVを作るデータに足していく
         if dataAppendBool == true {
             DispatchQueue.main.async {
-                if Float(self.myCollectionViewPosition) > 5 {
+                if self.i > 0 {
                     // self.tapData.append([(Float(self.tableViewPosition)),(self.goalPosition[self.i])])
                     self.nowgoal_Data.append(Float(self.myCollectionViewPosition + 25))
                     self.nowgoal_Data.append(Float(self.goalPosition[self.i]))
@@ -546,7 +548,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
 
         case 1:
             DispatchQueue.main.async {
-                self.buttonLabel.setTitle("CheekSquint_halfsmile", for: .normal)
+                self.buttonLabel.setTitle("mouthHalfSmile", for: .normal)
             }
             let cheekSquintLeft = faceAnchor.blendShapes[.mouthSmileLeft] as! Float
             let cheekSquintRight = faceAnchor.blendShapes[.mouthSmileRight] as! Float
@@ -704,18 +706,23 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                 self.buttonLabel.setTitle("cheekPuff", for: .normal)
             }
             let cheekR = Utility.faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[697][2] + faceAnchor.geometry.vertices[826][2] + faceAnchor.geometry.vertices[839][2]) / 3, maxFaceAUVertex: callibrationPosition[4], minFaceAUVertex: callibrationOrdinalPosition[4])
-            print("cheekR", cheekR)
+            // print("cheekR", cheekR)
             let cheekL = Utility.faceAURangeChange(faceAUVertex: (faceAnchor.geometry.vertices[245][2] + faceAnchor.geometry.vertices[397][2] + faceAnchor.geometry.vertices[172][2]) / 3, maxFaceAUVertex: callibrationPosition[5], minFaceAUVertex: callibrationOrdinalPosition[5])
-            print("cheekL", cheekL)
+            // print("cheekL", cheekL)
 
-            if cheekR < 0.1, cheekL < 0.1 {
-                return
-            }
-            if cheekL > cheekR {
+//            if cheekR < 0.1, cheekL < 0.1 {
+//                return
+//            }
+            if cheekL > cheekR, faceAnchor.geometry.vertices[24][0] > 0 {
                 scrollUpInMainThread(ratio: CGFloat(cheekL))
-            } else {
+            } else if cheekR > cheekL, faceAnchor.geometry.vertices[24][0] < 0 {
                 scrollDownInMainThread(ratio: CGFloat(cheekR))
             }
+//            if cheekL > cheekR {
+//                scrollUpInMainThread(ratio: CGFloat(cheekL))
+//            } else {
+//                scrollDownInMainThread(ratio: CGFloat(cheekR))
+//            }
 
         case 5:
             DispatchQueue.main.async {
