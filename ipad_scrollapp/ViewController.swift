@@ -230,6 +230,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var lastValueR: CGFloat = 0
     // LPFの比率
     var LPFRatio: CGFloat = 0.9
+    var maxValueR: CGFloat = 0
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -246,18 +247,31 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: 300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else if self.inputMethodString == "position" {
-                if self.ratioLookDown > 0.65 {
-                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
-                } else {
-                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                if self.maxValueR < outPutLPF {
+                    self.maxValueR = outPutLPF
+                    let ClutchPosition = self.userDefaults.float(forKey: "beforeCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+                } else if outPutLPF < 0.05, outPutLPF > -0.05 {
+                    self.maxValueR = 0
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
                 }
+
+//                if self.ratioLookDown > 0.65 {
+//                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+//                } else {
+//                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+//                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) + 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+//                }
             }
             // self.tableView.contentOffset = CGPoint(x: 0, y: self.tableView.contentOffset.y + 10*ratio*CGFloat(self.ratioChange))
         }
     }
 
     var lastValueL: CGFloat = 0
+    var maxValueL: CGFloat = 0
     // left scroll
     private func leftScrollMainThread(ratio: CGFloat) {
         DispatchQueue.main.async {
@@ -274,12 +288,24 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 //            } else if self.inputMethodString == "position" {
 //                self.myCollectionView.contentOffset = CGPoint(x: -300 * ratio * CGFloat(self.ratioChange), y: 0)
             } else if self.inputMethodString == "position" {
-                if self.ratioLookDown > 0.65 {
-                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
-                } else {
-                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                if self.maxValueL < outPutLPF {
+                    self.maxValueL = outPutLPF
+                    let ClutchPosition = self.userDefaults.float(forKey: "beforeCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+                } else if outPutLPF < 0.05, outPutLPF > -0.05 {
+                    self.maxValueL = 0
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
                 }
+
+//                if self.ratioLookDown > 0.65 {
+//                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+//                } else {
+//                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+//                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition) - 100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
+//                }
 //                self.myCollectionView.contentOffset = CGPoint(x: -100 * outPutLPF * CGFloat(self.ratioChange), y: 0)
             }
         }
