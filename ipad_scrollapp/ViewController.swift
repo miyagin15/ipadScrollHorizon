@@ -229,7 +229,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
 
     var lastValueR: CGFloat = 0
     // LPFの比率
-    var LPFRatio: CGFloat = 0.7
+    var LPFRatio: CGFloat = 0.5
     var maxValueR: CGFloat = 0
     // right scroll
     private func rightScrollMainThread(ratio: CGFloat) {
