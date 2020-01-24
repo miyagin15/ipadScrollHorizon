@@ -11,6 +11,7 @@ import UIKit
 // let goalPositionInt: [Int] = [9, 11, 8, 12, 7, 13, 40, 13]
 let goalPositionInt: [Int] = [9, 10, 8, 11, 7, 12, 30, 12, 9]
 let firstStartPosition: CGFloat = 800
+let thresholdPositionInput: CGFloat = 0.05
 class Utility {
     static let callibrationArr: [String] = ["口左", "口右", "口上", "口下", "頰右", "頰左", "眉上", "眉下", "右笑", "左笑", "上唇", "下唇", "普通"]
     // 初期設定のMINの普通の状態を保存する
