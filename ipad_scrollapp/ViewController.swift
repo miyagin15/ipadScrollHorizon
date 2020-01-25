@@ -257,6 +257,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
                     self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
+                } else if self.maxValueR - 0.3 > outPutLPF {
+                    self.maxValueR = self.maxValueR - 0.3
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
                 }
 
 //                if self.ratioLookDown > 0.65 {
@@ -295,6 +300,11 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
                 } else if outPutLPF < 0.05 {
                     self.maxValueL = 0.05
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
+                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
+                } else if self.maxValueL - 0.3 > outPutLPF {
+                    self.maxValueL = self.maxValueL - 0.3
                     let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
                     self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")

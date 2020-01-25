@@ -252,6 +252,11 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                     let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition))
                     self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "beforeCollectionViewPosition")
+                } else if self.maxValueUP - 0.3 > outPutLPF {
+                    self.maxValueUP = self.maxValueUP - 0.3
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition))
+                    self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "beforeCollectionViewPosition")
                 }
             }
 
@@ -289,6 +294,11 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                     self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "nowCollectionViewPosition")
                 } else if outPutLPF < 0.05 {
                     self.maxValueDown = 0.05
+                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+                    self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition))
+                    self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "beforeCollectionViewPosition")
+                } else if self.maxValueDown - 0.3 > outPutLPF {
+                    self.maxValueDown = self.maxValueDown - 0.3
                     let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: 0, y: CGFloat(ClutchPosition))
                     self.userDefaults.set(self.myCollectionView.contentOffset.y, forKey: "beforeCollectionViewPosition")
