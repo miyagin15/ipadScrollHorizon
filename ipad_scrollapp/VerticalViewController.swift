@@ -385,6 +385,7 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
     var ratioLookDown: Float = 0
 
     var handsSliderValue: Float = 0
+    var workTime: Float = 0
 
     var dataAppendBool = true
     // let firstConfig:[Float] = userDefaults.array(forKey: "firstConfig") as! [Float]
@@ -463,7 +464,13 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
                         }
                     } else {
                         self.myCollectionView.contentOffset.y = firstStartPosition
-                        self.goalLabel.text = "終了"
+                        if self.repeatNumber != 1 {
+                            self.goalLabel.text = "終了!" + String(Float(self.nowgoal_Data.count / 120) - self.workTime) + "秒かかった"
+                            self.workTime = Float(self.nowgoal_Data.count / 120)
+                        } else {
+                            self.workTime = Float(self.nowgoal_Data.count / 120)
+                            self.goalLabel.text = "終了." + String(self.workTime) + "sかかった"
+                        }
                         self.dataAppendBool = false
                         self.repeatNumber = self.repeatNumber + 1
                         self.time = 0

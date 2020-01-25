@@ -387,6 +387,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
     var depthLeftCheek: Float = 0
     var ratioLookDown: Float = 0
     var handsSliderValue: Float = 0
+    var workTime: Float = 0
     var transTrans = CGAffineTransform() // 移動
     func renderer(_: SCNSceneRenderer, didUpdate _: SCNNode, for anchor: ARAnchor) {
         guard let faceAnchor = anchor as? ARFaceAnchor else {
@@ -554,7 +555,13 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                         }
                     } else {
                         self.myCollectionView.contentOffset.x = firstStartPosition
-                        self.goalLabel.text = "終了"
+                        if self.repeatNumber != 1 {
+                            self.goalLabel.text = "終了!" + String(Float(self.nowgoal_Data.count / 120) - self.workTime) + "秒かかった"
+                            self.workTime = Float(self.nowgoal_Data.count / 120)
+                        } else {
+                            self.workTime = Float(self.nowgoal_Data.count / 120)
+                            self.goalLabel.text = "終了." + String(self.workTime) + "sかかった"
+                        }
                         self.dataAppendBool = false
                         self.repeatNumber = self.repeatNumber + 1
                         self.time = 0
