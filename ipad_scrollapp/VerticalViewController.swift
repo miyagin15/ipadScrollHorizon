@@ -410,19 +410,32 @@ class VerticalViewController: UIViewController, ARSCNViewDelegate, UICollectionV
             self.inputClutchView.backgroundColor = UIColor.red
             self.tracking.backgroundColor = UIColor.blue
         }
-        // 下を向いている時の処理
-        ratioLookDown = faceAnchor.transform.columns.1.z
+//        // 下を向いている時の処理
+//        ratioLookDown = faceAnchor.transform.columns.1.z
+//        DispatchQueue.main.async {
+//            self.orietationLabel.text = String(self.ratioLookDown)
+//        }
+
+//        if ratioLookDown > 0.65 {
+//            //  認識していたら青色に
+//            DispatchQueue.main.async {
+//                // print(self.tableView.contentOffset.y)
+//                self.inputClutchView.backgroundColor = UIColor.white
+//            }
+//            print("うなづき")
+//        }
+        //  認識していたら青色に
         DispatchQueue.main.async {
-            self.orietationLabel.text = String(self.ratioLookDown)
-        }
-        if ratioLookDown > 0.65 {
-            //  認識していたら青色に
-            DispatchQueue.main.async {
+            if self.nowgoal_Data.count % 120 == 0 {
+                self.orietationLabel.text = String(Float(self.nowgoal_Data.count / 120) - self.workTime)
+                //                self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
                 // print(self.tableView.contentOffset.y)
-                self.inputClutchView.backgroundColor = UIColor.white
+                if (Float(self.nowgoal_Data.count / 120) - self.workTime) > 60 {
+                    self.inputClutchView.backgroundColor = UIColor.white
+                }
             }
-            print("うなづき")
         }
+
         let goal = goalPosition[self.i]
 //        DispatchQueue.main.async {
 //            self.tableViewPosition = self.tableView.contentOffset.y

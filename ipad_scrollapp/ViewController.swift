@@ -258,7 +258,7 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
                     self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
                 } else if self.maxValueR - 0.3 > outPutLPF {
-                    self.maxValueR = self.maxValueR - 0.3
+                    self.maxValueR = outPutLPF
                     let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
                     self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
@@ -303,8 +303,14 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
                     let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
                     self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
+//                } else if self.maxValueL > 0.8, outPutLPF < 0.4 {
+//                    self.maxValueL = outPutLPF
+//                    let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
+//                    self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
+//                    self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
+//                }
                 } else if self.maxValueL - 0.3 > outPutLPF {
-                    self.maxValueL = self.maxValueL - 0.3
+                    self.maxValueL = outPutLPF
                     let ClutchPosition = self.userDefaults.float(forKey: "nowCollectionViewPosition")
                     self.myCollectionView.contentOffset = CGPoint(x: CGFloat(ClutchPosition), y: 0)
                     self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "beforeCollectionViewPosition")
@@ -528,19 +534,23 @@ class ViewController: UIViewController, ARSCNViewDelegate, UICollectionViewDeleg
         }
         // 顔のxyz位置
         // print(faceAnchor.transform.columns.3.x, faceAnchor.transform.columns.3.y, faceAnchor.transform.columns.3.z)
-        // 下を向いている時の処理
-        ratioLookDown = faceAnchor.transform.columns.1.z
+
+//        // 下を向いている時の処理
+//        ratioLookDown = faceAnchor.transform.columns.1.z
+//        DispatchQueue.main.async {
+//            self.orietationLabel.text = String(self.ratioLookDown)
+//        }
+
+        //  認識していたら青色に
         DispatchQueue.main.async {
-            self.orietationLabel.text = String(self.ratioLookDown)
-        }
-        if ratioLookDown > 0.65 {
-            //  認識していたら青色に
-            DispatchQueue.main.async {
-//                self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
+            if self.nowgoal_Data.count % 120 == 0 {
+                self.orietationLabel.text = String(Float(self.nowgoal_Data.count / 120) - self.workTime)
+                //                self.userDefaults.set(self.myCollectionView.contentOffset.x, forKey: "nowCollectionViewPosition")
                 // print(self.tableView.contentOffset.y)
-                self.inputClutchView.backgroundColor = UIColor.white
+                if (Float(self.nowgoal_Data.count / 120) - self.workTime) > 60 {
+                    self.inputClutchView.backgroundColor = UIColor.white
+                }
             }
-            print("うなづき")
         }
 
         let goal = goalPosition[self.i]
